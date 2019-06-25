@@ -10,45 +10,23 @@ typedef long long ll;
 typedef pair<int,int> P;
 typedef vector<int> ivec;
 const ll N = 1e9+7;
-
-int main(){
-    ll n = 10;
-    int i[n][n] = {};
-    int i0[n][n] = {0};
-    // vector<P> p[n] = {0};
-    vector<ivec> vec(n,ivec(n,0));
-    int i1[n][n] = {-1};
-    cout << "i" << endl;
-    rep(k,n){
-        rep(j,n){
-            cout << i[k][j] << " ";
+ 
+int main()
+{
+	int n = 5;
+    // for(int i = 0; i < (1 << n);i++){
+    //     rep(j,n){
+    //         //下からiを判定(i=3 なら順に1，2が出力、i=7なら1，2，4)
+    //         // cout << (i & (1 << j)) << endl;
+    //         cout  << i  << ' ' << j << ' ' << ( i & (1 << j)) << endl;
+    //     }
+    // }
+    for(int i = 0; i < (1 << n);i++){
+        for(int j = n;j >= 0; j--){
+            //下からiを判定(i=3 なら順に1，2が出力、i=7なら1，2，4)
+            // cout << (i & (i >> j)) << endl;
+            cout << i << ' ' << j << ' ' << (1 & (i >> j)) << endl;
+            // cout  << i  << ' ' << j << ' ' << (1 << j) << endl;
         }
-        cout << endl;
     }
-    cout << endl << "i0" << endl;
-    rep(k,n){
-        rep(j,n){
-            cout << i0[k][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << endl << "i1" << endl;
-    rep(k,n){
-        rep(j,n){
-            cout << i1[k][j] << " ";
-        }
-        cout << endl;
-    }
-
-    cout << endl << "vec" << endl;
-    rep(k,n){
-        rep(j,n){
-            cout << vec[k][j] << " ";
-        }
-        cout << endl;
-    }
-    int a[n] = {0};
-    cout 
-    rep(i,n)
-    return 0;
 }
