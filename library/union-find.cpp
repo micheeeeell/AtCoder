@@ -18,8 +18,8 @@ const ll N = 1e9+7;
 
 struct UnionFind{
 private:
-        vector<int> par;
-        vector<int> rank;
+    vector<int> par;
+    vector<int> rank;
 
 public:
     //n要素で親を初期化、par[x]はxの親を表す

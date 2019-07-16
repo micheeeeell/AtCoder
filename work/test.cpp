@@ -12,11 +12,8 @@ typedef vector<int> ivec;
 const ll N = 1e9+7;
 
 int main(){
-    ll a,b,c;
-    a = 25817729;
-    b = 76041209;
-    c = 81456309;
-    cout << (a^b) << endl;
-    cout << (1^2^3) << endl;
+    vector<int> a = {2,3,4,5,7,8,9};
+    a.erase(5);
+    for(auto i:a)cout << i << endl;
     return 0;
 }
