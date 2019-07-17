@@ -12,8 +12,11 @@ typedef vector<int> ivec;
 const ll N = 1e9+7;
 
 int main(){
-    vector<int> a = {2,3,4,5,7,8,9};
-    a.erase(5);
-    for(auto i:a)cout << i << endl;
+    vector<int> a = {1,2,3,4,5,6};
+    
+    // for(auto i:a)cout << (i ^ 6) << endl;
+    auto ed = a.end();
+    ed--;
+    cout << *ed << endl;
     return 0;
 }
