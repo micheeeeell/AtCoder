@@ -1,0 +1,40 @@
+{
+	// Place your snippets for cpp here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"include template": {
+		"prefix": "ctemp",
+		"body": [
+			"#include<bits/stdc++.h>",
+			"#include<iostream>",
+			"#include<cstdio>",
+			"#include<vector>",
+			"#include<string>",
+			"#include<algorithm>",
+			"#include<map>",
+			"using namespace std;",
+			"#define rep(i,x) for(int i = 0; i < x; i++)",
+			"#define pb push_back",
+			"#define mp make_pair",
+			"typedef long long ll;",
+			"typedef pair<int,int> P;",
+			"typedef pair<ll,ll> Pll;",
+			"typedef vector<int> vi;",
+			"typedef vector<vector<int>> vvi;",
+			"typedef vector<vector<vector<int>>> vvvi;",
+			"const ll N = 1e9+7;",
+			"const int n_max = 1e5+10;"
+		],
+		"description": "The template of Include library"
+	}
+}
