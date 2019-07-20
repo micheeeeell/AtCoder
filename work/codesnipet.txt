@@ -12,8 +12,39 @@
 	// 	],
 	// 	"description": "Log output to console"
 	// }
+
+	"cin_vector_int":{
+        "prefix": "cvi",
+        "body":[
+            "vector<int> $1($2);",
+            "rep(i,$2) cin >> $1[i];",
+        ],
+        "description": "vector<int>の受取"
+	},
+	"cin_string_int":{
+        "prefix": "csi",
+        "body":[
+            "string $1[$2];",
+            "rep(i,$2) cin >> $1[i];",
+        ],
+        "description": "vector<string>の受取"
+	},
+	"cin_one_int":{
+		"prefix":"coi",
+		"body":[
+			"int $1; cin >> $1;",
+		],
+		"description":"int の受け取り（1数）"
+	},
+	"cin_two_int":{
+		"prefix":"cti",
+		"body":[
+			"int $1,$2; cin >> $1 >> $2;",
+		],
+		"description":"int の受け取り（2数）"
+	},
 	"include template": {
-		"prefix": "ctemp",
+		"prefix": "itemp",
 		"body": [
 			"#include<bits/stdc++.h>",
 			"#include<iostream>",
@@ -36,5 +67,13 @@
 			"const int n_max = 1e5+10;"
 		],
 		"description": "The template of Include library"
+	},
+	"cout_debug":{
+		"prefix":"dcout",
+		"body":[
+			"$1 << ' ' << "
+		],
+		"description":"debug用のcoutの部品"
 	}
+
 }

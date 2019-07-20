@@ -20,12 +20,14 @@ struct UnionFind{
 private:
     vector<int> par;
     vector<int> rank;
+    vector<int> sz;
 
 public:
     //n要素で親を初期化、par[x]はxの親を表す
     UnionFind(int n){
         par.resize(n,0);
         rank.resize(n,0);
+        sz.resize(n,1);
         rep(i,n){
             par[i] = i;
         }
@@ -44,6 +46,7 @@ public:
         if(x == y) return;
         else{
             par[y] = x;
+            sz[x] += sz[y];
             if(rank[x] == rank[y]) rank[x]++;
         }
     }
@@ -51,6 +54,11 @@ public:
     //xとyが同じ集合に属するか否か
     bool same(int x, int y){
         return root(x) == root(y);
+    }
+
+    //xが属する集合のサイズを返す
+    int size(int x){
+        return sz[root(x)];
     }
 };
 
