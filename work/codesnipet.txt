@@ -43,6 +43,20 @@
 		],
 		"description":"int の受け取り（2数）"
 	},
+	"cin_one_ll":{
+		"prefix":"col",
+		"body":[
+			"ll $1; cin >> $1;",
+		],
+		"description":"int の受け取り（1数）"
+	},
+	"cin_two_ll":{
+		"prefix":"ctl",
+		"body":[
+			"ll $1,$2; cin >> $1 >> $2;",
+		],
+		"description":"int の受け取り（2数）"
+	},
 	"include template": {
 		"prefix": "itemp",
 		"body": [
