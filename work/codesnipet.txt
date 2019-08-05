@@ -99,5 +99,4 @@
 		],
 		"description":"debug用のcoutの部品"
 	}
-
 }
