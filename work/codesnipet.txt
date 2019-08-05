@@ -22,12 +22,11 @@
         "description": "vector<int>の受取"
 	},
 	"cin_string_int":{
-        "prefix": "csi",
+        "prefix": "cs",
         "body":[
-            "string $1[$2];",
-            "rep(i,$2) cin >> $1[i];",
+            "string $1;cin >> $1;"
         ],
-        "description": "vector<string>の受取"
+        "description": "stringの受取"
 	},
 	"cin_one_int":{
 		"prefix":"coi",
