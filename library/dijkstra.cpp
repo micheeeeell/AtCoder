@@ -53,6 +53,18 @@ struct graph{
     }
 };
 
+vector<int> is_moved(n_max,0);
+
+template<typename T>
+void reach(graph<T> &g, int pos){
+    is_moved[pos] = 1;
+    for(auto i : g.data[pos]){
+        if(!is_moved[i.t]){
+            reach(g, i.t);
+        }
+    }
+}
+
 template<typename T>
 std::vector<T> bellmanford(graph<T> &g, int s){
     const T INF = std::numeric_limits<T>::max()/4;
@@ -67,12 +79,17 @@ std::vector<T> bellmanford(graph<T> &g, int s){
     for(auto &v:g.data)for(auto &e:v){
         if(data[e.f]==INF)continue;        
         if(data[e.f] + e.c < data[e.t]){
-            fill(data.begin(),data.end(),std::numeric_limits<T>::min());
+            // fill(data.begin(),data.end(),std::numeric_limits<T>::min());
+            fill(is_moved.begin(),is_moved.end(),0);
+            reach(g,e.f);
+            for(T i = 0; i < g.data.size();i++){
+                if(is_moved[i])data[i] = INT_MIN;
+            }
             break;
         }
     }
     return data;
-}
+};
 
 template<typename T>
 std::vector<T> dijkstra(graph<T> &g,int s){
@@ -96,7 +113,7 @@ std::vector<T> dijkstra(graph<T> &g,int s){
         }
     }
     return data;
-}
+};
 
 //input
 /*
@@ -119,19 +136,25 @@ int main(){
         gr.add_edge(from,to,cost);
         // gr.add_edge(es[i]);
     }
-    // auto es = gr.make_edges();
-    // cout << gr.size() << endl;
-    // for(auto i : es) cout << i.f  << ' ' << i.t  << ' ' << i.c << endl;
+    auto es = gr.make_edges();
+    cout << gr.size() << endl;
+    for(auto i : es) cout << i.f  << ' ' << i.t  << ' ' << i.c << endl;
+    cout << "graph.data[0]" << endl;
+    for(auto i : gr.data[4]) cout << i.f  << ' ' << i.t  << ' ' << i.c << endl;
 
-    // auto data = bellmanford(gr, 0);
-    // for(auto i : data) cout << i << " ";
-    // cout << endl << endl;
-    // cout << INT << endl;
-    auto data2 = dijkstra(gr, r);
-    for(auto i : data2){
-        if(i != INT_MAX)cout << i << "\n";
-        else cout << "INF" << "\n";
-    } 
+    auto data = bellmanford(gr, 0);
+    for(auto i : data) cout << i << " ";
+    cout << endl << endl;
+    vi clear(n_max,0);
+    is_moved = clear;
+    reach(gr, 0);
+    rep(i,n) cout << is_moved[i] << " ";
+    cout << endl;
+    // auto data2 = bellmanford(gr, r);
+    // for(auto i : data2){
+    //     if(i != INT_MAX)cout << i << "\n";
+    //     else cout << "INF" << "\n";
+    // } 
     // cout << endl;
     return 0;
 }
