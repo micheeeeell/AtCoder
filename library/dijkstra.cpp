@@ -77,7 +77,8 @@ std::vector<T> bellmanford(graph<T> &g, int s){
         }
     }
     for(auto &v:g.data)for(auto &e:v){
-        if(data[e.f]==INF)continue;        
+        if(data[e.f]==INF)continue;
+        if(data[e.f]==INT_MIN)continue;        
         if(data[e.f] + e.c < data[e.t]){
             // fill(data.begin(),data.end(),std::numeric_limits<T>::min());
             fill(is_moved.begin(),is_moved.end(),0);
