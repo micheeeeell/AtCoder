@@ -1,0 +1,76 @@
+#include<bits/stdc++.h>
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<string>
+#include<algorithm>
+#include<map>
+using namespace std;
+#define rep(i,x) for(int i = 0; i < x; i++)
+#define pb push_back
+#define mp make_pair
+typedef long long ll;
+typedef long double ld;
+typedef pair<int,int> P;
+typedef pair<ll,ll> Pll;
+typedef vector<int> vi;
+typedef vector<vector<int>> vvi;
+typedef vector<vector<vector<int>>> vvvi;
+const ll N = 1e9+7;
+const int n_max = 1e5+10;
+
+void print() {
+    cout << endl;
+}
+
+template <class Head, class... Tail>
+void print(Head&& head, Tail&&... tail) {
+    cout << head;
+    if (sizeof...(tail) != 0) cout << ' ';
+    print(forward<Tail>(tail)...);
+}
+
+template <class T>
+void print(vector<T> &vec) {
+    for (auto& a : vec) {
+        cout << a;
+        if (&a != &vec.back()) cout << ' ';
+    }
+    cout << endl;
+}
+
+template <class T>
+void print(vector<vector<T>> &df) {
+    for (auto& vec : df) {
+        print(vec);
+    }
+}
+
+
+int main(){
+    ll n,k; cin >> n >> k;
+    vector<ll> a(n),abig(n,0),afront(n,0);
+    rep(i,n) cin >> a[i];
+    rep(i,n){
+        rep(j,n){
+            if(i == j)continue;
+            if(a[i] < a[j]){
+                if(j < i){
+                    afront[i]++;
+                    abig[i]++;
+                }
+                else abig[i]++;
+            }
+        }
+    }
+
+    // print(abig);
+    // print(afront);
+    ll abig_sum = 0;
+    ll afront_sum = 0;
+    abig_sum = accumulate(abig.begin(),abig.end(), 0) % N;
+    afront_sum = accumulate(afront.begin(), afront.end(), 0) % N;
+    ll ks = (k * (k-1)/2) % N;
+    cout << (((ks * abig_sum)%N) + ((afront_sum * k)%N))%N << endl;
+    return 0;
+}
