@@ -16,11 +16,16 @@ typedef pair<ll,ll> Pll;
 typedef vector<int> vi;
 typedef vector<vector<int>> vvi;
 typedef vector<vector<vector<int>>> vvvi;
-const ll N = 1e9+7;
+const ll MOD = 1e9+7;
 const int n_max = 1e5+10;
 
 int main(){
-    int hoge[100] = {};
-    fill(hoge, hoge+100, -1);
-    cout << hoge[0] << endl;
+    int n; cin >> n;
+    vvi a(n,vector<int>(n-1));
+    rep(i,n)rep(i,n-1){
+        cin >> a[i][j];
+        a[i][j]--;
+    }
+    bool ok = true;
+    
 }

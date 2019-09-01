@@ -16,11 +16,17 @@ typedef pair<ll,ll> Pll;
 typedef vector<int> vi;
 typedef vector<vector<int>> vvi;
 typedef vector<vector<vector<int>>> vvvi;
-const ll N = 1e9+7;
+const ll MOD = 1e9+7;
 const int n_max = 1e5+10;
 
 int main(){
-    int hoge[100] = {};
-    fill(hoge, hoge+100, -1);
-    cout << hoge[0] << endl;
+    string s;cin >> s;
+    string s2;cin >> s2;
+    int count = 0;
+    rep(i,3){
+        if(s[i] == s2[i])count++;
+    }
+    cout << count << endl;
+    return 0;
 }
+
