@@ -1,26 +1,40 @@
-#include<bits/stdc++.h>
-#include<iostream>
-#include<cstdio>
-#include<vector>
-#include<string>
-#include<algorithm>
-#include<map>
+#include <bits/stdc++.h>
 using namespace std;
-#define rep(i,x) for(int i = 0; i < x; i++)
-#define pb push_back
-#define mp make_pair
-typedef long long ll;
-typedef long double ld;
-typedef pair<int,int> P;
-typedef pair<ll,ll> Pll;
-typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
-typedef vector<vector<vector<int>>> vvvi;
-const ll N = 1e9+7;
-const int n_max = 1e5+10;
 
-int main(){
-    int hoge[100] = {};
-    fill(hoge, hoge+100, -1);
-    cout << hoge[0] << endl;
+typedef long long ll;
+typedef long double Double;
+#define rep(i, n) for (int i = 0; i < (int)(n); i++)
+
+void solve(long long N, long long K, std::vector<long long> A) {
+  int c[64][2] = {};
+  for(int i = 0 ; i < A.size() ; i++){
+    for(int j = 0 ; j < 60 ; j++){
+      c[j][A[i] >> j & 1]++;
+    }
+  }
+  ll x = 0;
+  for(int i = 59 ; i >= 0 ; i--){
+    if( c[i][0] > c[i][1] && (x|(1ll<<i)) <= K ){
+      x |= (1ll<<i);
+    }
+  }
+  ll sum = 0;
+  for(int i = 0 ; i < A.size() ; i++){
+    sum += A[i] ^ x;
+  }
+  cout << sum << endl;
+}
+
+
+int main() {
+  long long N;
+  scanf("%lld", &N);
+  long long K;
+  scanf("%lld", &K);
+  std::vector<long long> A(N);
+  for (int i = 0; i < N; i++) {
+    scanf("%lld", &A[i]);
+  }
+  solve(N, K, std::move(A));
+  return 0;
 }
