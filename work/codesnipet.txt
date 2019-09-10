@@ -86,8 +86,8 @@
 			"typedef vector<int> vi;",
 			"typedef vector<vector<int>> vvi;",
 			"typedef vector<vector<vector<int>>> vvvi;",
-			"const ll N = 1e9+7;",
-			"const int n_max = 1e5+10;"
+			"const ll MOD = 1e9+7;",
+			"const int n_max = 1e5+10;\n"
 		],
 		"description": "The template of Include library"
 	},
@@ -97,5 +97,47 @@
 			"$1 << ' ' << "
 		],
 		"description":"debug用のcoutの部品"
+	},
+
+	"print_function":{
+		"prefix": "print_func",
+		"body": [
+			"void print() {",
+			"\tcout << endl;",
+			"}\n",
+			"template <class Head, class... Tail>",
+			"void print(Head&& head, Tail&&... tail) {",
+			"\tcout << head;",
+			"\tif (sizeof...(tail) != 0) cout << ' ';",
+			"\tprint(forward<Tail>(tail)...);",
+			"}\n",
+			"template <class T>",
+			"void print(vector<T> &vec) {",
+			"\tfor (auto& a : vec) {",
+			"\t\tcout << a;",
+			"\t\tif (&a != &vec.back()) cout << ' ';",
+			"\t}",
+			"\tcout << endl;",
+			"}\n",
+			"template <class T>",
+			"void print(vector<vector<T>> &df) {",
+			"\tfor (auto& vec : df) {",
+			"\t\tprint(vec);",
+			"\t}",
+			"}\n",
+			"template<typename T>",
+			"void print(T &arr){",
+    		"\tll sz = sizeof(arr)/sizeof(arr[0]);",
+    		"\tfor(int i = 0;i < sz-1;i++){cout << arr[i] << ' ';}",
+    		"\tcout << arr[sz-1] << endl;",
+			"}\n"
+		]
+	},
+
+	"all_vector":{
+		"prefix": "all_vec",
+		"body": [
+			"$1.begin(), $1.end()"
+		]
 	}
-}
+}s
