@@ -19,10 +19,6 @@ typedef vector<vector<vector<int>>> vvvi;
 const ll MOD = 1e9+7;
 const int n_max = 1e5+10;
 
-// ※注記
-// これからのプログラムは最大公約数ですが、c++にはデフォルトで実装済みです！
-// c++17 だったので有用でした
-
 template <class T, class U>
 ll euclid_gcd(T a, U b){
     if(a < b)return euclid_gcd(b,a);
@@ -34,8 +30,31 @@ ll euclid_gcd(T a, U b){
     return b;
 }
 
+
 int main(){
-    int a = 18, b = 12;
-    cout << euclid_gcd(b,a) << endl;
+    ll n; cin >> n;
+    vector<ll> a(n);
+    rep(i,n) cin >> a[i];
+    vector<int> res(n), l(n), r(n);
+    rep(i,n){
+        if(!i){l[i] = a[i];continue;}
+        l[i] = euclid_gcd(l[i-1],a[i]);
+    }
+    for(int i = n-1; 0 <= i; i--){
+        if(i == n-1){r[i] = a[i];continue;}
+        r[i] = euclid_gcd(r[i+1], a[i]);
+    }
+    rep(i,n){
+        if(!i){
+            res[i] = r[i+1];
+            continue;
+        }
+        if(i == n-1){
+            res[i] = l[i-1];
+            continue;
+        }
+        res[i] = euclid_gcd(l[i-1], r[i+1]);
+    }
+    cout << *max_element(res.begin(), res.end()) << endl;
     return 0;
 }
