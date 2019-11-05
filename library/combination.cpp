@@ -32,7 +32,7 @@ void expo(){
 }
 
 
-ll conv(ll x, ll y){
+ll comb(ll x, ll y){
     ll ans;
     if(y > 0) ans = dp[x] * (invdp[y] * invdp[x-y] %N) % N;
     else ans = 1;
