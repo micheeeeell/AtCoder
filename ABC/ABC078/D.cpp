@@ -22,28 +22,17 @@ const ll MOD = 1e9+7;
 const int n_max = 1e5+10;
 
 int main(){
-    ll h,w; cin >> h >> w;
-    vvl c(10,vector<ll>(10,0));
-    rep(i,10)rep(j,10){
-        cin >> c[i][j];
-    }
+    cin.tie(0);
+    ios::sync_with_stdio(false);
 
-    // ワーシャルフロイド
-    rep(k,10){
-        rep(i,10){
-            rep(j,10){
-                c[i][j] = min(c[i][j], c[i][k] + c[k][j]);
-            }
-        }
+    ll n,z; cin >> n >> z;
+    ll w; cin >> w;
+    vector<ll> a(n);
+    rep(i,n) cin >> a[i];
+    ll ans = 0;
+    if(n == 1)ans = abs(a[0] - w);
+    else{
+        ans = max(abs(a[n-1]-w), abs(a[n-2]-a[n-1]));
     }
-    vvl a(h,vl(w));
-    rep(i,h)rep(j,w){
-        cin >> a[i][j];
-    }
-    ll res = 0;
-    rep(i,h)rep(j,w){
-        if(a[i][j] == -1)continue;
-        else res += c[a[i][j]][1];
-    }
-    cout << res << endl;
+    cout << ans << endl;
 }
