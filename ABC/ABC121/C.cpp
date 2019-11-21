@@ -20,9 +20,30 @@ typedef vector<vector<ll>> vvl;
 typedef vector<vector<vector<ll>>> vvvl;
 const ll MOD = 1e9+7;
 const int n_max = 1e5+10;
+
 int main(){
-    int n; cin >> n;
-    ll res = n*n;
+    cin.tie(0);
+    ios::sync_with_stdio(false);
+    
+    ll n,m; cin >> n >> m;
+    vector<Pll> ab(n);
+    rep(i,n){
+        ll a,b; cin >> a >> b;
+        ab[i] = make_pair(a,b);
+    }
+    sort(all(ab));
+    ll temp = 0, res = 0, cnt = 0;
+    while(temp < m){
+        ll rest = m - temp;
+        if(ab[cnt].second < rest){
+            temp += ab[cnt].second;
+            res += ab[cnt].first * ab[cnt].second;
+        }
+        else{
+            temp += rest;
+            res += ab[cnt].first * rest;
+        }
+        cnt++;
+    }
     cout << res << endl;
-    return 0;
 }

@@ -1,0 +1,25 @@
+{
+// tasks.json 形式の詳細についての資料は、
+    // https://go.microsoft.com/fwlink/?LinkId=733558 をご覧ください
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "g++-7 build active file",
+            "command": "/usr/bin/g++-7",
+            "args": [
+                "-g",
+                "-O0",
+                "-std=c++14",
+                "${file}"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
