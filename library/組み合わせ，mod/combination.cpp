@@ -44,6 +44,6 @@ int main(){
     ll n,m;
     cin >> n >> m;
     expo(); 
-    cout << conv(n,m) << endl;
+    cout << comb(n,m) << endl;
     return 0;
 }

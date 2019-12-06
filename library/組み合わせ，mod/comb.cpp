@@ -2,7 +2,7 @@
 typedef long long ll;
 using namespace std;
 
-const int MAX = 510000;
+const int MAX = 1e6 + 10;
 const int MOD = 1e9+7;
 
 long long fac[MAX], finv[MAX], inv[MAX];
