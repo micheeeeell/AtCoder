@@ -93,7 +93,6 @@
 			"#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)",
 			"#define pb push_back",
 			"#define eb emplace_back",
-			"#define mp make_pair",
 			"#define debug(x) cerr << #x << \": \" << (x) << \"\\n\";",
 			"#define all(x) (x).begin(), (x).end()",
 			"typedef long long ll;",
