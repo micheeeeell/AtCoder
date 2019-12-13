@@ -135,12 +135,12 @@
 			"\t\tprint(vec);",
 			"\t}",
 			"}\n",
-			"template<typename T>",
-			"void print(T &arr){",
-    		"\tll sz = sizeof(arr)/sizeof(arr[0]);",
-    		"\tfor(int i = 0;i < sz-1;i++){cout << arr[i] << ' ';}",
-    		"\tcout << arr[sz-1] << endl;",
-			"}\n"
+			// "template<typename T>",
+			// "void print(T &arr){",
+    		// "\tll sz = sizeof(arr)/sizeof(arr[0]);",
+    		// "\tfor(int i = 0;i < sz-1;i++){cout << arr[i] << ' ';}",
+    		// "\tcout << arr[sz-1] << endl;",
+			// "}\n"
 		]
 	},
 

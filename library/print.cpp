@@ -26,7 +26,7 @@ void print() {
 template <class Head, class... Tail>
 void print(Head&& head, Tail&&... tail) {
   cout << head;
-  if (sizeof...(tail) != 0) cout << " ";
+  if (sizeof...(tail) != 0) cout << ' ';
   print(forward<Tail>(tail)...);
 }
 
@@ -34,7 +34,7 @@ template <class T>
 void print(vector<T> &vec) {
   for (auto& a : vec) {
     cout << a;
-    if (&a != &vec.back()) cout << " ";
+    if (&a != &vec.back()) cout << ' ';
   }
   cout << endl;
 }
@@ -46,30 +46,10 @@ void print(vector<vector<T>> &df) {
   }
 }
 
-//
-void print() {
-    cout << endl;
+template<typename T>
+void print(T &arr){
+  ll sz = sizeof(arr)/sizeof(arr[0]);
+  for(int i = 0;i < sz-1;i++){cout << arr[i] << ' ';}
+  cout << arr[sz-1] << endl;
 }
 
-template <class Head, class... Tail>
-void print(Head&& head, Tail&&... tail) {
-    cout << head;
-    if (sizeof...(tail) != 0) cout << ' ';
-    print(forward<Tail>(tail)...);
-}
-
-template <class T>
-void print(vector<T> &vec) {
-    for (auto& a : vec) {
-        cout << a;
-        if (&a != &vec.back()) cout << ' ';
-    }
-    cout << endl;
-}
-
-template <class T>
-void print(vector<vector<T>> &df) {
-    for (auto& vec : df) {
-        print(vec);
-    }
-}
