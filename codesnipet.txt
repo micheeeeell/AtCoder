@@ -170,5 +170,15 @@
 			"cin.tie(0);",
 			"ios::sync_with_stdio(false);\n"
 		]
+	},
+
+	"ch_function":{
+		"prefix": "ch_func",
+		"body": [
+			"template<class T>",
+			"void chmax(T &a, T &b){if(a < b)a = b;}",
+			"template<class T>",
+			"void chmin(T &a, T &b){if(a > b)a = b;}"
+		]
 	}
 }
