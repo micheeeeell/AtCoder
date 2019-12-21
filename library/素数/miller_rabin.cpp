@@ -16,17 +16,18 @@ typedef vector<int> vi;
 typedef vector<vector<int>> vvi;
 typedef vector<vector<vector<int>>> vvvi;
 const ll N = 1e9+7;
+const ll MOD = 1e9+7;
 const int n_max = 1e5+10;
 
 ll hs_pow(ll x, ll n){
     ll ret = 1;
     while(0 < n){
         if((n % 2) == 0){
-            x *= x;
+            x = x*x % MOD;
             n >>= 1;
         }
         else{
-            ret *= x;
+            ret =ret * x % MOD;
             n--;
         }
         // cout << ret  << ' ' << n  << ' ' << x << endl;
