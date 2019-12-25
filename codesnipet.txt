@@ -115,7 +115,7 @@
 			"typedef vector<ll> vl;",
 			"typedef vector<vector<ll>> vvl;",
 			"typedef vector<vector<vector<ll>>> vvvl;",
-			"const ll INF = LLONG_MAX/4;",
+			"const ll INF = numeric_limits<ll>::max()/4;",
 			"const ll MOD = 1e9+7;",
 			"const int n_max = 1e5+10;\n\n"
 		],
@@ -176,9 +176,17 @@
 		"prefix": "ch_func",
 		"body": [
 			"template<class T>",
-			"void chmax(T &a, T &b){if(a < b)a = b;}",
+			"bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}",
 			"template<class T>",
-			"void chmin(T &a, T &b){if(a > b)a = b;}"
+			"bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}"
+		]
+	},
+
+	"input_file":{
+		"prefix": "input_file",
+		"body": [
+			"ifstream in(\"input.in\");",
+    		"cin.rdbuf(in.rdbuf());"
 		]
 	}
 }
