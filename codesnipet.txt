@@ -117,7 +117,10 @@
 			"typedef vector<vector<vector<ll>>> vvvl;",
 			"const ll INF = numeric_limits<ll>::max()/4;",
 			"const ll MOD = 1e9+7;",
-			"const int n_max = 1e5+10;\n\n"
+			"const int n_max = 1e5+10;\n",
+			"int main(){",
+			"\t$1",
+			"}"
 		],
 		"description": "The template of Include library"
 	},
