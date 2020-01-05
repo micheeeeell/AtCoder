@@ -92,6 +92,19 @@
 		],
 		"description":"long long の受け取り（3数）"
 	},
+	"cin_graph_ll":{
+		"prefix": "cgl",
+		"body": [
+			"vector<vector<ll>> graph($1);",
+			"rep(i,$1) {",
+			"\tll $2,$3;cin >> $2 >> $3;",
+			"\t$2--;$3--;",
+			"\tgraph[$2].emplace_back($3);",
+			"\tgraph[$3].emplace_back($2);",
+			"}"
+		],
+		"description": "無向重みなしグラフの受け取り"
+	},
 	"include template": {
 		"prefix": "itemp",
 		"body": [
