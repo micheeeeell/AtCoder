@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for f in *
+for f in *.cpp
 do
 name=${f%.*}
 # echo ${f##*.}
