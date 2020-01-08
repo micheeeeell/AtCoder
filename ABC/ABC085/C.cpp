@@ -9,7 +9,6 @@ using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
 #define pb push_back
 #define eb emplace_back
-#define mp make_pair
 #define debug(x) cerr << #x << ": " << (x) << "\n";
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
@@ -19,7 +18,7 @@ typedef pair<ll,ll> Pll;
 typedef vector<ll> vl;
 typedef vector<vector<ll>> vvl;
 typedef vector<vector<vector<ll>>> vvvl;
-const ll INF = LLONG_MAX/4;
+const ll INF = numeric_limits<ll>::max()/4;
 const ll MOD = 1e9+7;
 const int n_max = 1e5+10;
 
@@ -50,14 +49,19 @@ void print(vector<vector<T>> &df) {
     }
 }
 
-template<class T, class U>
-void print(pair<T,U> p){
-    cout << p.first << " " << p.second << "\n";
-}
 
 int main(){
-    Pll p = {-1,20};
-    pair<string, ll> ps = {"hoge", 102};
-
-    print(p);print(ps);
+    ll n,y; cin >> n >> y;
+    auto solve = [&]() -> vector<ll>{
+        vector<ll> ret(3);
+        rep(i,n+1)rep(j,n+1){
+            ll t = y - i*10000 - j*5000;
+            if(0 <= t && t%1000 == 0 && t/1000 == n-i-j){
+                return ret = {i,j,n-i-j};
+            }
+        }
+        return ret = {-1,-1,-1};
+    };
+    vector<ll> ans = solve();
+    print(ans);
 }
