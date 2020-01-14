@@ -9,7 +9,6 @@ using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
 #define pb push_back
 #define eb emplace_back
-#define mp make_pair
 #define debug(x) cerr << #x << ": " << (x) << "\n";
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
@@ -19,51 +18,25 @@ typedef pair<ll,ll> Pll;
 typedef vector<ll> vl;
 typedef vector<vector<ll>> vvl;
 typedef vector<vector<vector<ll>>> vvvl;
-const ll INF = LLONG_MAX/4;
+const ll INF = numeric_limits<ll>::max()/4;
 const ll MOD = 1e9+7;
 const int n_max = 1e5+10;
 
-void print() {
-    cout << endl;
-}
-
-template <class Head, class... Tail>
-void print(Head&& head, Tail&&... tail) {
-    cout << head;
-    if (sizeof...(tail) != 0) cout << ' ';
-    print(forward<Tail>(tail)...);
-}
-
-template <class T>
-void print(vector<T> &vec) {
-    for (auto& a : vec) {
-        cout << a;
-        if (&a != &vec.back()) cout << ' ';
-    }
-    cout << endl;
-}
-
-template <class T>
-void print(vector<vector<T>> &df) {
-    for (auto& vec : df) {
-        print(vec);
-    }
-}
-
-void print(Pll &p){
-    print(p.first, p.second);
-}
-
-template<std::uint_fast64_t Modulus>
+template<std::int_fast64_t Modulus>
 class modint {
-    using u64 = uint_fast64_t;
+    using i64 = int_fast64_t;
 
     public:
-    u64 a;
+    i64 a;
 
-    constexpr modint(const u64 x = 0) noexcept : a(x % Modulus) {}
-    constexpr u64 &value() const noexcept {return a;}
-    // constexpr const u64 &value() const noexcept {return a;}
+    constexpr modint(const i64 x = 0) noexcept {
+        this -> a = x % Modulus;
+        if(a < 0){
+            a += Modulus;
+        }
+    }
+    constexpr i64 &value() const noexcept {return a;}
+    // constexpr const i64 &value() const noexcept {return a;}
     constexpr modint operator+(const modint rhs) const noexcept {
         return modint(*this) += rhs;
     }
@@ -95,7 +68,7 @@ class modint {
         return *this;
     }
     constexpr modint &operator/=(modint rhs) noexcept {
-        u64 exp = Modulus - 2;
+        i64 exp = Modulus - 2;
         while(exp) {
             if(exp & 1) {
                 *this *= rhs;
@@ -141,25 +114,60 @@ class modint {
         operator--();
         return tmp;
     }
-
 };
 
 using mint = modint<MOD>;
-// かなり怪しい、標準入出力対応
-template<class modint, class T>
-std::ostream &operator<<(std::ostream &out, const modint &mint) {
-    out << mint.a;
+// 標準入出力対応
+std::ostream &operator<<(std::ostream &out, const modint<MOD> &m) {
+    out << m.a;
     return out;
 }
-template<class modint>
-std::istream &operator>>(std::istream &in, modint &mint) {
-    in >> mint.a;
-    mint.a %= MOD;
+std::istream &operator>>(std::istream &in, modint<MOD> &m) {
+    ll a;
+    in >> a;
+    m = mint(a);
     return in;
 }
 
+const int MAX = 1e5 + 10;
+
+long long fac[MAX], finv[MAX], inv[MAX];
+
+// テーブルを作る前処理
+void COMinit() {
+    fac[0] = fac[1] = 1;
+    finv[0] = finv[1] = 1;
+    inv[1] = 1;
+    for (int i = 2; i < MAX; i++){
+        fac[i] = fac[i - 1] * i % MOD;
+        inv[i] = MOD - inv[MOD%i] * (MOD / i) % MOD;
+        finv[i] = finv[i - 1] * inv[i] % MOD;
+    }
+}
+
+// 二項係数計算
+long long COM(int n, int k){
+    if (n < k) return 0;
+    if (n < 0 || k < 0) return 0;
+    return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
+}
+
+
 int main(){
-    vl dp(17);
-    dp[0];
-    
+    ll n,k; cin >> n >> k;
+    vector<ll> a(n);
+    rep(i,n) cin >> a[i];
+    sort(all(a));
+    COMinit();
+    vector<mint> min_(n), max_(n);
+    mint ans = 0;
+    rep(i,n){
+        max_[i] = COM(i, k-1);
+        min_[i] = COM(n-1-i, k-1);
+    }
+    rep(i,n){
+        ans += max_[i] * a[i];
+        ans -= min_[i] * a[i];
+    }
+    cout << ans << endl;
 }

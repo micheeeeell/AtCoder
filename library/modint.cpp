@@ -9,7 +9,6 @@ using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
 #define pb push_back
 #define eb emplace_back
-#define mp make_pair
 #define debug(x) cerr << #x << ": " << (x) << "\n";
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
@@ -19,51 +18,26 @@ typedef pair<ll,ll> Pll;
 typedef vector<ll> vl;
 typedef vector<vector<ll>> vvl;
 typedef vector<vector<vector<ll>>> vvvl;
-const ll INF = LLONG_MAX/4;
+const ll INF = numeric_limits<ll>::max()/4;
 const ll MOD = 1e9+7;
 const int n_max = 1e5+10;
 
-void print() {
-    cout << endl;
-}
 
-template <class Head, class... Tail>
-void print(Head&& head, Tail&&... tail) {
-    cout << head;
-    if (sizeof...(tail) != 0) cout << ' ';
-    print(forward<Tail>(tail)...);
-}
-
-template <class T>
-void print(vector<T> &vec) {
-    for (auto& a : vec) {
-        cout << a;
-        if (&a != &vec.back()) cout << ' ';
-    }
-    cout << endl;
-}
-
-template <class T>
-void print(vector<vector<T>> &df) {
-    for (auto& vec : df) {
-        print(vec);
-    }
-}
-
-void print(Pll &p){
-    print(p.first, p.second);
-}
-
-template<std::uint_fast64_t Modulus>
+template<std::int_fast64_t Modulus>
 class modint {
-    using u64 = uint_fast64_t;
+    using i64 = int_fast64_t;
 
     public:
-    u64 a;
+    i64 a;
 
-    constexpr modint(const u64 x = 0) noexcept : a(x % Modulus) {}
-    constexpr u64 &value() const noexcept {return a;}
-    // constexpr const u64 &value() const noexcept {return a;}
+    constexpr modint(const i64 x = 0) noexcept {
+        this -> a = x % Modulus;
+        if(a < 0){
+            a += Modulus;
+        }
+    }
+    constexpr i64 &value() const noexcept {return a;}
+    // constexpr const i64 &value() const noexcept {return a;}
     constexpr modint operator+(const modint rhs) const noexcept {
         return modint(*this) += rhs;
     }
@@ -95,7 +69,7 @@ class modint {
         return *this;
     }
     constexpr modint &operator/=(modint rhs) noexcept {
-        u64 exp = Modulus - 2;
+        i64 exp = Modulus - 2;
         while(exp) {
             if(exp & 1) {
                 *this *= rhs;
@@ -141,25 +115,53 @@ class modint {
         operator--();
         return tmp;
     }
-
 };
 
 using mint = modint<MOD>;
-// かなり怪しい、標準入出力対応
-template<class modint, class T>
-std::ostream &operator<<(std::ostream &out, const modint &mint) {
-    out << mint.a;
+// 標準入出力対応
+std::ostream &operator<<(std::ostream &out, const modint<MOD> &m) {
+    out << m.a;
     return out;
 }
-template<class modint>
-std::istream &operator>>(std::istream &in, modint &mint) {
-    in >> mint.a;
-    mint.a %= MOD;
+std::istream &operator>>(std::istream &in, modint<MOD> &m) {
+    ll a;
+    in >> a;
+    m = mint(a);
     return in;
 }
 
 int main(){
-    vl dp(17);
-    dp[0];
-    
+    mint a,b;
+    cin >> a >> b;
+    cout << a << ' ' << b << endl;
+    // cin >> a.a >> b.a; // これはダメ！！！！！
+    // cout << b.a << endl;
+
+    cout << a << endl;
+
+    cout << "operator++" << endl;
+    a++;
+    ++a;
+    cout << "a : " << a << endl;
+
+    cout << "operator+" << endl;
+    cout << "a + b : " << (a + b) << endl;
+    cout << (a + b) << endl;
+    mint add = a + b;
+    cout << "add : " << add << endl;
+
+    cout << "operator-" << endl;
+    cout << "a - b : " << (a-b) << endl;
+
+    cout << "operator--" << endl;
+    a--;
+    cout << "a : " << a << endl;
+
+    cout << "operator==" << endl;
+    modint<MOD> c(a);
+    cout << "a == b : " << (a == b) << endl;
+    cout << "a == c : " << (a == c) << endl;
+
+    cout << "operator<" << endl;
+    cout << "a < b : " << (a < b) << endl;
 }

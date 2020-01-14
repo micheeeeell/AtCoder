@@ -9,7 +9,6 @@ using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
 #define pb push_back
 #define eb emplace_back
-#define mp make_pair
 #define debug(x) cerr << #x << ": " << (x) << "\n";
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
@@ -19,40 +18,9 @@ typedef pair<ll,ll> Pll;
 typedef vector<ll> vl;
 typedef vector<vector<ll>> vvl;
 typedef vector<vector<vector<ll>>> vvvl;
-const ll INF = LLONG_MAX/4;
+const ll INF = numeric_limits<ll>::max()/4;
 const ll MOD = 1e9+7;
 const int n_max = 1e5+10;
-
-void print() {
-    cout << endl;
-}
-
-template <class Head, class... Tail>
-void print(Head&& head, Tail&&... tail) {
-    cout << head;
-    if (sizeof...(tail) != 0) cout << ' ';
-    print(forward<Tail>(tail)...);
-}
-
-template <class T>
-void print(vector<T> &vec) {
-    for (auto& a : vec) {
-        cout << a;
-        if (&a != &vec.back()) cout << ' ';
-    }
-    cout << endl;
-}
-
-template <class T>
-void print(vector<vector<T>> &df) {
-    for (auto& vec : df) {
-        print(vec);
-    }
-}
-
-void print(Pll &p){
-    print(p.first, p.second);
-}
 
 template<std::uint_fast64_t Modulus>
 class modint {
@@ -141,25 +109,36 @@ class modint {
         operator--();
         return tmp;
     }
-
 };
 
 using mint = modint<MOD>;
-// かなり怪しい、標準入出力対応
-template<class modint, class T>
-std::ostream &operator<<(std::ostream &out, const modint &mint) {
+// 標準入出力対応
+std::ostream &operator<<(std::ostream &out, const modint<MOD> &mint) {
     out << mint.a;
     return out;
 }
-template<class modint>
-std::istream &operator>>(std::istream &in, modint &mint) {
+std::istream &operator>>(std::istream &in, modint<MOD> &mint) {
     in >> mint.a;
     mint.a %= MOD;
     return in;
 }
 
+
+
 int main(){
-    vl dp(17);
-    dp[0];
-    
+    ll n; cin >> n;
+    vector<mint> x(n);
+    rep(i,n)cin >> x[i];
+    mint k = 1;
+    rep(i,n-1)k *= (i+1);
+    vector<mint> dp(n-1), sum(n,0);
+    rep(i,n-1)dp[i] = (k / (i+1));
+    rep(i,n-1)sum[i+1] = sum[i] + dp[i];
+    mint ans = 0;
+    rep(i,n-1){
+        mint dis = x[i+1] - x[i];
+        mint temp = sum[i+1] - sum[0];
+        ans += temp * dis;
+    }
+    cout << ans << endl;
 }
