@@ -21,7 +21,6 @@ typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const ll MOD = 1e9+7;
 const int n_max = 1e5+10;
-
 void print() {
     cout << endl;
 }
@@ -50,9 +49,10 @@ void print(vector<vector<T>> &df) {
 }
 
 template<class T, class U>
-void print(pair<T,U> p){
-    cout << p.first << " " << p.second << "\n";
+void print(pair<T,U> &p){
+    print(p.first, p.second);
 }
+
 
 int main(){
     string s;cin >> s;
