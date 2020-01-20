@@ -35,6 +35,24 @@ map<ll,int> prime(ll x){
     return e;
 }
 
+// 最小公倍数を因数分解された形で持つ
+// 入力のmap_を適宜更新していく
+void prime_map(ll x, map<ll,int> &map_){
+    
+    rep(i,sqrt(x)+1){
+        if(i <= 1)continue;
+        ll cnt = 0;
+        while(x % i == 0){
+            cnt++;
+            if(map_[i] < cnt)map_[i] = cnt;
+            x /= i;
+        }
+    }
+    if(x != 1)if(map_[x] < 1)map_[x]++;
+    // return map_;
+}
+
+
 // エラストテネスの篩
 const int N = 1e7+1;
 bool is_prime[N];

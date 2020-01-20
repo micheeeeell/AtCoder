@@ -22,7 +22,10 @@ const int n_max = 1e5+10;
 // xの桁数を返す関数
 int digit_max(ll x){
     int dig = 0;
-    while(x/pow(10,dig) >= 1)dig++;
+    while(x > 0){
+        dig++;
+        x /= 10;
+    }
     return dig;
 }
 
