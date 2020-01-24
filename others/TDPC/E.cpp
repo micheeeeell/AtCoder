@@ -21,7 +21,6 @@ typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
 
-
 template<std::int_fast64_t Modulus>
 class modint {
     using i64 = int_fast64_t;
@@ -68,23 +67,14 @@ class modint {
         return *this;
     }
     constexpr modint &operator/=(modint rhs) noexcept {
-        // i64 exp = Modulus - 2;
-        // while(exp) {
-        //     if(exp & 1) {
-        //         *this *= rhs;
-        //     }
-        //     rhs *= rhs;
-        //     exp /= 2;
-        // }
-        // return *this;
-        i64 a_ = rhs.a, b = Modulus, u = 1, v = 0;
-        while(b){
-            i64 t = a_/b;
-            a_ -= t * b; swap(a_,b);
-            u -= t * v; swap(u,v);
+        i64 exp = Modulus - 2;
+        while(exp) {
+            if(exp & 1) {
+                *this *= rhs;
+            }
+            rhs *= rhs;
+            exp /= 2;
         }
-        a = a * u % Modulus;
-        if(a < 0) a += Modulus;
         return *this;
     }
     
@@ -123,21 +113,6 @@ class modint {
         operator--();
         return tmp;
     }
-
-    template<typename T>
-    friend constexpr modint modpow(modint &mt, T n) noexcept {
-        if(n < 0){
-            modint t = (modint(1) / mt);
-            return modpow(t, -n);
-        }
-        modint res = 1;
-        while(n){
-            if(n & 1)res *= mt;
-            mt *= mt;
-            n /= 2;
-        }
-        return res;
-    }
 };
 
 const ll MOD = 1e9+7;
@@ -154,46 +129,34 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
     return in;
 }
 
+void print(vector< mint > & vec) {
+    for(auto i : vec)cout << i << " ";
+    cout << "\n";
+}
+
 int main(){
-    mint a,b;
-    cin >> a >> b;
-    cout << a << ' ' << b << endl;
-    // cin >> a.a >> b.a; // これはダメ！！！！！
-    // cout << b.a << endl;
-    cout << a << endl;
+    ll d; cin >> d;
+    string s;cin >> s;
+    ll n = s.size();
+    vector <vector< vector <mint>>> dp(2, vector<vector< mint >> (2, vector<mint>(d,0)));
+    vector <vector< mint >> clear(2,vector<mint>(d,0));
+    dp[0][0][0] = 1;
+    rep(i,n){
+        ll t = s[i] - '0';
+        rep(k, d){
+            rep(small, 2){
+                rep(j, (small ? 10 : t)){
+                    dp[(i+1) & 1][1][(k + j) % d] += dp[i & 1][small][k];
+                }
+            }
+            dp[(i+1) & 1][0][(k + t) % d] += dp[i & 1][0][k];
+        }
+        // print(dp[(i+1) & 1][0]);
+        // print(dp[(i+1) & 1][1]);
+        // cout << endl;
 
-    cout << "a: " << a << " b: " << b << endl;
-    cout << "operator/=" << endl;
-    cout << "a /= b : " << (a / b) << endl;
+        dp[i & 1] = clear;
+    }
 
-    cout << "input c:" << " ";
-    ll c;cin >> c;
-    cout << "modpow" << endl;
-    cout << "modpow(a,c): " << modpow(a,c) << endl; 
-    // cout << "operator++" << endl;
-    // a++;
-    // ++a;
-    // cout << "a : " << a << endl;
-
-    // cout << "operator+" << endl;
-    // cout << "a + b : " << (a + b) << endl;
-    // cout << (a + b) << endl;
-    // mint add = a + b;
-    // cout << "add : " << add << endl;
-
-    // cout << "operator-" << endl;
-    // cout << "a - b : " << (a-b) << endl;
-
-    // cout << "operator--" << endl;
-    // a--;
-    // cout << "a : " << a << endl;
-
-    // cout << "operator==" << endl;
-    // modint<MOD> c(a);
-    // cout << "a == b : " << (a == b) << endl;
-    // cout << "a == c : " << (a == c) << endl;
-
-    // cout << "operator<" << endl;
-    // cout << "a < b : " << (a < b) << endl;
-
+    cout << mint(dp[n & 1][0][0] + dp[n & 1][1][0]) - mint(1) << endl;
 }

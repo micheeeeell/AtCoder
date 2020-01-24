@@ -21,7 +21,6 @@ typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
 
-
 template<std::int_fast64_t Modulus>
 class modint {
     using i64 = int_fast64_t;
@@ -68,15 +67,6 @@ class modint {
         return *this;
     }
     constexpr modint &operator/=(modint rhs) noexcept {
-        // i64 exp = Modulus - 2;
-        // while(exp) {
-        //     if(exp & 1) {
-        //         *this *= rhs;
-        //     }
-        //     rhs *= rhs;
-        //     exp /= 2;
-        // }
-        // return *this;
         i64 a_ = rhs.a, b = Modulus, u = 1, v = 0;
         while(b){
             i64 t = a_/b;
@@ -123,7 +113,6 @@ class modint {
         operator--();
         return tmp;
     }
-
     template<typename T>
     friend constexpr modint modpow(modint &mt, T n) noexcept {
         if(n < 0){
@@ -154,46 +143,28 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
     return in;
 }
 
+void print(vector<vector<mint> > &vec){
+    cout <<"0" << endl;
+    rep(i,vec.size())cout << vec[i][0] << " ";
+    cout << endl;
+    cout <<"1" << endl;
+    rep(i,vec.size())cout << vec[i][1] << " ";
+    cout << endl;
+}
+
 int main(){
-    mint a,b;
-    cin >> a >> b;
-    cout << a << ' ' << b << endl;
-    // cin >> a.a >> b.a; // これはダメ！！！！！
-    // cout << b.a << endl;
-    cout << a << endl;
-
-    cout << "a: " << a << " b: " << b << endl;
-    cout << "operator/=" << endl;
-    cout << "a /= b : " << (a / b) << endl;
-
-    cout << "input c:" << " ";
-    ll c;cin >> c;
-    cout << "modpow" << endl;
-    cout << "modpow(a,c): " << modpow(a,c) << endl; 
-    // cout << "operator++" << endl;
-    // a++;
-    // ++a;
-    // cout << "a : " << a << endl;
-
-    // cout << "operator+" << endl;
-    // cout << "a + b : " << (a + b) << endl;
-    // cout << (a + b) << endl;
-    // mint add = a + b;
-    // cout << "add : " << add << endl;
-
-    // cout << "operator-" << endl;
-    // cout << "a - b : " << (a-b) << endl;
-
-    // cout << "operator--" << endl;
-    // a--;
-    // cout << "a : " << a << endl;
-
-    // cout << "operator==" << endl;
-    // modint<MOD> c(a);
-    // cout << "a == b : " << (a == b) << endl;
-    // cout << "a == c : " << (a == c) << endl;
-
-    // cout << "operator<" << endl;
-    // cout << "a < b : " << (a < b) << endl;
-
+    ll n,k; cin >> n >> k;
+    vector < vector < mint >> dp(n+1, vector<mint>(2,0));
+    dp[0][1] = 1;
+    dp[1][0] = 1;
+    // 1が通過，0が停車
+    for(int i = 1; i < n; i++){
+        dp[i+1][1] = dp[i][0] + dp[i][1];
+        dp[i+1][0] = dp[i][0] + dp[i][1];
+        if(i-k+1 >= 0){
+            dp[i+1][0] -= dp[i-k+1][1];
+        }
+    }
+    // print(dp);
+    cout << dp[n][0] << endl;
 }
