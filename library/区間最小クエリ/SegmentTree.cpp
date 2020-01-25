@@ -4,15 +4,22 @@
 #include<vector>
 #include<string>
 #include<algorithm>
+#include<map>
 using namespace std;
-#define rep(i,x) for(int i = 0; i < x; i++)
-#define pb(x) push_back(x)
-#define mp(x,y) make_pair(x,y)
+#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
+#define pb push_back
+#define eb emplace_back
+#define debug(x) cerr << #x << ": " << (x) << "\n";
+#define all(x) (x).begin(), (x).end()
 typedef long long ll;
+typedef long double ld;
 typedef pair<int,int> P;
-typedef vector<int> ivec;
-const ll N = 1e9+7;
-const ll INF = INT_MAX;
+typedef pair<ll,ll> Pll;
+typedef vector<ll> vl;
+typedef vector<vector<ll>> vvl;
+typedef vector<vector<vector<ll>>> vvvl;
+const ll INF = numeric_limits<ll>::max()/4;
+const int n_max = 1e5+10;
 
 
 struct SegmentTree {
@@ -70,24 +77,79 @@ public:
     }
 };
 
+
+// 抽象化再帰セグ木
+template< typename Monoid >
+struct AbsSegmentTree {
+    using F = function< Monoid(Monoid, Monoid) >;
+
+    const F f;
+    vector<Monoid> seg;
+    int sz;
+    const Monoid M1;
+
+    AbsSegmentTree(vector< Monoid > &v, const F f, const Monoid &M1) : f(f), M1(M1) {
+        int n = v.size();
+        sz = 1;
+        while(sz < n)sz <<= 1;
+        seg.assign(2*sz, M1);
+    }
+
+    void build(vector < Monoid > &v){
+        for(int i = 0; i < v.size(); i++)seg[i + sz] = v[i];
+
+        for(int k = sz - 1; k > 0; k--) {
+            seg[k] = f(seg[k * 2 + 0], seg[k * 2 + 1]);
+        }
+    }
+
+    void update(int k, const Monoid &x) {
+        k += sz;
+        seg[k] = x;
+        while(k >>= 1) {
+            seg[k] = f(seg[2 * k + 0], seg[2 * k + 1]);
+        }
+    }
+
+
+    Monoid query(int a, int b, int k=1, int l=0, int r=-1) {
+        if(r < 0)r = sz;
+        if(a >= r || b <= l)return M1;
+        if(a <= l && r <= b)return seg[k];
+
+        Monoid L = query(a,b,k * 2 + 0, l, (l+r) / 2);
+        Monoid R = query(a,b,2 * k + 1, (l+r)/2, r);
+        return f(L, R);
+    }
+};
+
 int main(){
-    int n,q;cin >> n >> q;
-    vector<int> xy[q];
+    // int n,q;cin >> n >> q;
+    // vector<int> xy[q];
+    // rep(i,q){
+    //     int com,x,y;cin >> com >> x >> y;
+    //     // xy[i] = {com,x,y};
+    //     xy[i].pb(com);xy[i].pb(x);xy[i].pb(y);
+    // }
+    // vector<int> a(n,INF);
+
+    // SegmentTree seg(a);
+    // rep(i,q){
+    //     int com,x,y;
+    //     com = xy[i][0];x = xy[i][1];y = xy[i][2];
+    //     if(!com)seg.update(x,y);
+    //     else cout << seg.getmin(x,y+1) << endl;
+
+    // }
+    // return 0;
+    
+    ll n,q; cin >> n >> q;
+    vector<ll> a(n,numeric_limits<int>::max());
+    AbsSegmentTree<ll> seg(a, [&](ll a, ll b){ return min(a,b); }, numeric_limits<int>::max());
+    seg.build(a);
     rep(i,q){
-        int com,x,y;cin >> com >> x >> y;
-        // xy[i] = {com,x,y};
-        xy[i].pb(com);xy[i].pb(x);xy[i].pb(y);
+        ll c,x,y; cin >> c >> x >> y;
+        if(c == 0)seg.update(x, y);
+        else cout << seg.query(x,y+1) << "\n";
     }
-    vector<int> a(n,INF);
-
-    SegmentTree seg(a);
-    rep(i,q){
-        int com,x,y;
-        com = xy[i][0];x = xy[i][1];y = xy[i][2];
-        if(!com)seg.update(x,y);
-        else cout << seg.getmin(x,y+1) << endl;
-
-    }
-    return 0;
-
 }

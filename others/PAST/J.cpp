@@ -21,75 +21,110 @@ typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
 
+template<class T>
+bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
+template<class T>
+bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+void print() {
+    cout << endl;
+}
 
+template <class Head, class... Tail>
+void print(Head&& head, Tail&&... tail) {
+    cout << head;
+    if (sizeof...(tail) != 0) cout << ' ';
+    print(forward<Tail>(tail)...);
+}
 
-//頂点fromから頂点toへのコストcostの辺
-template<typename T>
-struct edge{
-    int f,t;
-    T c;
-    int id;
-    edge(){};
-    edge(int f,int t,T c,int id = 0):f(f),t(t),c(c),id(id){};
-    bool operator< (const edge &s){
-        return c < s.c;
+template <class T>
+void print(vector<T> &vec) {
+    for (auto& a : vec) {
+        if(a == INF)cout << "INF";
+        else cout << a;
+        if (&a != &vec.back()) cout << ' ';
     }
-};
+    cout << endl;
+}
 
-template<typename T>
-struct graph{
-    std::vector<std::vector<edge<T> > > data;
-    graph(int v):data(v){};
-    void add_edge(edge<T> &e){
-        data[e.f].push_back(e);
+template <class T>
+void print(vector<vector<T>> &df) {
+    for (auto& vec : df) {
+        print(vec);
     }
-    void add_edge(int f,int t,T c){
-        data[f].emplace_back(f,t,c);
-    }
-    size_t size(){
-        return data.size();
-    }
-    std::vector<edge<T>> make_edges(){
-        std::vector<edge<T>> r;
-        for(auto &i:data)std::copy(i.begin(),i.end(),std::back_inserter(r));
-        return r;
-    }
-};
+}
 
-std::vector<T> dijkstra(graph<T> &g,int s){
-    using state = std::pair<T,int>;
-    //priority_queue
-    std::priority_queue<state,std::vector<state>,std::greater<state>> q;
-    q.emplace((T)0,s);
-    //data init
-    std::vector<T> data(g.size(),std::numeric_limits<T>::max());
-    data[s] = (T)0;
-    //solve
-    while(!q.empty()){
-        state cur = q.top();q.pop();
-        T c = cur.first; int pos = cur.second;
-        if(data[pos] < c)continue;
-        for(auto &e : g.data[pos]){
-            if(c + e.c < data[e.t]){
-                data[e.t] = c + e.c;
-                q.emplace(c + e.c, e.t);
-            }
-        }
-    }
-    return data;
-};
+void print(Pll &p){
+    print(p.first, p.second);
+}
 
 int main(){
     ll h,w; cin >> h >> w;
     ll a[h][w];
     rep(i,h)rep(j,w)cin >> a[i][j];
-    auto ch = [&](ll x){
-        ll hi = x/w;
-        ll we = x/h;
-        return 0 <= hi && hi < h && 0 <= we && we < w;
+    auto ch = [&](ll x, ll y){
+        return 0 <= x && x < h && 0 <= y && y < w;
     };
-    rep(i,h*w){
-        
+    using Plll = pair<ll, Pll>;
+    // priority_queue<Plll, vector< Plll >, greater< Plll > > pq;
+    // vector<vector<ll>> cost(h, vector<ll>(w,INF));
+    // cost[h-1][0] = 0;
+    // pq.push(Plll(0,Pll(h-1,0)));
+    ll dx[] = {0,0,1,-1};
+    ll dy[] = {1,-1,0,0};
+    // while(!pq.empty()){
+    //     Plll t = pq.top();pq.pop();
+    //     ll x = t.second.first, y = t.second.second;
+    //     if(x == 0 && y == w-1)break;
+    //     rep(i,4){
+    //         ll nx = x + dx[i], ny = y + dy[i];
+    //         if(ch(nx,ny) && chmin(cost[nx][ny], cost[x][y] + a[nx][ny])){
+    //             pq.push(Plll(cost[nx][ny], Pll(nx,ny)));
+    //         }
+    //     }
+    // }
+
+    // debug("test");
+    // vector<Pll> path;
+    // queue<Pll> que;
+    // vvl is_used(h,vl(w,0));
+    // is_used[0][w-1] = 1;
+    // que.push(Pll(0,w-1));
+    // while(!que.empty()){
+    //     Pll t = que.front();que.pop();
+    //     path.emplace_back(t);
+    //     rep(i,4){
+    //         ll nx = t.first + dx[i], ny = t.second + dy[i];
+    //         if(ch(nx,ny) && cost[nx][ny] == cost[t.first][t.second] - a[t.first][t.second] && is_used[nx][ny] == 0){
+    //             que.push(Pll(nx,ny));
+    //             is_used[nx][ny] = 1;
+    //         }
+    //     }
+    // }
+    ll ans = INF;
+    rep(i,h)rep(j,w){
+        priority_queue<Plll, vector< Plll >, greater< Plll > > pque;
+        vector<vector<ll>> c(h, vector<ll>(w,INF));
+        c[i][j] = 0;
+        pque.push(Plll(0,Pll(i,j)));
+        while(!pque.empty()){
+            Plll t = pque.top();pque.pop();
+            ll x = t.second.first, y = t.second.second;
+            // if(x == h-1 && y == w-1)break;
+            rep(i,4){
+                ll nx = x + dx[i], ny = y + dy[i];
+                if(ch(nx,ny) && chmin(c[nx][ny], c[x][y] + a[nx][ny])){
+                    pque.push(Plll(c[nx][ny], Pll(nx,ny)));
+                }
+            }
+        }
+
+        if(chmin(ans, c[h-1][0] + c[h-1][w-1] + c[0][w-1] + a[i][j])){
+            // print("i:", i,"j:", j);
+            // print(c);
+            // print("ans:",ans);
+        }
     }
+
+    cout << ans << endl;
 }
