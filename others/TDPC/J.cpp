@@ -26,22 +26,41 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-vector<ld> memo((1LL << n_max), -1);
+vector<ld> memo((1LL << n_max), -1.0);
 ld solve(int mask){
-    if(memo[mask] != -1)return memo[mask];
+    if(memo[mask] != -1.0L)return memo[mask];
     if(__builtin_popcount(mask) == n_max)return memo[mask] = 0;
-    ld res = 0;
+    ld res = numeric_limits<ld>::max();
     for(int i = 1; i <= 14; i++){
-        ld temp = 0, 
+        ld temp = 0, coef = 0, cst = 0;
+        rep(j,3){
+            if((mask >> (i+j-1)) & 1){
+                coef += 1.0/3.0;
+            }
+            else{
+            //     assert(mask != (mask | (1 << (i+j-1))));
+            //     debug(mask | (1 << (i+j-1)));
+                temp += solve(mask | (1 << (i+j-1))) / 3.0;
+            }
+        }
+        if(coef == 1.0L)continue;
+        chmin(res, (temp + 1.0) / (1.0-coef));
     }
+
+    return memo[mask] = res;
 }
 
 
 int main(){
     ll n; cin >> n;
-    int mask = 0;
+    int mask = (1 << n_max) - 1;
     rep(i,n){
         int x; cin >> x;
-        mask |= (1 << x);
+        mask ^= (1 << x);
     }
+    // debug(mask);
+    // debug((mask >> 0) & 1);
+    // debug(__builtin_popcount(mask));
+    cout << fixed << setprecision(10);
+    cout << solve(mask) << endl;
 }
