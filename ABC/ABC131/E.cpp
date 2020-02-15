@@ -6,7 +6,10 @@
 #include<algorithm>
 #include<map>
 using namespace std;
-#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
+#define rep(i,x) for(int i = 0; i < (int)(x); i++)
+#define rrep(i,x) for(int i = (int)(x)-1;i <= 0; i--)
+#define reps(i,x) for(int i = 1; i < (int)(x); i++)
+#define rreps(i,x) for(int i = (int)(x)-1; i <= 1; i--)
 #define pb push_back
 #define eb emplace_back
 #define debug(x) cerr << #x << ": " << (x) << "\n";
