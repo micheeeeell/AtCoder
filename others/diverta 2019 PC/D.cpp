@@ -25,8 +25,8 @@ const int n_max = 1e5+10;
 int main(){
     ll n; cin >> n;
     ll ans = 0;
-    rep(i,sqrt(n)+1){
-        if(i > 0 && n%i == 0 && n > i * (i+1))ans += n/i-1;
+    reps(i,sqrt(n)+1){
+        if(n%i == 0 && n > i * (i+1))ans += n/i-1;
     }
     cout << ans << endl;
 }
