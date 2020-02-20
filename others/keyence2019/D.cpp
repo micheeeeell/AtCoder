@@ -7,9 +7,9 @@
 #include<map>
 using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define rrep(i,x) for(ll i = (ll)(x)-1;i <= 0; i--)
-#define reps(i,x) for(ll i = 1; i < (ll)(x); i++)
-#define rreps(i,x) for(ll i = (ll)(x)-1; i <= 1; i--)
+#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
+#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
+#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
 #define debug(x) cerr << #x << ": " << (x) << "\n";
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
@@ -20,7 +20,7 @@ typedef vector<ll> vl;
 typedef vector<vector<ll>> vvl;
 typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
-const int n_max = 2e5+10;
+const int n_max = 1e6+10;
 
 template<std::int_fast64_t Modulus>
 class modint {
@@ -144,21 +144,39 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
     return in;
 }
 
-
 int main(){
-    ll n; cin >> n;
-    vector<mint> c(n);
-    rep(i,n) cin >> c[i];
-    vector<mint> pow2(n_max);
-    pow2[0] = 1;
-    reps(i,n_max)pow2[i] = pow2[i-1] * mint(2);
-    sort(all(c));
-    mint ans = 0;
+    ll n,m; cin >> n >> m;
+    vector<ll> a(n);
+    rep(i,n) cin >> a[i];
+    vector<ll> b(m);
+    rep(i,m) cin >> b[i];
+    vector<ll> h(n_max,0), h_sum(n_max+1,0);
+    vector<ll> v(n_max,0), v_sum(n_max+1,0);
+    bool ok = true;
     rep(i,n){
-        ll N = n - i - 1;
-        mint N_ = N;
-        ans += c[i] * (pow2[N] +  N_ * pow2[N-1]) * pow2[i];
+        if(h[a[i]-1])ok = false;
+        h[a[i]-1]++;
+    }
+    rep(i,m){
+        if(v[b[i]-1])ok = false;
+        v[b[i]-1]++;
+    }
+    rreps(i,n_max)h_sum[i-1] = h_sum[i] + h[i-1];
+    rreps(i,n_max)v_sum[i-1] = v_sum[i] + v[i-1];
+    mint ans = 1;
+    rrep(i,m*n){
+        // debug(i);debug(h[i]);debug(v[i]);
+        if(h[i] || v[i]){
+            if(h[i] && v[i])continue;
+            if(h[i])ans *= mint(v_sum[i]);
+            if(v[i])ans *= mint(h_sum[i]);
+        }
+        else{
+            ans *= mint(h_sum[i] * v_sum[i] - (n*m - i - 1));
+        }
+        // debug(i);debug(ans);
     }
 
-    cout << ans * pow2[n] << endl;
+    cout << (ok ? ans : mint(0)) << endl;
+
 }
