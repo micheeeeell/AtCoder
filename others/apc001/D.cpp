@@ -4,17 +4,23 @@
 #include<vector>
 #include<string>
 #include<algorithm>
+#include<map>
 using namespace std;
-#define rep(i,x) for(int i = 0; i < x; i++)
-#define pb(x) push_back(x)
-#define mp(x,y) make_pair(x,y)
+#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
+#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
+#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
+#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
+#define debug(x) cerr << #x << ": " << (x) << "\n";
+#define all(x) (x).begin(), (x).end()
 typedef long long ll;
+typedef long double ld;
 typedef pair<int,int> P;
-typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
-typedef vector<vector<vector<int>>> vvvi;
-const ll N = 1e9+7;
-
+typedef pair<ll,ll> Pll;
+typedef vector<ll> vl;
+typedef vector<vector<ll>> vvl;
+typedef vector<vector<vector<ll>>> vvvl;
+const ll INF = numeric_limits<ll>::max()/4;
+const int n_max = 1e5+10;
 
 struct UnionFind{
 private:
@@ -69,16 +75,47 @@ public:
     }
 };
 
+
+
 int main(){
-    int n,m; cin >> n >> m;
+    ll n,m; cin >> n >> m;
+    vector<ll> a(n);
+    ll sum = 0;
+    rep(i,n) {
+        cin >> a[i];
+        sum += a[i];
+    }
     UnionFind uf(n);
     rep(i,m){
-        int a,b;cin >> a >> b;
-        a--;b--;
-        uf.unite(a,b);
+        ll x,y; cin >> x >> y;
+        uf.unite(x, y);
     }
-    set<int> st;
-    rep(i,n) st.insert(uf.root(i));
-    cout << st.size()-1 << endl;
-    return 0;
+
+    ll num = uf.num_of_s();
+
+    if((num - 1) * 2 > n){
+        cout << "Impossible" << endl;
+        return 0;
+    }
+
+    if(num == 1){
+        cout << 0 << endl;
+        return 0;
+    }
+
+    vector<vector<ll>> graph(n);
+    rep(i,n){
+        graph[uf.root(i)].emplace_back(a[i]);
+    }
+    vector<ll> rest;
+    rep(i,n){
+        if(graph[i].size() <= 1)continue;
+        sort(all(graph[i]), greater<ll>());
+        rep(j,graph[i].size() - 1)rest.emplace_back(graph[i][j]);
+    }
+
+    sort(all(rest), greater<ll>());
+    rep(i,n - (num - 1) * 2)sum -= rest[i];
+
+    cout << sum << endl;
 }
