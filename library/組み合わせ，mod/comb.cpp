@@ -63,6 +63,24 @@ ll COM(ll n, ll k){
     return com[n-k][k];
 }
 
+// modintが必要
+// modintによる実装
+const int MAX = 1e6;
+vector<mint> fac(MAX);
+void COMinit(){
+    fac[0] = 1;
+    reps(i,n_max-1){
+        fac[i] = fac[i-1] * mint(i);
+    }
+}
+
+mint COM(ll n, ll k){
+    if (n < k) return (mint)0;
+    if (n < 0 || k < 0) return (mint)0;
+    return fac[n] / (fac[k] * fac[n-k]);
+}
+
+
 int main() {
     // 前処理
     COMinit();
