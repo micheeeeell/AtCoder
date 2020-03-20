@@ -44,11 +44,14 @@ public:
         x = root(x);
         y = root(y);
         if(x == y) return;
-        else{
-            par[y] = x;
-            sz[x] += sz[y];
-            if(rank[x] == rank[y]) rank[x]++;
+        
+        if(rank[x] < rank[y]){
+            swap(x,y);
         }
+        
+        par[y] = x;
+        sz[x] += sz[y];
+        if(rank[x] == rank[y]) rank[x]++; 
     }
 
     //xとyが同じ集合に属するか否か
