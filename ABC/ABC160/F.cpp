@@ -7,8 +7,9 @@
 #include<map>
 using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define pb push_back
-#define eb emplace_back
+#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
+#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
+#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
 #define debug(x) cerr << #x << ": " << (x) << "\n";
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
@@ -20,7 +21,6 @@ typedef vector<vector<ll>> vvl;
 typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
-
 
 template<std::int_fast64_t Modulus>
 class modint {
@@ -145,45 +145,13 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
 }
 
 int main(){
-    mint a,b;
-    cin >> a >> b;
-    cout << a << ' ' << b << endl;
-    // cin >> a.a >> b.a; // これはダメ！！！！！
-    // cout << b.a << endl;
-    cout << a << endl;
-
-    cout << "a: " << a << " b: " << b << endl;
-    cout << "operator/=" << endl;
-    cout << "a /= b : " << (a / b) << endl;
-
-    cout << "input c:" << " ";
-    ll c;cin >> c;
-    cout << "modpow" << endl;
-    cout << "modpow(a,c): " << modpow(mint(2),c) << endl; 
-    // cout << "operator++" << endl;
-    // a++;
-    // ++a;
-    // cout << "a : " << a << endl;
-
-    // cout << "operator+" << endl;
-    // cout << "a + b : " << (a + b) << endl;
-    // cout << (a + b) << endl;
-    // mint add = a + b;
-    // cout << "add : " << add << endl;
-
-    // cout << "operator-" << endl;
-    // cout << "a - b : " << (a-b) << endl;
-
-    // cout << "operator--" << endl;
-    // a--;
-    // cout << "a : " << a << endl;
-
-    // cout << "operator==" << endl;
-    // modint<MOD> c(a);
-    // cout << "a == b : " << (a == b) << endl;
-    // cout << "a == c : " << (a == c) << endl;
-
-    // cout << "operator<" << endl;
-    // cout << "a < b : " << (a < b) << endl;
-
+    ll n; cin >> n;
+    vector<vector<ll>> graph(n);
+    rep(i,n-1) {
+        ll a,b;cin >> a >> b;
+        a--;b--;
+        graph[a].emplace_back(b);
+        graph[b].emplace_back(a);
+    }
+    
 }
