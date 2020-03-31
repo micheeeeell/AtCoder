@@ -7,8 +7,9 @@
 #include<map>
 using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define pb push_back
-#define eb emplace_back
+#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
+#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
+#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
 #define debug(x) cerr << #x << ": " << (x) << "\n";
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
@@ -21,7 +22,6 @@ typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
 
-
 template<std::int_fast64_t Modulus>
 class modint {
     using i64 = int_fast64_t;
@@ -29,13 +29,13 @@ class modint {
     public:
     i64 a;
 
+    // constexpr modint(){};
     constexpr modint(const i64 x = 0) noexcept {
         this -> a = x % Modulus;
         if(a < 0){
             a += Modulus;
         }
     }
-    // constexpr i64 &value() const noexcept {return a;}
     constexpr const i64 &value() const noexcept {return a;}
     constexpr modint operator+(const modint rhs) const noexcept {
         return modint(*this) += rhs;
@@ -115,22 +115,22 @@ class modint {
         return tmp;
     }
     template<typename T>
-    friend constexpr modint modpow(const modint &mt, T n) noexcept {
+    friend constexpr modint modpow(modint &mt, T n) noexcept {
         if(n < 0){
             modint t = (modint(1) / mt);
             return modpow(t, -n);
         }
-        modint res = 1, tmp = mt;
+        modint res = 1;
         while(n){
-            if(n & 1)res *= tmp;
-            tmp *= tmp;
+            if(n & 1)res *= mt;
+            mt *= mt;
             n /= 2;
         }
         return res;
     }
 };
 
-const ll MOD = 1e9+7;
+const ll MOD = 998244353;
 using mint = modint<MOD>;
 // 標準入出力対応
 std::ostream &operator<<(std::ostream &out, const modint<MOD> &m) {
@@ -144,46 +144,60 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
     return in;
 }
 
+void print() {
+    cout << endl;
+}
+
+template <class Head, class... Tail>
+void print(Head&& head, Tail&&... tail) {
+    cout << head;
+    if (sizeof...(tail) != 0) cout << ' ';
+    print(forward<Tail>(tail)...);
+}
+
+template <class T>
+void print(vector<T> &vec) {
+    for (auto& a : vec) {
+        cout << a;
+        if (&a != &vec.back()) cout << ' ';
+    }
+    cout << endl;
+}
+
+template <class T>
+void print(vector<vector<T>> &df) {
+    for (auto& vec : df) {
+        print(vec);
+    }
+}
+
+template<class T, class U>
+void print(pair<T,U> &p){
+    print(p.first, p.second);
+}
+
+
 int main(){
-    mint a,b;
-    cin >> a >> b;
-    cout << a << ' ' << b << endl;
-    // cin >> a.a >> b.a; // これはダメ！！！！！
-    // cout << b.a << endl;
-    cout << a << endl;
+    ll n,s; cin >> n >> s;
+    vector<ll> a(n);
+    rep(i,n) cin >> a[i];
+    vector<vector<mint>> dp(n+1, vector<mint>(s+1));
+    mint ans = 0;
+    rep(i,n+1)dp[i][0] = i+1;
+    rep(i,n){
+        reps(j,s){
+            dp[i+1][j] = dp[i][j];
+            if(j - a[i] >= 0){
+                dp[i+1][j] += dp[i][j - a[i]];
+                // if(j == a[i])dp[i+1][j] += i;
+                if(j == s){
+                    ans += dp[i][j - a[i]] * (n-i);
+                }
+            }
+        }
+    }
 
-    cout << "a: " << a << " b: " << b << endl;
-    cout << "operator/=" << endl;
-    cout << "a /= b : " << (a / b) << endl;
+    // print(dp);
 
-    cout << "input c:" << " ";
-    ll c;cin >> c;
-    cout << "modpow" << endl;
-    cout << "modpow(a,c): " << modpow(mint(2),c) << endl; 
-    // cout << "operator++" << endl;
-    // a++;
-    // ++a;
-    // cout << "a : " << a << endl;
-
-    // cout << "operator+" << endl;
-    // cout << "a + b : " << (a + b) << endl;
-    // cout << (a + b) << endl;
-    // mint add = a + b;
-    // cout << "add : " << add << endl;
-
-    // cout << "operator-" << endl;
-    // cout << "a - b : " << (a-b) << endl;
-
-    // cout << "operator--" << endl;
-    // a--;
-    // cout << "a : " << a << endl;
-
-    // cout << "operator==" << endl;
-    // modint<MOD> c(a);
-    // cout << "a == b : " << (a == b) << endl;
-    // cout << "a == c : " << (a == c) << endl;
-
-    // cout << "operator<" << endl;
-    // cout << "a < b : " << (a < b) << endl;
-
+    cout << ans << endl;
 }

@@ -22,8 +22,6 @@ typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
 
-
-
 struct SplayNode {
     SplayNode *parent, *right, *left;
     ll size, value, minimum;
@@ -33,6 +31,15 @@ struct SplayNode {
         right = nullptr;
         left = nullptr;
         size = 1;
+    }
+
+    void print(){
+        cout << "parent :" <<(parent ? parent->value : -1) << endl;
+        cout << "right  :" <<(right ? right->value : -1) << endl;
+        cout << "left   :" << (left ? left->value : -1) << endl;
+        cout << "size   :" << size << endl;
+        cout << "value  :" << value << endl;
+        cout << endl;
     }
 
     void rotate(){
@@ -168,8 +175,33 @@ pair<SN*, SN*> remove(int ind, SN *root){
     return {merge(lroot, rroot), root};
 };
 
-// 小さい順に並ぶようにinsertする
+pair<SN*, int> search(ll x, SN* root){
+    ll ok = -1, ng = root->size;
+    // debug("search");
+    // root->print();
+    while(abs(ok - ng) > 1){
+        ll id = (ok + ng) / 2;
+        root = get(id, root);
+        if(root->value <= x)ok = id;
+        else ng = id;
+    }
+    return {root, ok + 1};
+};
+
 SN* val_insert(ll x, SN* root){
+    SN* ins = new SN;
+    ins->value = x;
+    if(!root)return ins;
+    auto p = search(x, root);
+    root = p.first;
+    ll id = p.second;
+    // debug(id);
+    // root->print();
+    
+    return insert(id, ins, root);
+};
+
+SN* vinsert(ll x, SN* root){
     SN* ins = new SN;
     ins->value = x;
     if(!root)return ins;
@@ -186,45 +218,26 @@ SN* val_insert(ll x, SN* root){
     return ins;
 }
 
-
 int main(){
-    ll n,q; cin >> n >> q;
-    vector<SplayNode> vec(n+1);
-    // debug("test");
-    rep(i,n){
-        vec[i+1].left = &vec[i];
-        vec[i].parent = &vec[i+1];
-        vec[i+1].update();
-        // debug(i);
-    }
-
-    rep(i,n){
-        cin >> vec[i].value;
-        vec[i].update();
-    }
-
-    ll vecsize = 0;
-    SplayNode *root = &vec[n-1];
+    ll q; cin >> q;
+    SN* root = nullptr;
+    // debug(root->value);debug(root->size);
     rep(i,q){
-        ll ord; cin >> ord;
-        if(ord == 0){
-            ll l,r; cin >> l >> r;
-            auto trees = remove(r, root);
-            root = insert(l, trees.second, trees.first);
+        ll t,x; cin >> t >> x;
+        if(t == 1){
+            root = val_insert(x, root);
         }
-        if(ord == 1){ 
-            ll l,r; cin >> l >> r;
-            auto trees = split(r+1, root);
-            SN* rroot = trees.second;
-            trees = split(l, trees.first);
-            cout << trees.second->minimum <<"\n";
-            root = merge(merge(trees.first, trees.second), rroot);
+        else{
+            root = get(x - 1, root);
+            cout << root->value << "\n";
+            auto trees = remove(x-1, root);
+            root = trees.first;
         }
-        if(ord == 2){
-            ll pos,val; cin >> pos >> val;
-            root = get(pos, root);
-            root->value = val;
-            root->update();
-        }
-    }
+        // debug(root->size);
+        // ll n = root->size;
+        // rep(j,n){
+        //     root = get(j,root);
+        //     root->print();
+        // }
+    }  
 }

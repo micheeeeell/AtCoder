@@ -7,8 +7,9 @@
 #include<map>
 using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define pb push_back
-#define eb emplace_back
+#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
+#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
+#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
 #define debug(x) cerr << #x << ": " << (x) << "\n";
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
@@ -20,7 +21,6 @@ typedef vector<vector<ll>> vvl;
 typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
-
 
 template<std::int_fast64_t Modulus>
 class modint {
@@ -115,15 +115,15 @@ class modint {
         return tmp;
     }
     template<typename T>
-    friend constexpr modint modpow(const modint &mt, T n) noexcept {
+    friend constexpr modint modpow(modint &mt, T n) noexcept {
         if(n < 0){
             modint t = (modint(1) / mt);
             return modpow(t, -n);
         }
-        modint res = 1, tmp = mt;
+        modint res = 1;
         while(n){
-            if(n & 1)res *= tmp;
-            tmp *= tmp;
+            if(n & 1)res *= mt;
+            mt *= mt;
             n /= 2;
         }
         return res;
@@ -145,45 +145,17 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
 }
 
 int main(){
-    mint a,b;
-    cin >> a >> b;
-    cout << a << ' ' << b << endl;
-    // cin >> a.a >> b.a; // これはダメ！！！！！
-    // cout << b.a << endl;
-    cout << a << endl;
+    ll n,d,k; cin >> n >> d >> k;
+    mint a = 0;
+    mint dp[2][k] = {};
+    dp[0][0] = 1;
+    rep(i,n){
+        vector<mint> sum(k+1, 0);
+        rep(j,k)sum[j+1] = sum[j] + dp[i & 1][j];
+        rep(j,k+1){
+            dp[(i+1) & 1][j] = sum[j] - sum[max(0LL,j-d)];
+        }
+    }
 
-    cout << "a: " << a << " b: " << b << endl;
-    cout << "operator/=" << endl;
-    cout << "a /= b : " << (a / b) << endl;
-
-    cout << "input c:" << " ";
-    ll c;cin >> c;
-    cout << "modpow" << endl;
-    cout << "modpow(a,c): " << modpow(mint(2),c) << endl; 
-    // cout << "operator++" << endl;
-    // a++;
-    // ++a;
-    // cout << "a : " << a << endl;
-
-    // cout << "operator+" << endl;
-    // cout << "a + b : " << (a + b) << endl;
-    // cout << (a + b) << endl;
-    // mint add = a + b;
-    // cout << "add : " << add << endl;
-
-    // cout << "operator-" << endl;
-    // cout << "a - b : " << (a-b) << endl;
-
-    // cout << "operator--" << endl;
-    // a--;
-    // cout << "a : " << a << endl;
-
-    // cout << "operator==" << endl;
-    // modint<MOD> c(a);
-    // cout << "a == b : " << (a == b) << endl;
-    // cout << "a == c : " << (a == c) << endl;
-
-    // cout << "operator<" << endl;
-    // cout << "a < b : " << (a < b) << endl;
-
+    cout << dp[n & 1][k] << endl;
 }
