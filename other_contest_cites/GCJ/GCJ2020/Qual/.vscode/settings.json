@@ -1,0 +1,29 @@
+{
+    // ここから
+    // デフォルトの起動するターミナルをUbuntu18.04にするために下の２行が必要
+        "terminal.integrated.shell.windows": "ubuntu1804.exe",
+        "terminal.integrated.shellArgs.windows": ["run", "/bin/bash"],
+    
+    
+    
+    // //ファイルをセーブするごとにコードを整えてくれる
+    //     "editor.formatOnSave": false,
+    // //行を書き終えるごとに行のコードを整えてくれる
+    //     "editor.formatOnType": true,
+    // //ペーストしたときにコードを整えてくれる
+    //     "editor.formatOnPaste": true,
+    
+    //予測をどのときに出すのか
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": true,
+            "strings": true
+        },
+    
+    //自動保存をしてくれる
+        "files.autoSave": "afterDelay",
+        "files.associations": {
+            "vector": "cpp",
+            "initializer_list": "cpp"
+        },
+}

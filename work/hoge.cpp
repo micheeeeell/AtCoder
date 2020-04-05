@@ -50,7 +50,6 @@ void print(vector<vector<T>> &df) {
     }
 }
 
-<<<<<<< HEAD
 void print(Pll &p){
     print(p.first, p.second);
 }
@@ -159,11 +158,6 @@ std::istream &operator>>(std::istream &in, modint &mint) {
     return in;
 }
 
-int main(){
-    vl dp(17);
-    dp[0];
-    
-=======
 template<class T, class U>
 void print(pair<T,U> p){
     cout << p.first << " " << p.second << "\n";
@@ -174,5 +168,4 @@ int main(){
     pair<string, ll> ps = {"hoge", 102};
 
     print(p);print(ps);
->>>>>>> 1311e1073eee239125928abcbfdedae48990a760
 }

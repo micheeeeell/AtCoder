@@ -21,8 +21,7 @@ typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
 
-
-vector<ll> vec,clear, is_used(55,0);
+vector<ll> vec, is_used(n_max,0);
 // 木の上で2頂点間のパス上にある頂点を求める（スタート，ゴールも入る）
 bool dfs(vvl &graph, ll pos, ll ed){
     is_used[pos] = 1;
@@ -32,7 +31,7 @@ bool dfs(vvl &graph, ll pos, ll ed){
     }
     for(auto to : graph[pos]){
         if(is_used[to] == 0){
-            if(dfs(graph, to,ed)){
+            if(dfs(graph, to, ed)){
                 vec.emplace_back(pos);
                 return true;
             }

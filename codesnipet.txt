@@ -186,7 +186,7 @@
 	"cin.tie(0)":{
 		"prefix": "cin.tie",
 		"body": [
-			"cin.tie(false);",
+			"cin.tie(0);",
 			"ios::sync_with_stdio(false);\n"
 		]
 	},

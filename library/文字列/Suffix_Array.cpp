@@ -20,6 +20,11 @@ const ll MOD = 1e9+7;
 const int n_max = 1e5+10;
 
 // Suffix Array ( Manber&Myers: O(n (logn)^2) )
+// Suffix: 接尾辞
+// SA: 文字列Sの接尾辞を辞書順に並べたもの
+// LCP: SAのi番目の要素sa[i]について、sa[i]とsa[i+1]の接頭辞がどれだけ共通しているか
+// LCPを用いることで任意の部分文字列同士の共通する接頭辞長を調べられる
+// rank_sa: SAの逆引き配列  SA[i] = t -> rank_sa[t] = i
 struct SuffixArray {
     string str;
     vector<int> sa;         // sa[i] : the starting index of the i-th smallest suffix (i = 0, 1, ..., n)
@@ -96,9 +101,10 @@ int main(){
     SuffixArray SA(s);
 
     cout << "Suffix Array" << endl;
-    cout << SA.sa.size() << endl;
+    cout << SA.sa.size() << endl << endl;
     rep(i,SA.sa.size()){
-        cout << SA[i] << " ";
+        cout << SA[i] << "\t";
+        cout << s.substr(SA[i]) << endl;
     }
     cout << endl;
 
@@ -108,5 +114,10 @@ int main(){
     rep(i,SA.lcp.size()){
         cout << SA.lcp[i] << " ";
     }
+    cout << endl;
+
+    cout << "rank" << endl;
+    cout << SA.rank_sa.size() << endl;
+    for(auto &i : SA.rank_sa) cout << i << " ";
     cout << endl;
 }

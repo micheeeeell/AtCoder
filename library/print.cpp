@@ -46,10 +46,14 @@ void print(vector<vector<T>> &df) {
   }
 }
 
-template<typename T>
-void print(T &arr){
-  ll sz = sizeof(arr)/sizeof(arr[0]);
-  for(int i = 0;i < sz-1;i++){cout << arr[i] << ' ';}
-  cout << arr[sz-1] << endl;
-}
+// template<typename T>
+// void print(T &arr){
+//   ll sz = sizeof(arr)/sizeof(arr[0]);
+//   for(int i = 0;i < sz-1;i++){cout << arr[i] << ' ';}
+//   cout << arr[sz-1] << endl;
+// }
 
+template<class T, class U>
+void print(pair<T,U> &p){
+    print(p.first, p.second);
+}

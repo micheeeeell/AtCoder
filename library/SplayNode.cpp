@@ -186,6 +186,44 @@ SN* val_insert(ll x, SN* root){
     return ins;
 }
 
+int index_(SN* root){
+    return root->left ? root->left->size : 0;
+}
+
+// boolはx以上のノードがあるかどうか、ないときはfalse
+// ないときでもresがnullにならないことがあるらしいけどよくわからない
+pair<SN*, bool> lower_bound(ll x, SN* root){
+    if(!root)return {root, false};
+    SN *cur = nullptr, *nxt = root, *res = nullptr;
+    while(nxt){
+        cur = nxt;
+        if(cur->value >= x) {
+            nxt = cur->left;
+            if(!res || cur->value <= res->value) res = cur;
+        }
+        else nxt = cur->right;
+    }
+    if(res)res->splay();
+    else root->splay();
+    return res ? make_pair(res, true) : make_pair(root, false);
+}
+
+// boolはxより大きいノードがあるかどうか、ないときはfalse
+pair<SN*, bool> upper_bound(ll x, SN* root){
+    if(!root)return {root, false};
+    SN *cur = nullptr, *nxt = root, *res = nullptr;
+    while(nxt){
+        cur = nxt;
+        if(cur->value > x) {
+            nxt = cur->left;
+            if(!res || cur->value <= res->value) res = cur;
+        }
+        else nxt = cur->right;
+    }
+    if(res)res->splay();
+    else root->splay();
+    return res ? make_pair(res, true) : make_pair(root, false);
+}
 
 int main(){
     ll n,q; cin >> n >> q;

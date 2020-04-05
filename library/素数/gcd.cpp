@@ -22,6 +22,7 @@ const int n_max = 1e5+10;
 // ※注記
 // これからのプログラムは最大公約数ですが、c++にはデフォルトで実装済みです！
 // c++17 だったので有用でした
+// c++17にアップデートされたため、
 
 template <class T, class U>
 ll euclid_gcd(T a, U b){
