@@ -130,8 +130,9 @@
 			"typedef vector<vector<ll>> vvl;",
 			"typedef vector<vector<vector<ll>>> vvvl;",
 			"const ll INF = numeric_limits<ll>::max()/4;",
-			"const int n_max = 1e5+10;\n",
-			"int main(){",
+			"const int n_max = 1e5+10;",
+			"#define int ll\n",
+			"signed main(){",
 			"\t$1",
 			"}"
 		],
@@ -198,6 +199,15 @@
 			"bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}",
 			"template<class T>",
 			"bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}"
+		]
+	},
+
+	"yes_function":{
+		"prefix": "yes_func",
+		"body": [
+			"void YES(bool ok){",
+			"\tcout << (ok ? \"Yes\" : \"No\") << endl;",
+			"}",
 		]
 	},
 
