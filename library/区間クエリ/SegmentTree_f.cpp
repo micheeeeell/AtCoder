@@ -42,8 +42,7 @@ struct SegmentTree {
 
     const F f;
     const Monoid M1;
-    SegmentTree(vector< Monoid > &vec, const F f, const Monoid &M1) : f(f), M1(M1) {
-        int n = vec.size();
+    SegmentTree(int n, const F f, const Monoid &M1) : f(f), M1(M1) {
         sz = 1;
         while(sz < n)sz <<= 1;
         seg.assign(2*sz, M1);
@@ -130,14 +129,25 @@ struct SegmentTree {
 };
 
 int main(){
-    int n,q; cin >> n >> q;
-    vector<int> a(n, numeric_limits<int>::max());
-    // auto f = [](int a, int b){return min(a,b); };
-    SegmentTree< int > seg(a, [](int a, int b){return min(a, b);}, numeric_limits<int>::max());
-    seg.build(a);
-    rep(i,q){
-        int t,x,y; cin >> t >> x >> y;
-        if(t == 0)seg.update(x, y);
-        else cout << seg.query(x, y+1) << "\n";
-    }
+    // int n,q; cin >> n >> q;
+    // vector<int> a(n, numeric_limits<int>::max());
+    // // auto f = [](int a, int b){return min(a,b); };
+    // SegmentTree< int > seg(n, [](int a, int b){return min(a, b);}, numeric_limits<int>::max());
+    // seg.build(a);
+    // rep(i,q){
+    //     int t,x,y; cin >> t >> x >> y;
+    //     if(t == 0)seg.update(x, y);
+    //     else cout << seg.query(x, y+1) << "\n";
+    // }
+
+    ll n = 10;
+    vector<ll> vec = {4,3,1,3,6,3,2,4,6,4};
+    auto f = [](ll a, ll b){return max(a,b);};
+    SegmentTree<ll> seg(n, f, 0);
+    seg.build(vec);
+    auto check = [](ll x){return x > 5;};
+    // 左端固定した時の最初をにぶたん
+    debug(seg.find_first(4, check));
+    // 右端固定したときの最後をにぶたん
+    debug(seg.find_last(10, check));
 }

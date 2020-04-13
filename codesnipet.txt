@@ -105,16 +105,22 @@
 		],
 		"description": "無向重みなしグラフの受け取り"
 	},
-	"include template": {
-		"prefix": "itemp",
+	"include": {
+		"prefix": "include",
 		"body": [
-			"#include<bits/stdc++.h>",
 			"#include<iostream>",
 			"#include<cstdio>",
 			"#include<vector>",
 			"#include<string>",
 			"#include<algorithm>",
-			"#include<map>",
+			"#include<map>"
+		]
+	},
+	"include template": {
+		"prefix": "itemp",
+		"body": [
+			"#define _GLIBCXX_DEBUG",
+			"#include<bits/stdc++.h>",
 			"using namespace std;",
 			"#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)",
 			"#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)",
@@ -133,6 +139,8 @@
 			"const int n_max = 1e5+10;",
 			"#define int ll\n",
 			"signed main(){",
+			"\tcin.tie(nullptr);",
+			"\tios::sync_with_stdio(false);",
 			"\t$1",
 			"}"
 		],
@@ -181,14 +189,6 @@
 		"prefix": "all_vec",
 		"body": [
 			"$1.begin(), $1.end()"
-		]
-	},
-
-	"cin.tie(0)":{
-		"prefix": "cin.tie",
-		"body": [
-			"cin.tie(0);",
-			"ios::sync_with_stdio(false);\n"
 		]
 	},
 
@@ -298,22 +298,22 @@
 			"    constexpr bool operator<=(const modint rhs) noexcept {",
 			"        return a <= rhs.a;",
 			"    }",
-			"    constexpr modint& operator++() noexcept {",
-			"        return (*this) += modint(1);",
-			"    }",
-			"    constexpr modint operator++(int) {",
-			"        modint tmp(*this);",
-			"        operator++();",
-			"        return tmp;",
-			"    }",
-			"    constexpr modint& operator--() noexcept {",
-			"        return (*this) -= modint(1);",
-			"    }",
-			"    constexpr modint operator--(int) {",
-			"        modint tmp(*this);",
-			"        operator--();",
-			"        return tmp;",
-			"    }",
+			"    // constexpr modint& operator++() noexcept {",
+			"    //     return (*this) += modint(1);",
+			"    // }",
+			"    // constexpr modint operator++(int) {",
+			"    //     modint tmp(*this);",
+			"    //     operator++();",
+			"    //     return tmp;",
+			"    // }",
+			"    // constexpr modint& operator--() noexcept {",
+			"    //     return (*this) -= modint(1);",
+			"    // }",
+			"    // constexpr modint operator--(int) {",
+			"    //     modint tmp(*this);",
+			"    //     operator--();",
+			"    //     return tmp;",
+			"    // }",
 			"    template<typename T>",
 			"    friend constexpr modint modpow(const modint &mt, T n) noexcept {",
 			"        if(n < 0){",

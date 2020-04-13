@@ -45,10 +45,9 @@ struct LazySegmentTree {
     const OperatorMonoid OM0;
 
 
-    LazySegmentTree(vector< Monoid > &vec, const F f, const G g, const H h,
+    LazySegmentTree(int n, const F f, const G g, const H h,
                     const Monoid &M1, const OperatorMonoid OM0)
         : f(f), g(g), h(h), M1(M1), OM0(OM0) {
-        int n = vec.size();
         sz = 1;
         height = 0;
         while(sz < n) sz <<= 1, height++;
@@ -179,7 +178,7 @@ int main(){
     auto f = [](ll a, ll b){ return a + b; };
     auto g = [](ll a, ll x, int num){ return a + x * num; };
     auto h = [](ll a, ll b){ return a + b; };
-    LazySegmentTree<ll> seg(a, f, g, h, 0, 0);
+    LazySegmentTree<ll> seg(n, f, g, h, 0, 0);
     // debug(seg.sz);
     // debug(seg.length(1));
     seg.build(a);
