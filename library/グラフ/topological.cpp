@@ -48,7 +48,7 @@ vector<ll> topo_sort(vvl &graph){
 // 木の上のトポロジカルソート
 // 適当な根から有向であるとみなしてBFS
 vector<ll> tree_topo(vvl &graph, ll root){
-    const ll n_max = 1e5+10;
+    // const ll n_max = 1e5+10;
     bitset<n_max> bs(0);
     vector<ll> ans;
     queue<ll> que;

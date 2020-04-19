@@ -18,6 +18,11 @@ const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
 #define int ll
 
+template<class T>
+bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
+template<class T>
+bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+
 void print() {
     cout << endl;
 }
@@ -50,41 +55,32 @@ void print(pair<T,U> &p){
     print(p.first, p.second);
 }
 
-template<class T>
-bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
-template<class T>
-bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
-void YES(bool ok){
-    cout << (ok ? "Possible" : "Impossible") << endl;
-}
-signed main(){
 
+signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-
     ll n; cin >> n;
-    vector<ll> a(n);
-    rep(i,n) cin >> a[i];
-    ll max_ = 0;
-    vector<ll> cnt(n+10);
+    vector<Pll> a(n);
     rep(i,n){
-        chmax(max_, a[i]);
-        cnt[a[i]]++;
+        cin >> a[i].first;
+        a[i].second = i;
     }
-    bool ok = true;
-    if(max_ % 2 == 1){
-        for(int i = max_; i > max_ / 2; i--)ok &= cnt[i] > 1;
-        rep(i,max_ / 2 + 1)ok &= cnt[i] == 0;
-        ok &= cnt[max_ / 2 + 1] == 2;
-    }
-    else{
-        for(int i = max_; i > max_ / 2; i--)ok &= cnt[i] > 1;
-        ok &= cnt[max_ / 2] == 1;
-        rep(i,max_ / 2)ok &= cnt[i] == 0;
-    }
+    sort(all(a));
+    vector<ll> ans(n), id(n), temp(n), temp_id(n);
+    ll ret = 0;
+    do{
+        ll t = 0;
+        rep(i,n){
+            temp[i] = a[i].first;
+            temp_id[i] = a[i].second;
+        }
+        rep(i,n)t += temp[i] * abs(temp_id[i] - i);
+        if(chmax(ret, t)){
+            ans = temp;
+            id = temp_id;
+        }
 
-    ok &= max_ < n;
-    // print(cnt);
-
-    YES(ok);
+    }while(next_permutation(all(a)));
+    print(ans);
+    print(id);
 }

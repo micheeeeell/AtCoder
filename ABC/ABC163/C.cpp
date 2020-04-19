@@ -1,4 +1,4 @@
-#define _GLIBCXX_DEBUG
+// #define _GLIBCXX_DEBUG
 #include<bits/stdc++.h>
 using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
@@ -17,7 +17,6 @@ typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
 #define int ll
-
 void print() {
     cout << endl;
 }
@@ -33,7 +32,7 @@ template <class T>
 void print(vector<T> &vec) {
     for (auto& a : vec) {
         cout << a;
-        if (&a != &vec.back()) cout << ' ';
+        if (&a != &vec.back()) cout << '\n';
     }
     cout << endl;
 }
@@ -50,41 +49,17 @@ void print(pair<T,U> &p){
     print(p.first, p.second);
 }
 
-template<class T>
-bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
-template<class T>
-bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
-void YES(bool ok){
-    cout << (ok ? "Possible" : "Impossible") << endl;
-}
 signed main(){
-
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-
+    
     ll n; cin >> n;
-    vector<ll> a(n);
-    rep(i,n) cin >> a[i];
-    ll max_ = 0;
-    vector<ll> cnt(n+10);
-    rep(i,n){
-        chmax(max_, a[i]);
-        cnt[a[i]]++;
-    }
-    bool ok = true;
-    if(max_ % 2 == 1){
-        for(int i = max_; i > max_ / 2; i--)ok &= cnt[i] > 1;
-        rep(i,max_ / 2 + 1)ok &= cnt[i] == 0;
-        ok &= cnt[max_ / 2 + 1] == 2;
-    }
-    else{
-        for(int i = max_; i > max_ / 2; i--)ok &= cnt[i] > 1;
-        ok &= cnt[max_ / 2] == 1;
-        rep(i,max_ / 2)ok &= cnt[i] == 0;
+    vector<ll> a(n-1);
+    rep(i,n-1) cin >> a[i];
+    vector<ll> cnt(n);
+    rep(i,n-1){
+        cnt[a[i]-1]++;
     }
 
-    ok &= max_ < n;
-    // print(cnt);
-
-    YES(ok);
+    print(cnt);
 }

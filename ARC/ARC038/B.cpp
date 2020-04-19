@@ -50,41 +50,47 @@ void print(pair<T,U> &p){
     print(p.first, p.second);
 }
 
-template<class T>
-bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
-template<class T>
-bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 void YES(bool ok){
-    cout << (ok ? "Possible" : "Impossible") << endl;
+    cout << (ok ? "First" : "Second") << endl;
 }
-signed main(){
 
+signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
+    ll h,w; cin >> h >> w;
+    string s[h];
+    rep(i,h)cin >> s[i];
+    vector<vector<ll>> graph(h, vector<ll>(w, -1));
+    ll dx[] = {1,0,1};
+    ll dy[] = {0,1,1};
 
-    ll n; cin >> n;
-    vector<ll> a(n);
-    rep(i,n) cin >> a[i];
-    ll max_ = 0;
-    vector<ll> cnt(n+10);
-    rep(i,n){
-        chmax(max_, a[i]);
-        cnt[a[i]]++;
-    }
-    bool ok = true;
-    if(max_ % 2 == 1){
-        for(int i = max_; i > max_ / 2; i--)ok &= cnt[i] > 1;
-        rep(i,max_ / 2 + 1)ok &= cnt[i] == 0;
-        ok &= cnt[max_ / 2 + 1] == 2;
-    }
-    else{
-        for(int i = max_; i > max_ / 2; i--)ok &= cnt[i] > 1;
-        ok &= cnt[max_ / 2] == 1;
-        rep(i,max_ / 2)ok &= cnt[i] == 0;
+    auto c = [&](ll x, ll y){
+        if(x < 0 || h <= x)return false;
+        if(y < 0 || w <= y)return false;
+        return true;
+    };
+
+    // graph[h-1][w-1] = 0;
+    vector<ll> cnt(4), clear(4);
+    ll nx, ny;
+    rrep(i,h){
+        rrep(j,w){
+            if(s[i][j] == '#')continue;
+            cnt = clear;
+            rep(k,3){
+                nx = i + dx[k], ny = j + dy[k];
+                if(!c(nx, ny))continue;
+                if(graph[nx][ny] == -1)continue;
+                cnt[graph[nx][ny]]++;
+            }
+            rep(k,4)if(cnt[k] == 0){
+                graph[i][j] = k;
+                break;
+            }
+        }
     }
 
-    ok &= max_ < n;
-    // print(cnt);
+    // print(graph);
 
-    YES(ok);
+    YES(graph[0][0]);
 }

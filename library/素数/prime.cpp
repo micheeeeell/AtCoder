@@ -37,9 +37,8 @@ map<ll,int> prime(ll x){
 
 // 最小公倍数を因数分解された形で持つ
 // 入力のmap_を適宜更新していく
-void prime_map(ll x, map<ll,int> &map_){
-    
-    rep(i,sqrt(x)+1){
+void lcm_map(ll x, map<ll,ll> &map_){
+    for(ll i = 2; i * i <= x; i++){
         if(i <= 1)continue;
         ll cnt = 0;
         while(x % i == 0){
@@ -52,15 +51,26 @@ void prime_map(ll x, map<ll,int> &map_){
     // return map_;
 }
 
+// xと元の数をかけた時の値を因数分解された形で更新する
+void prime_map(ll x, map<ll,ll> &map_){
+    for(ll i = 2; i * i <= x; i++){
+        while(x % i == 0){
+            map_[i]++;
+            x /= i;
+        }
+    }
+    if(x != 1)map_[x]++;
+    // return map_;
+}
 
 // エラストテネスの篩
-const int N = 1e7+1;
-bool is_prime[N];
+const ll N = 1e6+10;
+bitset<N> is_prime(0);
 void build_sieve(){
-    fill(is_prime, is_prime + N, true);
-    is_prime[0] = is_prime[1] = false;
-    for(int i = 2; i < N; ++i)if(is_prime[i]){
-        for(int j = 2*i; j < N; j+=i)is_prime[j] = false;
+    is_prime = ~is_prime;
+    is_prime[0] = is_prime[1] = 0;
+    for(ll i = 2; i < N; ++i)if(is_prime[i]){
+        for(ll j = 2*i; j < N; j+=i)is_prime[j] = 0;
     }
 }
 
@@ -71,5 +81,9 @@ int main(){
         // print((*itr).first, (*itr).second);
         cout << (*itr).first << ' ' << (*itr).second << endl;
     }
+
+    build_sieve();
+    rep(i,n)cout << is_prime[i] << " ";
+    cout << endl;
     return 0;
 }
