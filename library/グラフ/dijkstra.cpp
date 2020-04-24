@@ -28,10 +28,14 @@ struct edge{
     int id;
     edge(){};
     edge(int f,int t,T c,int id = 0):f(f),t(t),c(c),id(id){};
-    bool operator< (const edge &s){
-        return c < s.c;
+    bool operator< (const edge &rhs) const {
+        return (*this).c < rhs.c;
+    }
+    bool operator> (const edge &rhs) const {
+        return (*this).c > rhs.c;
     }
 };
+
 
 template<typename T>
 struct graph{
@@ -45,6 +49,9 @@ struct graph{
     }
     size_t size(){
         return data.size();
+    }
+    vector<edge<T>> operator[](int n){
+        return data[n];
     }
     std::vector<edge<T>> make_edges(){
         std::vector<edge<T>> r;
