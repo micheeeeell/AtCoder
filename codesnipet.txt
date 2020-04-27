@@ -1,358 +1,401 @@
 {
-	// Place your snippets for cpp here. Each snippet is defined under a snippet name and has a prefix, body and 
-	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
-	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
-	// same ids are connected.
-	// Example:
-	// "Print to console": {
-	// 	"prefix": "log",
-	// 	"body": [
-	// 		"console.log('$1');",
-	// 		"$2"
-	// 	],
-	// 	"description": "Log output to console"
-	// }
-	"vector_ll":{
-		"prefix": "vl",
-		"body": "vector<ll>"
-	},
+    // Place your snippets for cpp here. Each snippet is defined under a snippet name and has a prefix, body and 
+    // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+    // same ids are connected.
+    // Example:
+    // "Print to console": {
+    // 	"prefix": "log",
+    // 	"body": [
+    // 		"console.log('$1');",
+    // 		"$2"
+    // 	],
+    // 	"description": "Log output to console"
+    // }
+    "vector_ll":{
+        "prefix": "vl",
+        "body": "vector<ll>"
+    },
 
-	"cin_vector_int":{
+    "cin_vector_int":{
         "prefix": "cvi",
         "body":[
             "vector<int> $1($2);",
             "rep(i,$2) cin >> $1[i];",
         ],
         "description": "vector<int>の受取"
-	},
-	"cin_string_int":{
+    },
+    "cin_string_int":{
         "prefix": "cs",
         "body":[
             "string $1;cin >> $1;"
         ],
         "description": "stringの受取"
-	},
-	"cin_one_int":{
-		"prefix":"c1i",
-		"body":[
-			"int $1; cin >> $1;",
-		],
-		"description":"int の受け取り（1数）"
-	},
-	"cin_two_int":{
-		"prefix":"c2i",
-		"body":[
-			"int $1,$2; cin >> $1 >> $2;",
-		],
-		"description":"int の受け取り（2数）"
-	},
-	"cin_three_int":{
-		"prefix":"c3i",
-		"body":[
-			"int $1,$2,$3; cin >> $1 >> $2 >> $3;",
-		],
-		"description":"int の受け取り（3数）"
-	},
-	"cin_vector_ll":{
+    },
+    "cin_one_int":{
+        "prefix":"c1i",
+        "body":[
+            "int $1; cin >> $1;",
+        ],
+        "description":"int の受け取り（1数）"
+    },
+    "cin_two_int":{
+        "prefix":"c2i",
+        "body":[
+            "int $1,$2; cin >> $1 >> $2;",
+        ],
+        "description":"int の受け取り（2数）"
+    },
+    "cin_three_int":{
+        "prefix":"c3i",
+        "body":[
+            "int $1,$2,$3; cin >> $1 >> $2 >> $3;",
+        ],
+        "description":"int の受け取り（3数）"
+    },
+    "cin_vector_ll":{
         "prefix": "cvl",
         "body":[
             "vector<ll> $1($2);",
             "rep(i,$2) cin >> $1[i];",
         ],
         "description": "vector<ll>の受取"
-	},
+    },
 
-	"cin_two_vector_ll":{
+    "cin_two_vector_ll":{
         "prefix": "c2vl",
         "body":[
             "vector<ll> $1($3), $2($3);",
             "rep(i,$3) cin >> $1[i] >> $2[i];",
         ],
         "description": "vector<ll>二つの受取"
-	},
+    },
 
-	"cin_one_ll":{
-		"prefix":"c1l",
-		"body":[
-			"ll $1; cin >> $1;",
-		],
-		"description":"long long の受け取り（1数）"
-	},
-	"cin_two_ll":{
-		"prefix":"c2l",
-		"body":[
-			"ll $1,$2; cin >> $1 >> $2;",
-		],
-		"description":"long long の受け取り（2数）"
-	},
-	"cin_three_ll":{
-		"prefix":"c3l",
-		"body":[
-			"ll $1,$2,$3; cin >> $1 >> $2 >> $3;",
-		],
-		"description":"long long の受け取り（3数）"
-	},
-	"cin_graph_ll":{
-		"prefix": "cgl",
-		"body": [
-			"vector<vector<ll>> graph($1);",
-			"rep(i,$2) {",
-			"\tll $3,$4;cin >> $3 >> $4;",
-			"\t$3--;$4--;",
-			"\tgraph[$3].emplace_back($4);",
-			"\tgraph[$4].emplace_back($3);",
-			"}"
-		],
-		"description": "無向重みなしグラフの受け取り"
-	},
-	"include": {
-		"prefix": "include",
-		"body": [
-			"#include<iostream>",
-			"#include<cstdio>",
-			"#include<vector>",
-			"#include<string>",
-			"#include<algorithm>",
-			"#include<map>"
-		]
-	},
-	"include template": {
-		"prefix": "itemp",
-		"body": [
-			"#define _GLIBCXX_DEBUG",
-			"#include<bits/stdc++.h>",
-			"using namespace std;",
-			"#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)",
-			"#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)",
-			"#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)",
-			"#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)",
-			"#define debug(x) cerr << #x << \": \" << (x) << \"\\n\";",
-			"#define all(x) (x).begin(), (x).end()",
-			"typedef long long ll;",
-			"typedef long double ld;",
-			"typedef pair<int,int> P;",
-			"typedef pair<ll,ll> Pll;",
-			"typedef vector<ll> vl;",
-			"typedef vector<vector<ll>> vvl;",
-			"typedef vector<vector<vector<ll>>> vvvl;",
-			"const ll INF = numeric_limits<ll>::max()/4;",
-			"const int n_max = 1e5+10;",
-			"#define int ll\n",
-			"signed main(){",
-			"\tcin.tie(nullptr);",
-			"\tios::sync_with_stdio(false);",
-			"\t$1",
-			"}"
-		],
-		"description": "The template of Include library"
-	},
+    "cin_one_ll":{
+        "prefix":"c1l",
+        "body":[
+            "ll $1; cin >> $1;",
+        ],
+        "description":"long long の受け取り（1数）"
+    },
+    "cin_two_ll":{
+        "prefix":"c2l",
+        "body":[
+            "ll $1,$2; cin >> $1 >> $2;",
+        ],
+        "description":"long long の受け取り（2数）"
+    },
+    "cin_three_ll":{
+        "prefix":"c3l",
+        "body":[
+            "ll $1,$2,$3; cin >> $1 >> $2 >> $3;",
+        ],
+        "description":"long long の受け取り（3数）"
+    },
+    "cin_graph_ll":{
+        "prefix": "cgl",
+        "body": [
+            "vector<vector<ll>> graph($1);",
+            "rep(i,$2) {",
+            "\tll $3,$4;cin >> $3 >> $4;",
+            "\t$3--;$4--;",
+            "\tgraph[$3].emplace_back($4);",
+            "\tgraph[$4].emplace_back($3);",
+            "}"
+        ],
+        "description": "無向重みなしグラフの受け取り"
+    },
 
-	"print_function": {
-		"prefix": "print_func",
-		"body": [
-			"void print() {",
-			"    cout << endl;",
-			"}",
-			"",
-			"// template <class Head, class... Tail>",
-			"// void print(Head&& head, Tail&&... tail) {",
-			"//     cout << head;",
-			"//     if (sizeof...(tail) != 0) cout << \" \";",
-			"//     print(forward<Tail>(tail)...);",
-			"// }",
-			"",
-			"template <class T>",
-			"void print(vector<T> &vec) {",
-			"    for (auto& a : vec) {",
-			"        cout << a;",
-			"        if (&a != &vec.back()) cout << \" \";",
-			"    }",
-			"    cout << endl;",
+    "graph_struct":{
+        "prefix": "graph_struct",
+        "body": [
+            "template<typename T>",
+            "struct edge{",
+            "    int f,t;",
+            "    T c;",
+            "    int id;",
+            "    edge(){};",
+            "    edge(int f,int t,T c,int id = 0):f(f),t(t),c(c),id(id){};",
+            "    bool operator< (const edge &rhs) const {",
+            "        return (*this).c < rhs.c;",
+            "    }",
+            "    bool operator> (const edge &rhs) const {",
+            "        return (*this).c > rhs.c;",
+            "    }",
+            "};",
+            "",
+            "template<typename T>",
+            "struct graph{",
+            "    std::vector<std::vector<edge<T> > > data;",
+            "    graph(int v):data(v){};",
+            "    void add_edge(edge<T> &e){",
+            "        data[e.f].push_back(e);",
+            "    }",
+            "    void add_edge(int f,int t,T c){",
+            "        data[f].emplace_back(f,t,c);",
+            "    }",
+            "    size_t size(){",
+            "        return data.size();",
+            "    }",
+            "    vector<edge<T>> operator[](int n){",
+            "        return data[n];",
+            "    }",
+            "    std::vector<edge<T>> make_edges(){",
+            "        std::vector<edge<T>> r;",
+            "        for(auto &i:data)std::copy(i.begin(),i.end(),std::back_inserter(r));",
+            "        return r;",
+            "    }",
+            "};",
+        ]
+    },
+    "include": {
+        "prefix": "include",
+        "body": [
+            "#include<iostream>",
+            "#include<cstdio>",
+            "#include<vector>",
+            "#include<string>",
+            "#include<algorithm>",
+            "#include<map>"
+        ]
+    },
+    "include template": {
+        "prefix": "itemp",
+        "body": [
+            "#define _GLIBCXX_DEBUG",
+            "#include<bits/stdc++.h>",
+            "using namespace std;",
+            "#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)",
+            "#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)",
+            "#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)",
+            "#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)",
+            "#define debug(x) cerr << #x << \": \" << (x) << \"\\n\";",
+            "#define all(x) (x).begin(), (x).end()",
+            "typedef long long ll;",
+            "typedef long double ld;",
+            "typedef pair<int,int> P;",
+            "typedef pair<ll,ll> Pll;",
+            "typedef vector<ll> vl;",
+            "typedef vector<vector<ll>> vvl;",
+            "typedef vector<vector<vector<ll>>> vvvl;",
+            "const ll INF = numeric_limits<ll>::max()/4;",
+            "const int n_max = 1e5+10;",
+            "#define int ll\n",
+            "signed main(){",
+            "\tcin.tie(nullptr);",
+            "\tios::sync_with_stdio(false);",
+            "\t$1",
+            "}"
+        ],
+        "description": "The template of Include library"
+    },
+
+    "print_function": {
+        "prefix": "print_func",
+        "body": [
+            "void print() {",
+            "    cout << endl;",
+            "}",
+            "",
+            "// template <class Head, class... Tail>",
+            "// void print(Head&& head, Tail&&... tail) {",
+            "//     cout << head;",
+            "//     if (sizeof...(tail) != 0) cout << \" \";",
+            "//     print(forward<Tail>(tail)...);",
+            "// }",
+            "",
+            "template <class T>",
+            "void print(vector<T> &vec) {",
+            "    for (auto& a : vec) {",
+            "        cout << a;",
+            "        if (&a != &vec.back()) cout << \" \";",
+            "    }",
+            "    cout << endl;",
             "}",
             "",
             "template <class T>",
             "void print(vector<T> &vec, ll k){",
-			"   ll n = vec.size();",
-			"   k = min(k, n);",
-			"   rep(i,k-1)cout << vec[i] << \" \";",
-			"   cout << vec[k-1] << endl;",
-			"}",
-			"",
-			"template <class T>",
-			"void print(vector<vector<T>> &df) {",
-			"    for (auto& vec : df) {",
-			"        print(vec);",
-			"    }",
-			"}",
-			"",
-			"template<class T, class U>",
-			"void print(pair<T,U> &p){",
-			"    print(p.first, p.second);",
-			"}\n"
-		],
-		"description": "print_function"
-	},
+            "   ll n = vec.size();",
+            "   k = min(k, n);",
+            "   rep(i,k-1)cout << vec[i] << \" \";",
+            "   cout << vec[k-1] << endl;",
+            "}",
+            "",
+            "template <class T>",
+            "void print(vector<vector<T>> &df) {",
+            "    for (auto& vec : df) {",
+            "        print(vec);",
+            "    }",
+            "}",
+            "",
+            "template<class T, class U>",
+            "void print(pair<T,U> &p){",
+            "    print(p.first, p.second);",
+            "}\n"
+        ],
+        "description": "print_function"
+    },
 
-	"all_vector":{
-		"prefix": "all_vec",
-		"body": [
-			"$1.begin(), $1.end()"
-		]
-	},
+    "all_vector":{
+        "prefix": "all_vec",
+        "body": [
+            "$1.begin(), $1.end()"
+        ]
+    },
 
-	"ch_function":{
-		"prefix": "ch_func",
-		"body": [
-			"template<class T>",
-			"bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}",
-			"template<class T>",
-			"bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}"
-		]
-	},
+    "ch_function":{
+        "prefix": "ch_func",
+        "body": [
+            "template<class T>",
+            "bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}",
+            "template<class T>",
+            "bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}"
+        ]
+    },
 
-	"yes_function":{
-		"prefix": "yes_func",
-		"body": [
-			"void YES(bool ok){",
-			"\tcout << (ok ? \"Yes\" : \"No\") << endl;",
-			"}",
-		]
-	},
+    "yes_function":{
+        "prefix": "yes_func",
+        "body": [
+            "void YES(bool ok){",
+            "\tcout << (ok ? \"Yes\" : \"No\") << endl;",
+            "}",
+        ]
+    },
 
-	"input_file":{
-		"prefix": "input_file",
-		"body": [
-			"ifstream in(\"input.in\");",
-    		"cin.rdbuf(in.rdbuf());"
-		]
-	},
+    "input_file":{
+        "prefix": "input_file",
+        "body": [
+            "ifstream in(\"input.in\");",
+            "cin.rdbuf(in.rdbuf());"
+        ]
+    },
 
-	"modint_container": {
-		"prefix": "modint_con",
-		"body": [
-			"template<std::int_fast64_t Modulus>",
-			"class modint {",
-			"    using i64 = int_fast64_t;",
-			"",
-			"    public:",
-			"    i64 a;",
-			"",
-			"    constexpr modint(const i64 x = 0) noexcept {",
-			"        this -> a = x % Modulus;",
-			"        if(a < 0){",
-			"            a += Modulus;",
-			"        }",
-			"    }",
-			"    // constexpr i64 &value() const noexcept {return a;}",
-			"    constexpr const i64 &value() const noexcept {return a;}",
-			"    constexpr modint operator+(const modint rhs) const noexcept {",
-			"        return modint(*this) += rhs;",
-			"    }",
-			"    constexpr modint operator-(const modint rhs) const noexcept {",
-			"        return modint(*this) -= rhs;",
-			"    }",
-			"    constexpr modint operator*(const modint rhs) const noexcept {",
-			"        return modint(*this) *= rhs;",
-			"    }",
-			"    constexpr modint operator/(const modint rhs) const noexcept {",
-			"        return modint(*this) /= rhs;",
-			"    }",
-			"    constexpr modint &operator+=(const modint rhs) noexcept {",
-			"        a += rhs.a;",
-			"        if(a >= Modulus) {",
-			"            a -= Modulus;",
-			"        }",
-			"        return *this;",
-			"    }",
-			"    constexpr modint &operator-=(const modint rhs) noexcept {",
-			"        if(a < rhs.a) {",
-			"            a += Modulus;",
-			"        }",
-			"        a -= rhs.a;",
-			"        return *this;",
-			"    }",
-			"    constexpr modint &operator*=(const modint rhs) noexcept {",
-			"        a = a * rhs.a % Modulus;",
-			"        return *this;",
-			"    }",
-			"    constexpr modint &operator/=(modint rhs) noexcept {",
-			"        i64 a_ = rhs.a, b = Modulus, u = 1, v = 0;",
-			"        while(b){",
-			"            i64 t = a_/b;",
-			"            a_ -= t * b; swap(a_,b);",
-			"            u -= t * v; swap(u,v);",
-			"        }",
-			"        a = a * u % Modulus;",
-			"        if(a < 0) a += Modulus;",
-			"        return *this;",
-			"    }",
-			"    ",
-			"    // 自前実装",
-			"    constexpr bool operator==(const modint rhs) noexcept {",
-			"        return a == rhs.a;",
-			"    }",
-			"    constexpr bool operator!=(const modint rhs) noexcept {",
-			"        return a != rhs.a;",
-			"    }",
-			"    constexpr bool operator>(const modint rhs) noexcept {",
-			"        return a > rhs.a;",
-			"    }",
-			"    constexpr bool operator>=(const modint rhs) noexcept {",
-			"        return a >= rhs.a;",
-			"    }",
-			"    constexpr bool operator<(const modint rhs) noexcept {",
-			"        return a < rhs.a;",
-			"    }",
-			"    constexpr bool operator<=(const modint rhs) noexcept {",
-			"        return a <= rhs.a;",
-			"    }",
-			"    // constexpr modint& operator++() noexcept {",
-			"    //     return (*this) += modint(1);",
-			"    // }",
-			"    // constexpr modint operator++(int) {",
-			"    //     modint tmp(*this);",
-			"    //     operator++();",
-			"    //     return tmp;",
-			"    // }",
-			"    // constexpr modint& operator--() noexcept {",
-			"    //     return (*this) -= modint(1);",
-			"    // }",
-			"    // constexpr modint operator--(int) {",
-			"    //     modint tmp(*this);",
-			"    //     operator--();",
-			"    //     return tmp;",
-			"    // }",
-			"    template<typename T>",
-			"    friend constexpr modint modpow(const modint &mt, T n) noexcept {",
-			"        if(n < 0){",
-			"            modint t = (modint(1) / mt);",
-			"            return modpow(t, -n);",
-			"        }",
-			"        modint res = 1, tmp = mt;",
-			"        while(n){",
-			"            if(n & 1)res *= tmp;",
-			"            tmp *= tmp;",
-			"            n /= 2;",
-			"        }",
-			"        return res;",
-			"    }",
-			"};",
-			"",
-			"const ll MOD = 1e9+7;",
-			"using mint = modint<MOD>;",
-			"// 標準入出力対応",
-			"std::ostream &operator<<(std::ostream &out, const modint<MOD> &m) {",
-			"    out << m.a;",
-			"    return out;",
-			"}",
-			"std::istream &operator>>(std::istream &in, modint<MOD> &m) {",
-			"    ll a;",
-			"    in >> a;",
-			"    m = mint(a);",
-			"    return in;",
-			"}",
-			""
-		],
-		"description": "modint_container"
-	},
+    "modint_container": {
+        "prefix": "modint_con",
+        "body": [
+            "template<std::int_fast64_t Modulus>",
+            "class modint {",
+            "    using i64 = int_fast64_t;",
+            "",
+            "    public:",
+            "    i64 a;",
+            "",
+            "    constexpr modint(const i64 x = 0) noexcept {",
+            "        this -> a = x % Modulus;",
+            "        if(a < 0){",
+            "            a += Modulus;",
+            "        }",
+            "    }",
+            "    // constexpr i64 &value() const noexcept {return a;}",
+            "    constexpr const i64 &value() const noexcept {return a;}",
+            "    constexpr modint operator+(const modint rhs) const noexcept {",
+            "        return modint(*this) += rhs;",
+            "    }",
+            "    constexpr modint operator-(const modint rhs) const noexcept {",
+            "        return modint(*this) -= rhs;",
+            "    }",
+            "    constexpr modint operator*(const modint rhs) const noexcept {",
+            "        return modint(*this) *= rhs;",
+            "    }",
+            "    constexpr modint operator/(const modint rhs) const noexcept {",
+            "        return modint(*this) /= rhs;",
+            "    }",
+            "    constexpr modint &operator+=(const modint rhs) noexcept {",
+            "        a += rhs.a;",
+            "        if(a >= Modulus) {",
+            "            a -= Modulus;",
+            "        }",
+            "        return *this;",
+            "    }",
+            "    constexpr modint &operator-=(const modint rhs) noexcept {",
+            "        if(a < rhs.a) {",
+            "            a += Modulus;",
+            "        }",
+            "        a -= rhs.a;",
+            "        return *this;",
+            "    }",
+            "    constexpr modint &operator*=(const modint rhs) noexcept {",
+            "        a = a * rhs.a % Modulus;",
+            "        return *this;",
+            "    }",
+            "    constexpr modint &operator/=(modint rhs) noexcept {",
+            "        i64 a_ = rhs.a, b = Modulus, u = 1, v = 0;",
+            "        while(b){",
+            "            i64 t = a_/b;",
+            "            a_ -= t * b; swap(a_,b);",
+            "            u -= t * v; swap(u,v);",
+            "        }",
+            "        a = a * u % Modulus;",
+            "        if(a < 0) a += Modulus;",
+            "        return *this;",
+            "    }",
+            "    ",
+            "    // 自前実装",
+            "    constexpr bool operator==(const modint rhs) noexcept {",
+            "        return a == rhs.a;",
+            "    }",
+            "    constexpr bool operator!=(const modint rhs) noexcept {",
+            "        return a != rhs.a;",
+            "    }",
+            "    constexpr bool operator>(const modint rhs) noexcept {",
+            "        return a > rhs.a;",
+            "    }",
+            "    constexpr bool operator>=(const modint rhs) noexcept {",
+            "        return a >= rhs.a;",
+            "    }",
+            "    constexpr bool operator<(const modint rhs) noexcept {",
+            "        return a < rhs.a;",
+            "    }",
+            "    constexpr bool operator<=(const modint rhs) noexcept {",
+            "        return a <= rhs.a;",
+            "    }",
+            "    // constexpr modint& operator++() noexcept {",
+            "    //     return (*this) += modint(1);",
+            "    // }",
+            "    // constexpr modint operator++(int) {",
+            "    //     modint tmp(*this);",
+            "    //     operator++();",
+            "    //     return tmp;",
+            "    // }",
+            "    // constexpr modint& operator--() noexcept {",
+            "    //     return (*this) -= modint(1);",
+            "    // }",
+            "    // constexpr modint operator--(int) {",
+            "    //     modint tmp(*this);",
+            "    //     operator--();",
+            "    //     return tmp;",
+            "    // }",
+            "    template<typename T>",
+            "    friend constexpr modint modpow(const modint &mt, T n) noexcept {",
+            "        if(n < 0){",
+            "            modint t = (modint(1) / mt);",
+            "            return modpow(t, -n);",
+            "        }",
+            "        modint res = 1, tmp = mt;",
+            "        while(n){",
+            "            if(n & 1)res *= tmp;",
+            "            tmp *= tmp;",
+            "            n /= 2;",
+            "        }",
+            "        return res;",
+            "    }",
+            "};",
+            "",
+            "const ll MOD = 1e9+7;",
+            "using mint = modint<MOD>;",
+            "// 標準入出力対応",
+            "std::ostream &operator<<(std::ostream &out, const modint<MOD> &m) {",
+            "    out << m.a;",
+            "    return out;",
+            "}",
+            "std::istream &operator>>(std::istream &in, modint<MOD> &m) {",
+            "    ll a;",
+            "    in >> a;",
+            "    m = mint(a);",
+            "    return in;",
+            "}",
+            ""
+        ],
+        "description": "modint_container"
+    },
 }
