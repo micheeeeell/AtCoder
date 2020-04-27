@@ -22,4 +22,8 @@ signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     
+    double n, k; cin >> n >> k;
+    double ans = 0;
+    cout << fixed << setprecision(15);
+    cout << n / 2.0 << endl;
 }

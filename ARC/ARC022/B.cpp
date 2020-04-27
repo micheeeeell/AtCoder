@@ -27,16 +27,25 @@ signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     
-    ll q; cin >> q;
-    rep(_, q){
-        ll n,i,j; cin >> n >> i >> j;
-        ll mi = min({i,j,n-i-1, n-j-1});
-        ll top = (n-1 + n - 1 - 2 * (mi-1)) * mi * 2;
-        ll ans = top;
-        if(i == mi)top += (j - mi);
-        else if(n-j-1 == mi)top += j - mi + i - mi; 
-        else if(n-i-1 == mi)top += 2 * (i - mi) + n-mi-1-j;
-        else top += 3 * (n - 2 * mi - 1) + n-mi-1-i;
-        cout << top << "\n";
+    ll n; cin >> n;
+    vector<ll> a(n);
+    rep(i,n) cin >> a[i];
+    bitset<n_max> used = 0;
+    ll right = 0;
+    ll ans = 0;
+    rep(left, n){
+        while(right < n && used[a[right]] == 0){
+            used[a[right]] = 1;
+            right++;
+        }
+
+        chmax(ans, right - left);
+
+        if(right == left)right++;
+        else{
+            used[a[left]] = 0;
+        }
     }
+
+    cout << ans << endl;
 }

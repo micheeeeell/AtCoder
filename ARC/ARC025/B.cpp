@@ -1,4 +1,4 @@
-// #define _GLIBCXX_DEBUG
+#define _GLIBCXX_DEBUG
 #include<bits/stdc++.h>
 using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
@@ -17,7 +17,6 @@ typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
 #define int ll
-
 void print() {
     cout << endl;
 }
@@ -58,7 +57,6 @@ void print(pair<T,U> &p){
     print(p.first, p.second);
 }
 
-
 template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
@@ -68,28 +66,22 @@ signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     
-    ll n,V,l; cin >> n >> V >> l;
-    vector<ll> x(n+1), v(n), w(n);
-    x[0] = 0;
-    rep(i,n){
-        cin >> x[i+1] >> v[i] >> w[i];
-    }
-    vector<vector<ll>> dp(n+10, vector<ll>(V+10, INF));
-    rep(i,V+1)dp[0][i] = 0;
-    rep(i,n){
-        rrep(j,V+1){
-            if(j + x[i+1] - x[i] < V+1)chmin(dp[i+1][j], dp[i][j + x[i+1] - x[i]]);
-        }
-        rrep(j,V+1){
-            chmin(dp[i+1][j], dp[i+1][max(0LL,j - v[i])] + w[i]);
-            chmin(dp[i+1][j], dp[i+1][j+1]);
-        }
+    ll h,w; cin >> h >> w;
+    vvl c(h, vector<ll>(w)), sum1(h+1, vector<ll>(w+1)), sum2(h+1, vl(w+1));
+    rep(i,h)rep(j,w)cin >> c[i][j];
+    rep(i,h)rep(j,w){
+        sum1[i+1][j+1] = sum1[i+1][j] + sum1[i][j+1] - sum1[i][j] + ((i + j) % 2 == 0 ? c[i][j] : 0);
+        sum2[i+1][j+1] = sum2[i+1][j] + sum2[i][j+1] - sum2[i][j] + ((i + j) % 2 == 1 ? c[i][j] : 0);
     }
 
-    print(dp);
-    if(l - x[n] > V){
-        cout << -1 << endl;
-        return 0;
+    // print(sum1);print();print(sum2);
+    ll ans = 0, tmp1, tmp2;
+    reps(xe, h)reps(ye, w)rep(xs, xe)rep(ys, ye){
+        tmp1 = sum1[xe][ye] - sum1[xe][ys] - sum1[xs][ye] + sum1[xs][ys];
+        tmp2 = sum2[xe][ye] - sum2[xe][ys] - sum2[xs][ye] + sum2[xs][ys];
+        if(tmp1 != tmp2)continue;
+        chmax(ans, (xe - xs) * (ye - ys));
     }
-    cout << (dp[n][l-x[n]] == INF ? -1 : dp[n][l-x[n]]) << endl;
+
+    cout << ans << endl;
 }
