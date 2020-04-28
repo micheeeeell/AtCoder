@@ -1,10 +1,5 @@
+#define _GLIBCXX_DEBUG
 #include<bits/stdc++.h>
-#include<iostream>
-#include<cstdio>
-#include<vector>
-#include<string>
-#include<algorithm>
-#include<map>
 using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
 #define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
@@ -35,6 +30,10 @@ class modint {
         if(a < 0){
             a += Modulus;
         }
+    }
+    constexpr int getmod() { return Modulus; }
+    constexpr modint operator - () const noexcept {
+        return a ? Modulus - a : 0;
     }
     // constexpr i64 &value() const noexcept {return a;}
     constexpr const i64 &value() const noexcept {return a;}
@@ -145,88 +144,111 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
     return in;
 }
 
-// modintが必要
-// modintによる実装
-const int MAX = 1e6;
-vector<mint> modfac(MAX);
-void modCOMinit(){
-    modfac[0] = 1;
-    reps(i,n_max-1){
-        modfac[i] = modfac[i-1] * mint(i);
+void print() {
+    cout << endl;
+}
+
+// template <class Head, class... Tail>
+// void print(Head&& head, Tail&&... tail) {
+//     cout << head;
+//     if (sizeof...(tail) != 0) cout << " ";
+//     print(forward<Tail>(tail)...);
+// }
+
+template <class T>
+void print(vector<T> &vec) {
+    for (auto& a : vec) {
+        cout << a;
+        if (&a != &vec.back()) cout << " ";
+    }
+    cout << endl;
+}
+
+template <class T>
+void print(vector<T> &vec, ll k){
+   ll n = vec.size();
+   k = min(k, n);
+   rep(i,k-1)cout << vec[i] << " ";
+   cout << vec[k-1] << endl;
+}
+
+template <class T>
+void print(vector<vector<T>> &df) {
+    for (auto& vec : df) {
+        print(vec);
     }
 }
 
-mint modCOM(ll n, ll k){
-    if (n < k) return (mint)0;
-    if (n < 0 || k < 0) return (mint)0;
-    return modfac[n] / (modfac[k] * modfac[n-k]);
+template<class T, class U>
+void print(pair<T,U> &p){
+    print(p.first, p.second);
 }
 
-// const int MAX = 1e6 + 10;
-
-long long fac[MAX], finv[MAX], inv[MAX];
-
-// テーブルを作る前処理
-void COMinit() {
-    fac[0] = fac[1] = 1;
-    finv[0] = finv[1] = 1;
-    inv[1] = 1;
-    for (int i = 2; i < MAX; i++){
-        fac[i] = fac[i - 1] * i % MOD;
-        inv[i] = MOD - inv[MOD%i] * (MOD / i) % MOD;
-        finv[i] = finv[i - 1] * inv[i] % MOD;
+template<class T> struct BiCoef {
+    vector<T> fact_, inv_, finv_;
+    constexpr BiCoef() {}
+    constexpr BiCoef(int n) noexcept : fact_(n, 1), inv_(n, 1), finv_(n, 1) {
+        init(n);
     }
-}
+    constexpr void init(int n) noexcept {
+        fact_.assign(n, 1), inv_.assign(n, 1), finv_.assign(n, 1);
+        int MOD = fact_[0].getmod();
+        for(int i = 2; i < n; i++){
+            fact_[i] = fact_[i-1] * i;
+            inv_[i] = -inv_[MOD%i] * (MOD/i);
+            finv_[i] = finv_[i-1] * inv_[i];
+        }
+    }
+    constexpr T com(int n, int k) const noexcept {
+        if (n < k || n < 0 || k < 0) return 0;
+        return fact_[n] * finv_[k] * finv_[n-k];
+    }
+    constexpr T fact(int n) const noexcept {
+        if (n < 0) return 0;
+        return fact_[n];
+    }
+    constexpr T inv(int n) const noexcept {
+        if (n < 0) return 0;
+        return inv_[n];
+    }
+    constexpr T finv(int n) const noexcept {
+        if (n < 0) return 0;
+        return finv_[n];
+    }
+};
 
-// 二項係数計算
-long long COM(int n, int k){
-    if (n < k) return 0;
-    if (n < 0 || k < 0) return 0;
-    return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
+// 愚直に計算
+mint g_com(ll n, ll k){
+    k = min(k, n-k);
+    mint ret = 1, rev = 1;
+    reps(i,k){
+        ret *= n--;
+        rev *= i;
+    }
+    return ret / rev;
 }
-
 
 signed main(){
-    cin.tie(0);
+    cin.tie(nullptr);
     ios::sync_with_stdio(false);
+    ll n; cin >> n;
+    vector<ll> a(n);
+    rep(i,n) cin >> a[i];
+    // BiCoef<mint> bc(1e6);
 
-    ll N = 1e6;
-    ll M = 1e5;
-    ll n, k;
-    mint temp1;
-    ll temp2;
-    std::random_device rand;
-    std::mt19937 mt(rand());
-
-    clock_t start = clock();
-
-    modCOMinit();
-    rep(i,N){
-        n = mt() % M;
-        k = mt() % M;
-        if(n < k)swap(n,k);
-        temp1 = modCOM(n, k);
+    ll min_ = -1;
+    ll cnt = 0;
+    mint ans = 1;
+    rep(i,n){
+        if(a[i] == -1){
+            cnt++;
+            continue;
+        }
+        ans *= g_com(cnt + a[i] - min_, cnt);
+        min_ = a[i];
+        cnt = 0;
     }
+    debug(g_com(5, 2));
 
-    clock_t end = clock();
-
-    const double time = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;
-    printf("time %lf[ms]\n", time);
-
-    start = clock();
-
-    COMinit();
-    // ll n, k, temp;
-    rep(i,N){
-        n = mt() % M;
-        k = mt() % M;
-        if(n < k)swap(n,k);
-        temp2 = COM(n, k);
-    }
-
-    end = clock();
-
-    const double time2 = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;
-    printf("time %lf[ms]\n", time2);
-    
+    cout << ans << endl;
 }

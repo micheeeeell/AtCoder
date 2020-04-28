@@ -1,10 +1,5 @@
+#define _GLIBCXX_DEBUG
 #include<bits/stdc++.h>
-#include<iostream>
-#include<cstdio>
-#include<vector>
-#include<string>
-#include<algorithm>
-#include<map>
 using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
 #define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
@@ -145,88 +140,41 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
     return in;
 }
 
-// modintが必要
-// modintによる実装
-const int MAX = 1e6;
-vector<mint> modfac(MAX);
-void modCOMinit(){
-    modfac[0] = 1;
-    reps(i,n_max-1){
-        modfac[i] = modfac[i-1] * mint(i);
+template<class T> struct BiCoef {
+    vector<T> fact_, inv_, finv_;
+    constexpr BiCoef() {}
+    constexpr BiCoef(int n) noexcept : fact_(n, 1), inv_(n, 1), finv_(n, 1) {
+        init(n);
     }
-}
-
-mint modCOM(ll n, ll k){
-    if (n < k) return (mint)0;
-    if (n < 0 || k < 0) return (mint)0;
-    return modfac[n] / (modfac[k] * modfac[n-k]);
-}
-
-// const int MAX = 1e6 + 10;
-
-long long fac[MAX], finv[MAX], inv[MAX];
-
-// テーブルを作る前処理
-void COMinit() {
-    fac[0] = fac[1] = 1;
-    finv[0] = finv[1] = 1;
-    inv[1] = 1;
-    for (int i = 2; i < MAX; i++){
-        fac[i] = fac[i - 1] * i % MOD;
-        inv[i] = MOD - inv[MOD%i] * (MOD / i) % MOD;
-        finv[i] = finv[i - 1] * inv[i] % MOD;
+    constexpr void init(int n) noexcept {
+        fact_.assign(n, 1), inv_.assign(n, 1), finv_.assign(n, 1);
+        int MOD = fact_[0].getmod();
+        for(int i = 2; i < n; i++){
+            fact_[i] = fact_[i-1] * i;
+            inv_[i] = -inv_[MOD%i] * (MOD/i);
+            finv_[i] = finv_[i-1] * inv_[i];
+        }
     }
-}
-
-// 二項係数計算
-long long COM(int n, int k){
-    if (n < k) return 0;
-    if (n < 0 || k < 0) return 0;
-    return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
-}
-
+    constexpr T com(int n, int k) const noexcept {
+        if (n < k || n < 0 || k < 0) return 0;
+        return fact_[n] * finv_[k] * finv_[n-k];
+    }
+    constexpr T fact(int n) const noexcept {
+        if (n < 0) return 0;
+        return fact_[n];
+    }
+    constexpr T inv(int n) const noexcept {
+        if (n < 0) return 0;
+        return inv_[n];
+    }
+    constexpr T finv(int n) const noexcept {
+        if (n < 0) return 0;
+        return finv_[n];
+    }
+};
 
 signed main(){
-    cin.tie(0);
+    cin.tie(nullptr);
     ios::sync_with_stdio(false);
 
-    ll N = 1e6;
-    ll M = 1e5;
-    ll n, k;
-    mint temp1;
-    ll temp2;
-    std::random_device rand;
-    std::mt19937 mt(rand());
-
-    clock_t start = clock();
-
-    modCOMinit();
-    rep(i,N){
-        n = mt() % M;
-        k = mt() % M;
-        if(n < k)swap(n,k);
-        temp1 = modCOM(n, k);
-    }
-
-    clock_t end = clock();
-
-    const double time = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;
-    printf("time %lf[ms]\n", time);
-
-    start = clock();
-
-    COMinit();
-    // ll n, k, temp;
-    rep(i,N){
-        n = mt() % M;
-        k = mt() % M;
-        if(n < k)swap(n,k);
-        temp2 = COM(n, k);
-    }
-
-    end = clock();
-
-    const double time2 = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;
-    printf("time %lf[ms]\n", time2);
-    
 }

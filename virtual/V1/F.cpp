@@ -1,10 +1,5 @@
+#define _GLIBCXX_DEBUG
 #include<bits/stdc++.h>
-#include<iostream>
-#include<cstdio>
-#include<vector>
-#include<string>
-#include<algorithm>
-#include<map>
 using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
 #define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
@@ -145,88 +140,30 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
     return in;
 }
 
-// modintが必要
-// modintによる実装
-const int MAX = 1e6;
-vector<mint> modfac(MAX);
-void modCOMinit(){
-    modfac[0] = 1;
-    reps(i,n_max-1){
-        modfac[i] = modfac[i-1] * mint(i);
-    }
-}
-
-mint modCOM(ll n, ll k){
-    if (n < k) return (mint)0;
-    if (n < 0 || k < 0) return (mint)0;
-    return modfac[n] / (modfac[k] * modfac[n-k]);
-}
-
-// const int MAX = 1e6 + 10;
-
-long long fac[MAX], finv[MAX], inv[MAX];
-
-// テーブルを作る前処理
-void COMinit() {
-    fac[0] = fac[1] = 1;
-    finv[0] = finv[1] = 1;
-    inv[1] = 1;
-    for (int i = 2; i < MAX; i++){
-        fac[i] = fac[i - 1] * i % MOD;
-        inv[i] = MOD - inv[MOD%i] * (MOD / i) % MOD;
-        finv[i] = finv[i - 1] * inv[i] % MOD;
-    }
-}
-
-// 二項係数計算
-long long COM(int n, int k){
-    if (n < k) return 0;
-    if (n < 0 || k < 0) return 0;
-    return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
-}
-
 
 signed main(){
-    cin.tie(0);
+    cin.tie(nullptr);
     ios::sync_with_stdio(false);
-
-    ll N = 1e6;
-    ll M = 1e5;
-    ll n, k;
-    mint temp1;
-    ll temp2;
-    std::random_device rand;
-    std::mt19937 mt(rand());
-
-    clock_t start = clock();
-
-    modCOMinit();
-    rep(i,N){
-        n = mt() % M;
-        k = mt() % M;
-        if(n < k)swap(n,k);
-        temp1 = modCOM(n, k);
-    }
-
-    clock_t end = clock();
-
-    const double time = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;
-    printf("time %lf[ms]\n", time);
-
-    start = clock();
-
-    COMinit();
-    // ll n, k, temp;
-    rep(i,N){
-        n = mt() % M;
-        k = mt() % M;
-        if(n < k)swap(n,k);
-        temp2 = COM(n, k);
-    }
-
-    end = clock();
-
-    const double time2 = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;
-    printf("time %lf[ms]\n", time2);
     
+    ll n; cin >> n;
+    vector<ll> x(n);
+    rep(i,n) cin >> x[i];
+    ll last = 1;
+    ll cnt = 0;
+    mint ans = 1;
+    rep(i,n){
+        if(last <= x[i]){
+            last += 2;
+            cnt++;
+            continue;
+        }
+        else{
+            ans *= cnt + 1;
+        }
+    }
+    // debug(cnt);
+    reps(i,cnt)ans *= i;
+
+    cout << ans << endl;
+
 }

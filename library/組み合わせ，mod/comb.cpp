@@ -80,6 +80,16 @@ mint COM(ll n, ll k){
     return fac[n] / (fac[k] * fac[n-k]);
 }
 
+// 愚直に計算
+mint g_com(ll n, ll k){
+    k = min(k, n-k);
+    mint ret = 1, rev = 1;
+    reps(i,k){
+        ret *= n--;
+        rev *= i;
+    }
+    return ret / rev;
+}
 
 int main() {
     // 前処理
