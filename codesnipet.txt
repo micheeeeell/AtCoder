@@ -25,13 +25,22 @@
         ],
         "description": "vector<int>の受取"
     },
+    
     "cin_string_int":{
-        "prefix": "cs",
+        "prefix": "cstr",
         "body":[
             "string $1;cin >> $1;"
         ],
         "description": "stringの受取"
     },
+    "cin_2_string_int":{
+        "prefix": "c2str",
+        "body":[
+            "string $1, $2;cin >> $1 >> $2;"
+        ],
+        "description": "stringの受取(2つ)"
+    },
+
     "cin_one_int":{
         "prefix":"c1i",
         "body":[
@@ -441,9 +450,10 @@
             "        return finv_[n];",
             "    }",
             "};",
-            
+            "",
+            "BiCoef<mint> bc(n_max);",
         ]
-    }
+    },
 
     "clock_time": {
         "prefix": "clock",

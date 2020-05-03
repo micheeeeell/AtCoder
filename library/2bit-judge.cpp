@@ -29,4 +29,6 @@ int main()
             // cout  << i  << ' ' << j << ' ' << (1 << j) << endl;
         }
     }
+    // maskの部分集合を全探索できる回し方
+    for(ll i=mask; i >= 0; i = (i-1) & mask){}
 }
