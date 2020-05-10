@@ -1,15 +1,10 @@
-// #include<bits/stdc++.h>
-#include<iostream>
-#include<cstdio>
-#include<vector>
-#include<string>
-#include<algorithm>
-#include<map>
-#include<functional>
+#define _GLIBCXX_DEBUG
+#include<bits/stdc++.h>
 using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define pb push_back
-#define eb emplace_back
+#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
+#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
+#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
 #define debug(x) cerr << #x << ": " << (x) << "\n";
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
@@ -21,18 +16,8 @@ typedef vector<vector<ll>> vvl;
 typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
+#define int ll
 
-
-// nはサイズ，fはfunction, M1はMonoidの単位元
-// SegmentTree(n, f, M1):= サイズ n の初期化。
-// ここで f は2つの区間の要素をマージする二項演算, M1 はモノイドの単位元である。
-// set(k, x):= k 番目の要素に x を代入する。
-// build():= セグメント木を構築する。
-// query(a, b):= 区間 [a,b) に対して二項演算した結果を返す。
-// update(k, x):= k 番目の要素を x に変更する。
-// operator[k] := k 番目の要素を返す。
-// find_first(a, check) := [a,x) が check を満たす最初の要素位置 x を返す。
-// find_last(b, check) := [x,b) が check を満たす最後の要素位置 x を返す。
 template< typename Monoid >
 struct SegmentTree {
     using F = function< Monoid(Monoid, Monoid) >;
@@ -42,7 +27,7 @@ struct SegmentTree {
 
     const F f;
     const Monoid M1;
-    SegmentTree(const int n, const F f, const Monoid &M1) : f(f), M1(M1) {
+    SegmentTree(int n, const F f, const Monoid &M1) : f(f), M1(M1) {
         sz = 1;
         while(sz < n)sz <<= 1;
         seg.assign(2*sz, M1);
@@ -128,26 +113,75 @@ struct SegmentTree {
     }
 };
 
-int main(){
-    // int n,q; cin >> n >> q;
-    // vector<int> a(n, numeric_limits<int>::max());
-    // // auto f = [](int a, int b){return min(a,b); };
-    // SegmentTree< int > seg(n, [](int a, int b){return min(a, b);}, numeric_limits<int>::max());
-    // seg.build(a);
-    // rep(i,q){
-    //     int t,x,y; cin >> t >> x >> y;
-    //     if(t == 0)seg.update(x, y);
-    //     else cout << seg.query(x, y+1) << "\n";
-    // }
+void print() {
+    cout << endl;
+}
 
-    ll n = 10;
-    vector<ll> vec = {4,3,1,3,6,3,2,4,6,4};
-    auto f = [](ll a, ll b){return max(a,b);};
-    SegmentTree<ll> seg(n, f, 0);
-    seg.build(vec);
-    auto check = [](ll x){return x > 5;};
-    // 左端固定した時の最初をにぶたん
-    debug(seg.find_first(4, check));
-    // 右端固定したときの最後をにぶたん
-    debug(seg.find_last(10, check));
+// template <class Head, class... Tail>
+// void print(Head&& head, Tail&&... tail) {
+//     cout << head;
+//     if (sizeof...(tail) != 0) cout << " ";
+//     print(forward<Tail>(tail)...);
+// }
+
+template <class T>
+void print(vector<T> &vec) {
+    for (auto& a : vec) {
+        cout << a;
+        if (&a != &vec.back()) cout << " ";
+    }
+    cout << endl;
+}
+
+template <class T>
+void print(vector<T> &vec, ll k){
+   ll n = vec.size();
+   k = min(k, n);
+   rep(i,k-1)cout << vec[i] << " ";
+   cout << vec[k-1] << endl;
+}
+
+template <class T>
+void print(vector<vector<T>> &df) {
+    for (auto& vec : df) {
+        print(vec);
+    }
+}
+
+template<class T, class U>
+void print(pair<T,U> &p){
+    cout << p.first << " " << p.second << "\n";
+}
+
+
+signed main(){
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    
+    ll n,k,d; cin >> n >> k >> d;
+    vector<Pll> a(n);
+    rep(i,n){
+        cin >> a[i].first;
+        a[i].second = i;
+    }
+    auto f = [&](Pll a, Pll b){return min(a, b);};
+    SegmentTree<Pll> seg(n, f, {INF, INF});
+    seg.build(a);
+    vector<ll> ans;
+    ll left = 0;
+    ll right = n - (k - 1) * d - 1;
+    bool ok = true;
+    if(left > right)ok = false;
+    while(k){
+        auto p = seg.query(left, right+1);
+        ans.emplace_back(p.first);
+        left = p.second + d;
+        k--;
+        right = n - (k - 1) * d - 1;
+    }
+    if(!ok){
+        cout << -1 << endl;
+        return 0;
+    }
+    print(ans);
 }
