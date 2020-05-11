@@ -20,6 +20,7 @@ typedef vector<vector<ll>> vvl;
 typedef vector<vector<vector<ll>>> vvvl;
 const ll INF = numeric_limits<ll>::max()/4;
 const int n_max = 1e5+10;
+#define int ll
 
 
 template<std::int_fast64_t Modulus>
@@ -144,7 +145,7 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
     return in;
 }
 
-int main(){
+signed main(){
     mint a,b;
     cin >> a >> b;
     cout << a << ' ' << b << endl;
