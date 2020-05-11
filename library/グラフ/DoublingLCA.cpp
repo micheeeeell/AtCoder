@@ -25,9 +25,9 @@ const int n_max = 1e5+10;
 
 // DoublingによりLowest Common Ancestor(最小共通祖先)を求める
 // うしさんのライブラリです
-// G はvector< vector<int> >とかで行ける
+// G はglaphの型, vector< vector<int> >など
 // 検証：ABC014_D 木のノード間距離を求める問題
-template<typename G >
+template<typename G>
 struct DoublingLCA {
     const int LOG;
     vector<int> dep;
@@ -56,7 +56,7 @@ struct DoublingLCA {
         }
     }
 
-    int query(int u, int v) {
+    int lca(int u, int v) {
         if(dep[u] > dep[v])swap(u,v);
         for(int i = LOG - 1; 0 <= i; i--) {
             if(((dep[v] - dep[u]) >> i) & 1) v = table[i][v];

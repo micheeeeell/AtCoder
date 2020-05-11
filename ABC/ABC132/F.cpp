@@ -14,6 +14,46 @@ typedef pair<int,int> P;
 typedef vector<int> ivec;
 const ll N = 1e9+7;
 
+void print() {
+    cout << endl;
+}
+
+// template <class Head, class... Tail>
+// void print(Head&& head, Tail&&... tail) {
+//     cout << head;
+//     if (sizeof...(tail) != 0) cout << " ";
+//     print(forward<Tail>(tail)...);
+// }
+
+template <class T>
+void print(vector<T> &vec) {
+    for (auto& a : vec) {
+        cout << a;
+        if (&a != &vec.back()) cout << " ";
+    }
+    cout << endl;
+}
+
+template <class T>
+void print(vector<T> &vec, ll k){
+   ll n = vec.size();
+   k = min(k, n);
+   rep(i,k-1)cout << vec[i] << " ";
+   cout << vec[k-1] << endl;
+}
+
+template <class T>
+void print(vector<vector<T>> &df) {
+    for (auto& vec : df) {
+        print(vec);
+    }
+}
+
+template<class T, class U>
+void print(pair<T,U> &p){
+    cout << p.first << " " << p.second << "\n";
+}
+
 int main(){
     ll n,k; cin >> n >> k;
     vector<vector<ll>> dp(k+1,vector<ll>(n));
@@ -31,6 +71,8 @@ int main(){
         }
     }
     ll ans = 0;
+
+    print(dp);
     
     rep(i,n){
         ans += dp[k][i] % N;

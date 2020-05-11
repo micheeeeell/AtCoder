@@ -42,7 +42,7 @@ struct SegmentTree {
 
     const F f;
     const Monoid M1;
-    SegmentTree(int n, const F f, const Monoid &M1) : f(f), M1(M1) {
+    SegmentTree(const int n, const F f, const Monoid &M1) : f(f), M1(M1) {
         sz = 1;
         while(sz < n)sz <<= 1;
         seg.assign(2*sz, M1);
