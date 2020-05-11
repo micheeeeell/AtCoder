@@ -102,19 +102,19 @@ class modint {
     constexpr modint& operator++() noexcept {
         return (*this) += modint(1);
     }
-    constexpr modint operator++(int) {
-        modint tmp(*this);
-        operator++();
-        return tmp;
-    }
+    // constexpr modint operator++(int) {
+    //     modint tmp(*this);
+    //     operator++();
+    //     return tmp;
+    // }
     constexpr modint& operator--() noexcept {
         return (*this) -= modint(1);
     }
-    constexpr modint operator--(int) {
-        modint tmp(*this);
-        operator--();
-        return tmp;
-    }
+    // constexpr modint operator--(int) {
+    //     modint tmp(*this);
+    //     operator--();
+    //     return tmp;
+    // }
     template<typename T>
     friend constexpr modint modpow(const modint &mt, T n) noexcept {
         if(n < 0){
