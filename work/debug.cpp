@@ -31,8 +31,8 @@ string to_string(const string& s) {
   return '"' + s + '"';
 }
  
-string to_string(const char* s) {
-  return to_string((string) s);
+string to_string(const char s) {
+  return to_string((string) &s);
 }
  
 string to_string(bool b) {
@@ -100,7 +100,7 @@ void debug_out(Head H, Tail... T) {
   debug_out(T...);
 }
  
-// #define LOCAL
+#define LOCAL
 #ifdef LOCAL
 #define debug(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
 #else
@@ -156,5 +156,5 @@ signed main(){
     vector<vector<ll>> v2 = {{1,2,3}, {4,5,6}, {7,8,9}};
     debug(v, v2);
     print(v2);
-    debug();
+    debug('c');
 }

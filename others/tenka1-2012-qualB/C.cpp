@@ -1,4 +1,4 @@
-// #define LOCAL
+#define LOCAL
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
@@ -15,8 +15,7 @@ typedef pair<ll,ll> Pll;
 typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef vector<vvl> vvvl;
-constexpr ll INF = numeric_limits<ll>::max()/100;
-constexpr ll n_max = 2e5+10;
+constexpr ll INF = numeric_limits<ll>::max()/4;
 #define int ll
 
 template <typename A, typename B>
@@ -57,55 +56,62 @@ void debug_out(Head H, Tail... T) {
 #else
 #define debug(...) 42
 #endif
-
 template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+ll n;
+const ll n_max = 15;
+const ll MAX = 1LL << n_max;
+vector<vector<ll>> vec(n_max, vector<ll>(2));
+vector<ll> memo(MAX);
+ll dfs(ll mask){
+    if(__builtin_popcountll(mask) == 1)return 1;
+    if(memo[mask])return memo[mask];
+    bool ok = true;
+    ll ed = -1;
+    rep(i,n){
+        if((mask >> i) & 1){
+            if(ed > vec[i][0])ok = false;
+            ed = vec[i][1];
+        }
+    }
+    rep(i,n){
+        if((mask >> i) & 1){
+            if(ed >( vec[i][0] + 60 * 24))ok = false;
+            ed = vec[i][1] + 60 * 24;
+        }
+    }
+    
+    if(ok)return memo[mask] = 1;
+    ll ans = INF;
+    for(ll t = mask; t > 0; t = (t-1) & mask){
+        if(t == mask)continue;
+        chmin(ans, dfs(t) + dfs(mask ^ t));
+    }
 
+    return memo[mask] = ans;
+}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n; cin >> n;
-    string s = to_string(n);
-    ll m = s.size();
-    ll k; cin >> k;
-    ll ans = INF;
-
-    auto update = [&](ll &a, const ll b, const ll n){
-        if(abs(a - n) >= abs(b - n))a = b;
+    cin >> n;
+    auto to_num = [](string &s){
+        ll ret = (s[0] - '0') * 10 + (s[1] - '0');
+        ret *= 60;
+        ret += (s[3] - '0') * 10 + (s[4] - '0');
+        return ret;
     };
-    rep(i, (1LL << 10)){
-        bitset<10> bs(i);
-        if(bs.count() > k)continue;
-        vvl dp(2, vl(m+1, INF));
-        fill(all(dp[0]), INF);
-        fill(all(dp[1]), 0);
-        // fill(all(dp[2]), -1);
-        dp[0][0] = 0;
-        debug(i);
-        rep(k,m){
-            ll t = s[k] - '0';
-            ll temp = n / pow(10,m-k-1);
-            debug(temp);
-            bool first = true;
-            rep(j,10){
-                if(bs[j] == 0)continue;
-                ll p = dp[0][k] * 10 + j;
-                if(temp <= p)chmin(dp[0][k+1], p);
-                else{
-                    chmax(dp[1][k+1], p);
-                }
-                if(dp[1][k] * 10 + j < temp)chmax(dp[1][k+1], dp[1][k] * 10 + j);
-
-            }
-            debug(dp);
-        }
-        rep(j,2){
-            chmin(ans, abs(dp[j][m] - n));
-        }
-
+    vector<Pll> v;
+    rep(i,n){
+        string s, t;cin >> s >> t;
+        v.emplace_back(to_num(s), to_num(t));
+    }
+    sort(all(v));
+    rep(i,n){
+        vec[i][0] = v[i].first;
+        vec[i][1] = v[i].second;
     }
 
-    cout << ans << endl;
+    cout << dfs((1LL << n) - 1) << endl;
 }

@@ -1,4 +1,4 @@
-// #define LOCAL
+#define LOCAL
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
@@ -15,7 +15,7 @@ typedef pair<ll,ll> Pll;
 typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef vector<vvl> vvvl;
-constexpr ll INF = numeric_limits<ll>::max()/100;
+constexpr ll INF = numeric_limits<ll>::max()/4;
 constexpr ll n_max = 2e5+10;
 #define int ll
 
@@ -58,54 +58,40 @@ void debug_out(Head H, Tail... T) {
 #define debug(...) 42
 #endif
 
-template<class T>
-bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
-template<class T>
-bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
-
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     ll n; cin >> n;
-    string s = to_string(n);
-    ll m = s.size();
-    ll k; cin >> k;
-    ll ans = INF;
-
-    auto update = [&](ll &a, const ll b, const ll n){
-        if(abs(a - n) >= abs(b - n))a = b;
-    };
-    rep(i, (1LL << 10)){
-        bitset<10> bs(i);
-        if(bs.count() > k)continue;
-        vvl dp(2, vl(m+1, INF));
-        fill(all(dp[0]), INF);
-        fill(all(dp[1]), 0);
-        // fill(all(dp[2]), -1);
-        dp[0][0] = 0;
-        debug(i);
-        rep(k,m){
-            ll t = s[k] - '0';
-            ll temp = n / pow(10,m-k-1);
-            debug(temp);
-            bool first = true;
-            rep(j,10){
-                if(bs[j] == 0)continue;
-                ll p = dp[0][k] * 10 + j;
-                if(temp <= p)chmin(dp[0][k+1], p);
-                else{
-                    chmax(dp[1][k+1], p);
-                }
-                if(dp[1][k] * 10 + j < temp)chmax(dp[1][k+1], dp[1][k] * 10 + j);
-
-            }
-            debug(dp);
-        }
-        rep(j,2){
-            chmin(ans, abs(dp[j][m] - n));
-        }
-
+    vector<ll> a(n);
+    rep(i,n) cin >> a[i];
+    vector<ll> cnt(n+1);
+    cnt[a[0]]++;
+    reps(i,n-1){
+        if(a[i] != a[i-1])cnt[a[i]]++;
+    }
+    debug(cnt);
+    if(*max_element(all(cnt)) == 1){
+        cout << 0 << endl;
+        return 0;
+    }
+    if(*max_element(all(cnt)) > 2){
+        cout << -1 << endl;
+        return 0;
+    }
+    ll c = 0;
+    rep(i,n)if(cnt[i] == 2)c++;
+    if(c > 1){
+        cout << -1 << endl;
+        return 0;
+    }
+    if(c == 1 && cnt[a[0]] == 2 && a[n-1] == a[0]){
+        cout << 1 << endl;
+        return 0;
+    }
+    else{
+        cout << -1 << endl;
+        return 0;
     }
 
-    cout << ans << endl;
+
 }

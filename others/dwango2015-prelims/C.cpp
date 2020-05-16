@@ -29,7 +29,7 @@ void COMinit(){
         }
     }
 }
-ll COM(ll n, ll k){
+ld COM(ll n, ll k){
     return com[n-k][k];
 }
 
@@ -56,9 +56,13 @@ signed main(){
         return 0LL;
     };
     COMinit();
+    vector<long double> pw(120);
+    pw[0] = 1;
+    reps(i,119)pw[i] = pw[i-1] / 3.0;
+    
     auto P = [&](ll n, ll r, ll s, ll p){
         ld ans = 0;
-        ans = (COM(n, r) / pow(3, n)) * COM(n-r, s);
+        ans = (COM(n, r) * pw[n]) * COM(n-r, s);
         return ans;
     };
     vector<ld> e(n+1);

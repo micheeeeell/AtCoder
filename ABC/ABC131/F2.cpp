@@ -1,4 +1,4 @@
-// #define LOCAL
+#define LOCAL
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
@@ -15,7 +15,7 @@ typedef pair<ll,ll> Pll;
 typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef vector<vvl> vvvl;
-constexpr ll INF = numeric_limits<ll>::max()/100;
+constexpr ll INF = numeric_limits<ll>::max()/4;
 constexpr ll n_max = 2e5+10;
 #define int ll
 
@@ -58,54 +58,85 @@ void debug_out(Head H, Tail... T) {
 #define debug(...) 42
 #endif
 
-template<class T>
-bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
-template<class T>
-bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+
+struct UnionFind{
+private:
+    vector<int> par;
+    vector<int> rank;
+    vector<int> xsz, ysz;
+
+public:
+    //n要素で親を初期化、par[x]はxの親を表す
+    UnionFind(int n, ll base){
+        par.resize(n,0);
+        rank.resize(n,0);
+        xsz.resize(n,0);
+        ysz.resize(n,1);
+        fill(xsz.begin(), xsz.begin() + base, 1);
+        fill(ysz.begin(), ysz.begin() + base, 0);
+        rep(i,n){
+            par[i] = i;
+        }
+    }
+
+    //木の根を求める
+    int root(int x){
+        if(par[x] == x) return x;
+        else return par[x] = root(par[x]);
+    }
+
+    //xとyの属する集合を併合
+    void unite(int x, int y){
+        x = root(x);
+        y = root(y);
+        if(x == y) return;
+        
+        if(rank[x] < rank[y]){
+            swap(x,y);
+        }
+        
+        par[y] = x;
+        xsz[x] += xsz[y];
+        ysz[x] += ysz[y];
+        if(rank[x] == rank[y]) rank[x]++; 
+    }
+
+    //xとyが同じ集合に属するか否か
+    bool same(int x, int y){
+        return root(x) == root(y);
+    }
+
+    //xが属する集合のサイズを返す
+    pair<int, int> size(int x){
+        return {xsz[root(x)], ysz[root(x)]};
+    }
+
+    // 集合の数を返す
+    int num_of_s(){
+        set<int> st;
+        rep(i,par.size()) st.insert(root(i));
+        return st.size();
+    }
+};
+
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     ll n; cin >> n;
-    string s = to_string(n);
-    ll m = s.size();
-    ll k; cin >> k;
-    ll ans = INF;
-
-    auto update = [&](ll &a, const ll b, const ll n){
-        if(abs(a - n) >= abs(b - n))a = b;
-    };
-    rep(i, (1LL << 10)){
-        bitset<10> bs(i);
-        if(bs.count() > k)continue;
-        vvl dp(2, vl(m+1, INF));
-        fill(all(dp[0]), INF);
-        fill(all(dp[1]), 0);
-        // fill(all(dp[2]), -1);
-        dp[0][0] = 0;
-        debug(i);
-        rep(k,m){
-            ll t = s[k] - '0';
-            ll temp = n / pow(10,m-k-1);
-            debug(temp);
-            bool first = true;
-            rep(j,10){
-                if(bs[j] == 0)continue;
-                ll p = dp[0][k] * 10 + j;
-                if(temp <= p)chmin(dp[0][k+1], p);
-                else{
-                    chmax(dp[1][k+1], p);
-                }
-                if(dp[1][k] * 10 + j < temp)chmax(dp[1][k+1], dp[1][k] * 10 + j);
-
-            }
-            debug(dp);
+    ll base = 1e5 + 1;
+    UnionFind uf(n_max, base);
+    rep(i,n){
+        ll x,y; cin >> x >> y;
+        uf.unite(x, y + base);
+    }
+    ll sum = 0;
+    rep(i,n_max){
+        if(uf.root(i) == i){
+            auto p = uf.size(i);
+            sum += p.first * p.second;
         }
-        rep(j,2){
-            chmin(ans, abs(dp[j][m] - n));
-        }
-
     }
 
-    cout << ans << endl;
+    cout << sum - n << endl;
 }

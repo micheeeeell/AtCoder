@@ -15,7 +15,7 @@ typedef pair<ll,ll> Pll;
 typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef vector<vvl> vvvl;
-constexpr ll INF = numeric_limits<ll>::max()/100;
+constexpr ll INF = numeric_limits<ll>::max()/4;
 constexpr ll n_max = 2e5+10;
 #define int ll
 
@@ -57,7 +57,11 @@ void debug_out(Head H, Tail... T) {
 #else
 #define debug(...) 42
 #endif
-
+struct state{
+    ll s,e;
+    state(){}
+    state(ll s, ll e):s(s), e(e){};
+};
 template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
@@ -67,45 +71,44 @@ signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     ll n; cin >> n;
-    string s = to_string(n);
-    ll m = s.size();
-    ll k; cin >> k;
-    ll ans = INF;
-
-    auto update = [&](ll &a, const ll b, const ll n){
-        if(abs(a - n) >= abs(b - n))a = b;
-    };
-    rep(i, (1LL << 10)){
-        bitset<10> bs(i);
-        if(bs.count() > k)continue;
-        vvl dp(2, vl(m+1, INF));
-        fill(all(dp[0]), INF);
-        fill(all(dp[1]), 0);
-        // fill(all(dp[2]), -1);
-        dp[0][0] = 0;
-        debug(i);
-        rep(k,m){
-            ll t = s[k] - '0';
-            ll temp = n / pow(10,m-k-1);
-            debug(temp);
-            bool first = true;
-            rep(j,10){
-                if(bs[j] == 0)continue;
-                ll p = dp[0][k] * 10 + j;
-                if(temp <= p)chmin(dp[0][k+1], p);
-                else{
-                    chmax(dp[1][k+1], p);
-                }
-                if(dp[1][k] * 10 + j < temp)chmax(dp[1][k+1], dp[1][k] * 10 + j);
-
+    vector<ll> h(n);
+    rep(i,n) cin >> h[i];
+    reps(i,n-1)h[i] += h[i-1];
+    map<ll, ll> mp;
+    vector<vector<state>> v(n);
+    rep(i,n){
+        ll m,s,e; cin >> m >> s >> e;
+        mp[s] = 1, mp[e] = 1;
+        m--;
+        v[m].emplace_back(s, e);
+    }
+    ll id = 0;
+    for(auto itr = mp.begin(); itr != mp.end();itr++){
+        itr->second = id++;
+    }
+    ll m = mp.size();
+    vector<ll> dp(m+1);
+    rep(i,n)sort(all(v[i]), [](const auto &a, const auto &b){
+        return a.e < b.e;
+    });
+    vector<ll> now(n);
+    rep(i,m){
+        if(i)chmax(dp[i], dp[i-1]);
+        rep(j,n){
+            while(now[j] < v[j].size() && i > mp[v[j][now[j]].s])now[j]++;
+            if(now[j] == v[j].size())continue;
+            debug(i,j,now[j]);
+            ll et = v[j][now[j]].s;
+            ll cnt = 0;
+            for(ll tnow = now[j];tnow < v[j].size(); tnow++){
+                if(et > v[j][tnow].s) continue;
+                chmax(dp[mp[v[j][tnow].e]], dp[i] + h[cnt++]);
+                et = v[j][tnow].e;
             }
-            debug(dp);
         }
-        rep(j,2){
-            chmin(ans, abs(dp[j][m] - n));
-        }
-
+    debug(dp);
     }
 
-    cout << ans << endl;
+
+    cout << dp[m-1] << endl;
 }
