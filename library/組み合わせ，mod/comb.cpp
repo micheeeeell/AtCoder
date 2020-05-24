@@ -83,6 +83,7 @@ mint COM(ll n, ll k){
 // 愚直に計算
 mint g_com(ll n, ll k){
     k = min(k, n-k);
+    if(k < 0)return mint(0);
     mint ret = 1, rev = 1;
     reps(i,k){
         ret *= n--;

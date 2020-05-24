@@ -492,7 +492,17 @@
             "BiCoef<mint> bc(n_max);",
         ]
     },
-
+    "grid_template": {
+        "prefix": "grid_temp",
+        "body": [
+            "ll dx[] = {0,0,1,-1};",
+            "ll dy[] = {1,-1,0,0};",
+            "auto is_out = [&](ll x, ll y){",
+            "   if(x < 0 || x >= h || y < 0 || y >= w)return true;",
+            "   return false;",
+            "};"
+        ]
+    },
     "clock_time": {
         "prefix": "clock",
         "body": [
