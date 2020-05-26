@@ -30,6 +30,7 @@
         "regex": "cpp",
         "tuple": "cpp",
         "valarray": "cpp",
-        "condition_variable": "cpp"
+        "condition_variable": "cpp",
+        "iostream": "cpp"
     }
 }
