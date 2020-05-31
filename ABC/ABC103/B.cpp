@@ -1,4 +1,4 @@
-#define LOCAL
+// #define LOCAL
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
@@ -22,7 +22,7 @@ constexpr ll n_max = 2e5+10;
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
-string to_string(const char* c) {return to_string((string) c);}
+string to_string(const char c) {return to_string((string) &c);}
 string to_string(bool b) {return (b ? "true" : "false");}
 template <size_t N>
 string to_string(bitset<N> v){
@@ -58,19 +58,25 @@ void debug_out(Head H, Tail... T) {
 #define debug(...) 42
 #endif
 
+template<class T>
+bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
+template<class T>
+bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+
+void YES(bool ok){
+    cout << (ok ? "Yes" : "No") << endl;
+}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll a = 10, b= 9, c = 8;
-    debug(a, b, c);
-    vector<ll> v = {2,5,1,4,6};
-    debug(v);
-    vector<vector<ll>> v2 = {{1,2,3}, {4,5,6}, {7,8,9}};
-    debug(v2);
-    pair<ll, string> p = {3, "test"};
-    debug(p);
-    pair<pair<ll, ll>, string> p2 = {{3,5}, "test"};
-    debug(p2);
-    bitset<15> bs(11);
-    debug(bs);
+    string s, t;cin >> s >> t;
+    string s2 = s + s;
+    ll n = t.size();
+    bool ok = false;
+
+    rep(i,n){
+        ok |= s2.substr(i, n) == t;   
+        debug(s2.substr(i, n));
+    }
+    YES(ok);
 }

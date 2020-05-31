@@ -1,28 +1,67 @@
+// #define LOCAL
+#ifdef LOCAL
+#define _GLIBCXX_DEBUG
+#endif
 #include<bits/stdc++.h>
-#include<iostream>
-#include<cstdio>
-#include<vector>
-#include<string>
-#include<algorithm>
-#include<map>
 using namespace std;
 #define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
 #define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
 #define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
 #define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
-#define debug(x) cerr << #x << ": " << (x) << "\n";
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
 typedef long double ld;
-typedef pair<int,int> P;
 typedef pair<ll,ll> Pll;
 typedef vector<ll> vl;
-typedef vector<vector<ll>> vvl;
-typedef vector<vector<vector<ll>>> vvvl;
-const ll INF = numeric_limits<ll>::max()/4;
-const int n_max = 1e5+10;
+typedef vector<vl> vvl;
+typedef vector<vvl> vvvl;
+constexpr ll INF = numeric_limits<ll>::max()/4;
+constexpr ll n_max = 2e5+10;
 #define int ll
 
+template <typename A, typename B>
+string to_string(pair<A, B> p);
+string to_string(const string &s) {return '"' + s + '"';}
+string to_string(const char c) {return to_string((string) &c);}
+string to_string(bool b) {return (b ? "true" : "false");}
+template <size_t N>
+string to_string(bitset<N> v){
+    string res = "";
+    for(size_t i = 0; i < N; i++) res += static_cast<char>('0' + v[i]);
+    return res;
+}
+template <typename A>
+string to_string(A v) {
+    bool first = true;
+    string res = "{";
+    for(const auto &x : v) {
+        if(!first) res += ", ";
+        first = false;
+        res += to_string(x);
+    }
+    res += "}";
+    return res;
+}
+template <typename A, typename B>
+string to_string(pair<A, B> p){return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";}
+
+void debug_out() {cerr << endl;}
+template<typename Head, typename... Tail>
+void debug_out(Head H, Tail... T) {
+    cerr << " " << to_string(H);
+    debug_out(T...);
+}
+
+#ifdef LOCAL
+#define debug(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
+#else
+#define debug(...) 42
+#endif
+
+template<class T>
+bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
+template<class T>
+bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 template<std::int_fast64_t Modulus>
 class modint {
     using i64 = int_fast64_t;
@@ -36,7 +75,10 @@ class modint {
             a += Modulus;
         }
     }
-    // constexpr i64 &value() const noexcept {return a;}
+    constexpr int getmod() { return Modulus; }
+    constexpr modint operator - () const noexcept {
+        return a ? Modulus - a : 0;
+    }
     constexpr const i64 &value() const noexcept {return a;}
     constexpr modint operator+(const modint rhs) const noexcept {
         return modint(*this) += rhs;
@@ -99,17 +141,17 @@ class modint {
     constexpr bool operator<=(const modint rhs) noexcept {
         return a <= rhs.a;
     }
-    // constexpr modint& operator++() noexcept {
-    //     return (*this) += modint(1);
-    // }
+    constexpr modint& operator++() noexcept {
+        return (*this) += modint(1);
+    }
     // constexpr modint operator++(int) {
     //     modint tmp(*this);
     //     operator++();
     //     return tmp;
     // }
-    // constexpr modint& operator--() noexcept {
-    //     return (*this) -= modint(1);
-    // }
+    constexpr modint& operator--() noexcept {
+        return (*this) -= modint(1);
+    }
     // constexpr modint operator--(int) {
     //     modint tmp(*this);
     //     operator--();
@@ -145,88 +187,58 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
     return in;
 }
 
-// modintが必要
-// modintによる実装
-const int MAX = 1e6;
-vector<mint> modfac(MAX);
-void modCOMinit(){
-    modfac[0] = 1;
-    reps(i,n_max-1){
-        modfac[i] = modfac[i-1] * mint(i);
+
+string to_string(mint m){
+    return to_string(m.a);
+}
+
+template <class T>
+void print(vector<T> &vec, ll k){
+    ll n = vec.size();
+    k = min(k, n);
+    rep(i,k-1)cout << vec[i] << " ";
+    cout << vec[k-1] << endl;
+}
+template <class T>
+void print(vector<vector<T>> &vec, ll k){
+    ll n = vec[0].size();
+    k = min(k, n);
+    for(auto &i : vec)print(i, k);
+}
+
+vector<vector<ll>> graph(n_max);
+vector<ll> cnt(n_max);
+vector<mint> dp(n_max);
+ll n;
+void dfs(ll now, ll par = -1){
+    ll c = 1;
+    mint r = 1;
+    for(auto &to : graph[now]){
+        if(to == par)continue;
+        dfs(to, now);
+        c += cnt[to];
+        r += modpow(mint(2), cnt[to]) - 1;
     }
+    r += modpow(mint(2), n - c) - 1;
+    cnt[now] = c;
+    dp[now] = modpow(mint(2), n-1) - r;
 }
-
-mint modCOM(ll n, ll k){
-    if (n < k) return (mint)0;
-    if (n < 0 || k < 0) return (mint)0;
-    return modfac[n] / (modfac[k] * modfac[n-k]);
-}
-
-// const int MAX = 1e6 + 10;
-
-long long fac[MAX], finv[MAX], inv[MAX];
-
-// テーブルを作る前処理
-void COMinit() {
-    fac[0] = fac[1] = 1;
-    finv[0] = finv[1] = 1;
-    inv[1] = 1;
-    for (int i = 2; i < MAX; i++){
-        fac[i] = fac[i - 1] * i % MOD;
-        inv[i] = MOD - inv[MOD%i] * (MOD / i) % MOD;
-        finv[i] = finv[i - 1] * inv[i] % MOD;
-    }
-}
-
-// 二項係数計算
-long long COM(int n, int k){
-    if (n < k) return 0;
-    if (n < 0 || k < 0) return 0;
-    return fac[n] * (finv[k] * finv[n - k] % MOD) % MOD;
-}
-
 
 signed main(){
-    cin.tie(0);
+    cin.tie(nullptr);
     ios::sync_with_stdio(false);
-
-    ll N = 1e6;
-    ll M = 1e5;
-    ll n, k;
-    mint temp1;
-    ll temp2;
-    std::random_device rand;
-    std::mt19937 mt(rand());
-
-    clock_t start = clock();
-
-    modCOMinit();
-    rep(i,N){
-        n = mt() % M;
-        k = mt() % M;
-        if(n < k)swap(n,k);
-        temp1 = modCOM(n, k);
+    cin >> n;
+    rep(i,n-1) {
+        ll a,b;cin >> a >> b;
+        a--;b--;
+        graph[a].emplace_back(b);
+        graph[b].emplace_back(a);
     }
-
-    clock_t end = clock();
-
-    const double time = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;
-    printf("time %lf[ms]\n", time);
-
-    start = clock();
-
-    COMinit();
-    // ll n, k, temp;
-    rep(i,N){
-        n = mt() % M;
-        k = mt() % M;
-        if(n < k)swap(n,k);
-        temp2 = COM(n, k);
-    }
-
-    end = clock();
-
-    const double time2 = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;
-    printf("time %lf[ms]\n", time2);
-    
+    dfs(0);
+    mint ans = 0;
+    rep(i,n)ans += dp[i];
+    // print(dp,10);
+    // print(cnt,10);
+    debug(ans);
+    cout << ans / modpow(mint(2), n) << endl;
 }

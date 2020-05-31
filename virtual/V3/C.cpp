@@ -1,4 +1,4 @@
-#define LOCAL
+// #define LOCAL
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
@@ -22,7 +22,7 @@ constexpr ll n_max = 2e5+10;
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
-string to_string(const char* c) {return to_string((string) c);}
+string to_string(const char c) {return to_string((string) &c);}
 string to_string(bool b) {return (b ? "true" : "false");}
 template <size_t N>
 string to_string(bitset<N> v){
@@ -58,9 +58,57 @@ void debug_out(Head H, Tail... T) {
 #define debug(...) 42
 #endif
 
+template<class T>
+bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
+template<class T>
+bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
+    
     ll n; cin >> n;
-    cout << n << endl;
+    string s;cin >> s;
+    vector<ll> v(n);
+    rep(i,n){
+        if(s[i] == 'A')v[i] = 0;
+        if(s[i] == 'B')v[i] = 1;
+        if(s[i] == 'X')v[i] = 2;
+        if(s[i] == 'Y')v[i] = 3;
+    }
+
+
+
+    Pll l, r;
+    ll ans = INF;
+    rep(i,4)rep(j,4){
+        rep(ii,4)rep(jj,4){
+            l = {i,j};
+            r = {ii, jj};
+            ll temp = 0;
+            for(int id = 0; id < n; id++){
+                if(id == n-1){
+                    temp++;
+                    continue;
+                }
+                if(v[id] == l.first && v[id+1] == l.second){
+                    temp++;
+                    id++;
+                    continue;
+                }
+                if(v[id] == r.first && v[id+1] == r.second){
+                    temp++;
+                    id++;
+                    continue;
+                }
+                temp++;
+            }
+
+            if(chmin(ans, temp)){
+                debug(l, r, temp);
+            }
+        }
+    }
+
+    cout << ans << endl;
 }

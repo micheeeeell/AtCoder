@@ -171,7 +171,6 @@
     "include template": {
         "prefix": "itemp",
         "body": [
-            "#define LOCAL",
             "#ifdef LOCAL",
             "#define _GLIBCXX_DEBUG",
             "#endif",
@@ -230,6 +229,10 @@
             "#else",
             "#define debug(...) 42",
             "#endif\n",
+            "template<class T>",
+            "bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}",
+            "template<class T>",
+            "bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}\n",
             "signed main(){",
             "\tcin.tie(nullptr);",
             "\tios::sync_with_stdio(false);",
@@ -448,7 +451,12 @@
             "    m = mint(a);",
             "    return in;",
             "}",
-            ""
+            "",
+            "",
+            "string to_string(mint m){",
+            "    return to_string(m.a);",
+            "}",
+
         ],
         "description": "modint_container"
     },
