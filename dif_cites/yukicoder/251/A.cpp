@@ -63,5 +63,11 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    string s;cin >> s;
+    ll n = s.size();
+    ll cnt = 0;
+    rep(i,0,n){
+        if(s[i] != '0')cnt++;
+    }
+    cout << cnt - 1 << endl;
 }

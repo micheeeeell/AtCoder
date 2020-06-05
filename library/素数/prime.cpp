@@ -24,8 +24,7 @@ const int n_max = 1e5+10;
 // template<class T>
 map<ll,int> prime(ll x){
     map<ll,int> e;
-    rep(i,sqrt(x)+1){
-        if(i <= 1)continue;
+    for(int i = 2; i * i <= x; i++){
         while(x % i == 0){
             e[i]++;
             x /= i;

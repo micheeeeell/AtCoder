@@ -63,5 +63,17 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll n,x; cin >> n >> x;
+    vector<ll> a(n);
+    rep(i,0,n) cin >> a[i];
+    map<ll, ll> mp;
+    ll ans = 0;
+    rep(i,0,n){
+        if(mp.count(x ^ a[i]) != 0){
+            ans += mp[x ^ a[i]];
+        }
+        mp[a[i]]++;
+    }
+
+    cout << ans << endl;
 }

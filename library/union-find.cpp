@@ -15,12 +15,12 @@ typedef vector<vector<int>> vvi;
 typedef vector<vector<vector<int>>> vvvi;
 const ll N = 1e9+7;
 
-
+template< typename T>
 struct UnionFind{
 private:
-    vector<int> par;
-    vector<int> rank;
-    vector<int> sz;
+    vector<T> par;
+    vector<T> rank;
+    vector<T> sz;
 
 public:
     //n要素で親を初期化、par[x]はxの親を表す
@@ -28,7 +28,7 @@ public:
         par.resize(n,0);
         rank.resize(n,0);
         sz.resize(n,1);
-        rep(i,n){
+        for(int i = 0; i < n; i++){
             par[i] = i;
         }
     }

@@ -60,7 +60,6 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-
 template<std::int_fast64_t Modulus>
 class modint {
     using i64 = int_fast64_t;
@@ -74,8 +73,11 @@ class modint {
             a += Modulus;
         }
     }
-    constexpr i64 &value() const noexcept {return a;}
-    // constexpr const i64 &value() const noexcept {return a;}
+    constexpr int getmod() { return Modulus; }
+    constexpr modint operator - () const noexcept {
+        return a ? Modulus - a : 0;
+    }
+    constexpr const i64 &value() const noexcept {return a;}
     constexpr modint operator+(const modint rhs) const noexcept {
         return modint(*this) += rhs;
     }
@@ -140,29 +142,29 @@ class modint {
     constexpr modint& operator++() noexcept {
         return (*this) += modint(1);
     }
-    constexpr modint operator++(int) {
-        modint tmp(*this);
-        operator++();
-        return tmp;
-    }
+    // constexpr modint operator++(int) {
+    //     modint tmp(*this);
+    //     operator++();
+    //     return tmp;
+    // }
     constexpr modint& operator--() noexcept {
         return (*this) -= modint(1);
     }
-    constexpr modint operator--(int) {
-        modint tmp(*this);
-        operator--();
-        return tmp;
-    }
+    // constexpr modint operator--(int) {
+    //     modint tmp(*this);
+    //     operator--();
+    //     return tmp;
+    // }
     template<typename T>
-    friend constexpr modint modpow(modint &mt, T n) noexcept {
+    friend constexpr modint modpow(const modint &mt, T n) noexcept {
         if(n < 0){
             modint t = (modint(1) / mt);
             return modpow(t, -n);
         }
-        modint res = 1;
+        modint res = 1, tmp = mt;
         while(n){
-            if(n & 1)res *= mt;
-            mt *= mt;
+            if(n & 1)res *= tmp;
+            tmp *= tmp;
             n /= 2;
         }
         return res;
@@ -184,14 +186,18 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
 }
 
 
+string to_string(mint m){
+    return to_string(m.a);
+}
+
 using vmi = vector< mint >;
 using mat = vector< vmi >;
 
 mat mul(mat &a, mat &b){
-    mat c(a.size(), vmi(b[0].size()));
-    for(int i = 0; i < a.size(); i++){
-        for(int k = 0; k < b.size(); k++){
-            for(int j = 0; j < b[0].size(); j++){
+    mat c(a.size(), vector<mint>(b[0].size()));
+    rep(i,0,a.size()){
+        rep(k,0,b.size()){
+            rep(j,0,b[0].size()){
                 c[i][j] += a[i][k] * b[k][j];
             }
         }
@@ -199,10 +205,9 @@ mat mul(mat &a, mat &b){
     return c;
 }
 
-const ll I = 1;
 mat pow(mat &a, ll n){
-    mat b(a.size(), vmi(a.size()));
-    for(int i = 0;i < a.size(); i++) b[i][i] = I;
+    mat b(a.size(), vector<mint>(a.size()));
+    rep(i,0,a.size())b[i][i] = 1;
     while(n > 0){
         if(n & 1)b = mul(b,a);
         a = mul(a,a);
@@ -210,7 +215,18 @@ mat pow(mat &a, ll n){
     }
     return b;
 }
-
 signed main(){
-    
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    ll n; cin >> n;
+    mat M(6, vmi(6));
+    rep(i,0,6){
+        M[0][i] = mint(1) / mint(6);
+        if(i < 5)M[i+1][i] = 1;
+    }
+    mat V(6, vmi(1));
+    V[0][0] = 1;
+    M = pow(M, n);
+    V = mul(M, V);
+    cout << V[0][0] << endl;
 }

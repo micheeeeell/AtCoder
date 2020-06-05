@@ -34,7 +34,7 @@ vector<ll> N_LIS(vector<int> a){
     vector<ll> dp(n_max, INF);
     // fill(all(dp), INF);
     int n = a.size();
-    rep(i,n){
+    for(int i = 0; i < n; i++){
         *lower_bound(all(dp), a[i]) = a[i];
     }
     cout << lower_bound(all(dp), INF) - dp.begin() << endl;
@@ -46,7 +46,7 @@ vector<ll> B_LIS(vector<int> a){
     vector<ll> dp(n_max, INF);
     // fill(all(dp), INF);
     int n = a.size();
-    rep(i,n){
+    for(int i = 0; i < n; i++){
         *upper_bound(all(dp), a[i]) = a[i];
     }
     cout << upper_bound(all(dp), INF) - dp.begin() << endl;

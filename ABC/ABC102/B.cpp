@@ -63,5 +63,15 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll n; cin >> n;
+    vector<ll> a(n);
+    ll min_ = INF, max_ = 0;
+    rep(i,0,n) {
+        cin >> a[i];
+        chmin(min_, a[i]);
+        chmax(max_, a[i]);
+    }
+
+    cout << max_ - min_ << endl;
+
 }

@@ -33,7 +33,7 @@ int digit_max(ll x){
 // 下から順にone-based（感覚に即しているはず）
 int digit_num(ll x, int digit){
     assert(digit_max(x) >= digit);
-    rep(i,digit-1)x /= 10;
+    for(int i = 0; i < digit-1; i++) x /= 10;
     return x % 10;
 }
 
