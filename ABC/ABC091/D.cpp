@@ -65,6 +65,32 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll a,b; cin >> a >> b;
-    cout << a * b << endl;
+    ll n; cin >> n;
+    vector<ll> a(n);
+    rep(i,n) cin >> a[i];
+    vector<ll> b(n);
+    rep(i,n) cin >> b[i];
+    ll ans = 0;
+    rep(i,32){
+        ll k = 1LL << i;
+        vector<ll> t(n);
+        rep(j,n)t[j] = b[j] % (k << 1);
+        sort(all(t));
+        ll cnt = 0;
+        debug(t);
+        rep(j,n){
+            ll at = a[j] % (k << 1);
+            ll id1 = lower_bound(all(t), k - at) - t.begin();
+            ll id2 = upper_bound(all(t), k*2 - at - 1) - t.begin();
+            cnt += (id2 - id1);
+            debug(id1, id2);
+            id1 = lower_bound(all(t), k * 3 - at) - t.begin();
+            id2 = upper_bound(all(t), k * 4 - at - 1) - t.begin();
+            cnt += (id2 - id1);
+            debug(id1, id2);
+        }
+        debug(cnt);
+        if(cnt & 1)ans += k;
+    }
+    cout << ans << endl;
 }

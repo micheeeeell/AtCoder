@@ -173,7 +173,7 @@ class modint {
     }
 };
 
-const ll MOD = 998244353;
+const ll MOD = 1e9+7;
 using mint = modint<MOD>;
 // 標準入出力対応
 std::ostream &operator<<(std::ostream &out, const modint<MOD> &m) {
@@ -191,29 +191,30 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
 string to_string(mint m){
     return to_string(m.a);
 }
-
-
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n,s; cin >> n >> s;
-    vector<ll> a(n);
-    rep(i,n) cin >> a[i];
-    vector<vector<mint>> dp(n+1, vector<mint>(s+10));
-    dp[0][0] = 1;
-    rep(i,n){
-        rrep(k, i+1){
-            rep(j,s+1){
-                if(j >= a[i])dp[k+1][j] += dp[k][j - a[i]];
-                // dp[k+1][j] += dp[k][j];
-            }
-        }
+    ll L; cin >> L;
+    if(L <= 8){
+        cout << 0 << endl;
+        return 0;
     }
-    debug(dp);
+
+    mint a = (L - 1) / 4;
+    mint b = (L - 2) / 3;
+    mint c = (L + 1) / 3;
+    mint d = (L - 2) / 2;
+
+    debug(a, b, c, d);
+    mint L2 = L;
     mint ans = 0;
-    reps(i,n){
-        ans += modpow(mint(2), (n-i)) * dp[i][s];
-    }
-    
+    ans += (a - 1) * a / 2;
+    debug(ans);
+    ans += (b - a) * (mint(2)*L2 - mint(3)*b - mint(3)*a - 7) / 2;
+    debug(ans);
+    ans += (c - 2) * (c - 3) / 2;
+    debug(ans);
+    ans += (d - c) * (L2 - d - c - 3);
+    debug(ans);
     cout << ans << endl;
 }

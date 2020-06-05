@@ -62,8 +62,41 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+// xと元の数をかけた時の値を因数分解された形で更新する
+void prime_map(ll x, map<ll,ll> &map_){
+    for(ll i = 2; i * i <= x; i++){
+        while(x % i == 0){
+            map_[i]++;
+            x /= i;
+        }
+    }
+    if(x != 1)map_[x]++;
+    // return map_;
+}
+
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll n; cin >> n;
+    vector<ll> a(n);
+    bool zero = false;
+    rep(i,n){
+        cin >> a[i];
+        zero |= a[i] == 0;
+    }
+    if(zero){
+        cout << 0 << endl;
+        return 0;
+    }
+    map<ll,ll> mp;
+    mp[1] = 1;
+    ll ret = 1, pre = 1;
+    rep(i,n){
+        prime_map(a[i], mp);
+    }
+    ll ret = 1;
+    for(auto &i : mp){
+        n
+    }
+    cout << ret << endl;
 }

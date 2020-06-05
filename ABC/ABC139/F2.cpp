@@ -114,15 +114,22 @@ signed main(){
     };
     ld ans = 0.0;
     // 誤差が怖いのでにぶたん→しゃくとりにする
-    rep(i,n){
-        state t = v[i];
-        ll id = ub(t.theta + pi / 2.0);
-        debug(i, t.theta + pi / 2.0, id);
-        ll x = sum[id+1].first - sum[i].first;
-        ll y = sum[id+1].second - sum[i].second;
-        ld dis = hypot(x, y);
-        debug(x, y, dis);
-        chmax(ans, dis);
+    ll right = 0;
+    Pll temp = {0,0};
+    rep(left, n){
+        while(right < (left+n) && hypot(v[right].x + temp.first, v[right].y + temp.second) >= hypot(temp.first, temp.second)){
+            temp.first += v[right].x;
+            temp.second += v[right].y;
+            ++right;
+        }
+        debug(temp, left, right);
+        ld t = hypot(temp.first, temp.second);
+        chmax(ans, t);
+        if(right == left) ++right;
+        else{
+            temp.first -= v[left].x;
+            temp.second -= v[left].y;
+        }
     }
     cout << fixed << setprecision(20);
     cout << ans << endl;

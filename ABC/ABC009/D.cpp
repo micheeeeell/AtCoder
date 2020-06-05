@@ -173,7 +173,7 @@ class modint {
     }
 };
 
-const ll MOD = 998244353;
+const ll MOD = 2;
 using mint = modint<MOD>;
 // 標準入出力対応
 std::ostream &operator<<(std::ostream &out, const modint<MOD> &m) {
@@ -191,29 +191,57 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
 string to_string(mint m){
     return to_string(m.a);
 }
+using vmi = vector< ll >;
+using mat = vector< vmi >;
 
+mat mul(mat &a, mat &b){
+    mat c(a.size(), vmi(b[0].size()));
+    rep(i,a.size()){
+        rep(k,b.size()){
+            rep(j,b[0].size()){
+                c[i][j] ^= a[i][k] & b[k][j];
+            }
+        }
+    }
+    return c;
+}
+
+mat pow(mat &a, ll n){
+    mat b(a.size(), vmi(a.size()));
+    rep(i,a.size())b[i][i] = (1LL << 32) - 1;
+    while(n > 0){
+        if(n & 1)b = mul(b,a);
+        a = mul(a,a);
+        n >>= 1;
+    }
+    return b;
+}
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n,s; cin >> n >> s;
-    vector<ll> a(n);
-    rep(i,n) cin >> a[i];
-    vector<vector<mint>> dp(n+1, vector<mint>(s+10));
-    dp[0][0] = 1;
-    rep(i,n){
-        rrep(k, i+1){
-            rep(j,s+1){
-                if(j >= a[i])dp[k+1][j] += dp[k][j - a[i]];
-                // dp[k+1][j] += dp[k][j];
-            }
+    ll k,m; cin >> k >> m;
+    vector<ll> a(k);
+    rep(i,k) cin >> a[i];
+
+    vector<ll> c(k);
+    rep(i,k) cin >> c[i];
+
+    if(m <= k){
+        cout << a[m-1] << endl;
+        return 0;
+    }
+    mat C(k, vmi(k)), A(k, vmi(1)), clear(k, vmi(k, 0));
+    rep(i,k){
+        C[0][i] = c[i];
+        if(i < k-1){
+            C[i+1][i] = (1LL << 32) - 1;
         }
+        A[i][0] = a[k-i-1];
     }
-    debug(dp);
-    mint ans = 0;
-    reps(i,n){
-        ans += modpow(mint(2), (n-i)) * dp[i][s];
-    }
-    
-    cout << ans << endl;
+    debug(C, A);
+    C = pow(C, m-k);
+    A = mul(C, A);
+    debug(C, A);
+    cout << A[0][0] << endl;
 }

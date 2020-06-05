@@ -65,5 +65,9 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ld a; cin >> a;
+    long double b;cin >> b;
+    ld ret = b *a;
+    cout << ll(ret) << endl;
+    cout << ll(0.99) << endl;
 }

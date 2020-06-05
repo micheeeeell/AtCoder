@@ -62,9 +62,42 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+ll w,h,n;
+using point = pair<Pll, Pll>;
+map<point, ll> mp, flag;
+vector<Pll> vec;
+ll dfs(ll xs, ll xt, ll ys, ll yt){
+    point p = {{xs, ys}, {xt, yt}};
+    if(flag.count(p) != 0)return mp[p];
+    ll ret = 0;
+    rep(i,n){
+        ll x = vec[i].first, y = vec[i].second;
+        ll temp = 0;
+        if(x < xs || xt <= x || y < ys || yt <= y)continue;
+        temp += dfs(xs, x, ys, y);
+        temp += dfs(xs, x, y+1, yt);
+        temp += dfs(x+1, xt, ys, y);
+        temp += dfs(x+1, xt, y+1, yt);
+        if(chmax(ret, temp + (xt - xs) + (yt - ys) - 1)){
+            debug(xs,xt, ys, yt);
+            debug(i, temp, ret);
+        }
+    }
+    flag[p] = 1;
+    return mp[p] = ret;
+}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll a,b; cin >> a >> b;
-    cout << a * b << endl;
+    
+    cin >> h >> w;
+    cin >> n;
+    vec.resize(n);
+    rep(i,n){
+        ll x,y; cin >> x >> y;
+        x--;y--;
+        vec[i] = {x, y};
+    }
+
+    cout << dfs(0, h, 0, w) << endl;
 }

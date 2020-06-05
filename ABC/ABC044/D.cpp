@@ -65,6 +65,45 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll a,b; cin >> a >> b;
-    cout << a * b << endl;
+    ll n,s; cin >> n >> s;
+    if(n == 1 && s == 1){
+        cout << 2 << endl;
+        return 0;
+    }
+    auto f = [&](ll n, ll k){
+        ll ans = 0;
+        while(n){
+            ans += n % k;
+            n /= k;
+        }
+        return ans;
+    };
+    for(int i = 2; i * i <= n; i++){
+        if(f(n, i) == s){
+            cout << i << endl;
+            return 0;
+        }
+    }
+    bool ok = false;
+    ll ans = INF;
+    for(int i = 1; i * i <= n; i++){
+        ll r = s - i;
+        if((n - r) % i != 0)continue;
+        ll p = (n - r) / i;
+        if(p > r && p > i && r >= 0 && p > 1){
+            ok = true;
+            chmin(ans, p);
+        }
+        debug(p, i, r);
+    }
+
+    if(s == 1){
+        ok = true;
+        chmin(ans, n);
+    }
+    if(s == n){
+        ok = true;
+        chmin(ans, n+1);
+    }
+    cout << (ok ? ans : -1) << endl;
 }

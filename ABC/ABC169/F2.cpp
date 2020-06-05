@@ -61,7 +61,6 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
-
 template<std::int_fast64_t Modulus>
 class modint {
     using i64 = int_fast64_t;
@@ -191,8 +190,6 @@ std::istream &operator>>(std::istream &in, modint<MOD> &m) {
 string to_string(mint m){
     return to_string(m.a);
 }
-
-
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
@@ -202,18 +199,11 @@ signed main(){
     vector<vector<mint>> dp(n+1, vector<mint>(s+10));
     dp[0][0] = 1;
     rep(i,n){
-        rrep(k, i+1){
-            rep(j,s+1){
-                if(j >= a[i])dp[k+1][j] += dp[k][j - a[i]];
-                // dp[k+1][j] += dp[k][j];
-            }
+        rep(j,s+1){
+            dp[i+1][j] += dp[i][j] * 2;
+            if(j >= a[i])dp[i+1][j] += dp[i][j - a[i]];
         }
     }
-    debug(dp);
-    mint ans = 0;
-    reps(i,n){
-        ans += modpow(mint(2), (n-i)) * dp[i][s];
-    }
-    
-    cout << ans << endl;
+
+    cout << dp[n][s] << endl;
 }

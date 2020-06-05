@@ -65,6 +65,42 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll a,b; cin >> a >> b;
-    cout << a * b << endl;
+    string s;cin >> s;
+    ll n = s.size();
+    vvl nxt(n+1, vl(26, n));
+    rrep(i,n){
+        rep(j, 26){
+            nxt[i][j] = nxt[i+1][j];
+        }
+        nxt[i][s[i] - 'a'] = i;
+    }
+
+    debug(nxt[0]);
+    vector<ll> dp(n+2);
+    dp[n] = 1;
+    rrep(i,n){
+        ll t = INF;
+        rep(j,26){
+            chmin(t, dp[nxt[i][j] + 1]);
+        }
+        dp[i] = t + 1;
+    }
+
+
+    debug(dp);
+
+    string ans;
+    ll id = 0;
+    while(id < n){
+        ll t = dp[id];
+        rep(j,26){
+            if(dp[nxt[id][j] + 1] == t - 1){
+                ans += 'a' + j;
+                id = nxt[id][j] + 1;
+                break;
+            }
+        }
+    }
+
+    cout << ans << endl;
 }

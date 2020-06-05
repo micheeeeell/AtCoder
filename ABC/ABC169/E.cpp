@@ -65,5 +65,22 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll n; cin >> n;
+    vector<ll> a(n), b(n);
+    rep(i,n) cin >> a[i] >> b[i];
+    sort(all(a));
+    sort(all(b));
+    ll min_, max_;
+    ll ans = 0;
+    if(n & 1){
+        min_ = a[n/2];
+        max_ = b[n/2];
+        ans = max_ - min_ + 1;
+    }
+    else{
+        min_ = a[n/2-1] + a[n/2];
+        max_ = b[n/2-1] + b[n/2];
+        ans = max_ - min_ + 1;
+    }
+    cout << ans << endl;
 }
