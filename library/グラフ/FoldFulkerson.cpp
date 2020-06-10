@@ -48,7 +48,7 @@ struct FoldFulkerson {
 
     void add_edge(int from, int to, flow_t cap, int idx = -1) {
         graph[from].emplace_back((edge) {to, cap, (int) graph[to].size(), false, idx});
-        graph[to].emplace_back((edge) {from, 0, (int) graph[from].size(), true, idx});
+        graph[to].emplace_back((edge) {from, 0, (int) graph[from].size() - 1, true, idx});
     }
 
     flow_t dfs(int idx, const int t, flow_t flow) {

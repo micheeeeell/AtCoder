@@ -23,7 +23,7 @@ const int n_max = 1e5+10;
 // Suffix: 接尾辞
 // SA: 文字列Sの接尾辞を辞書順に並べたもの
 // LCP: SAのi番目の要素sa[i]について、sa[i]とsa[i+1]の接頭辞がどれだけ共通しているか
-// LCPを用いることで任意の部分文字列同士の共通する接頭辞長を調べられる
+// LCPを用いることで任意の接尾辞同士の共通する接頭辞長を調べられる
 // rank_sa: SAの逆引き配列  SA[i] = t -> rank_sa[t] = i
 struct SuffixArray {
     string str;

@@ -192,7 +192,7 @@
             "template <typename A, typename B>",
             "string to_string(pair<A, B> p);",
             "string to_string(const string &s) {return '\"' + s + '\"';}",
-            "string to_string(const char c) {return to_string((string) &c);}",
+            "string to_string(const char *c) {return to_string((string) c);}",
             "string to_string(bool b) {return (b ? \"true\" : \"false\");}",
             "template <size_t N>",
             "string to_string(bitset<N> v){",
