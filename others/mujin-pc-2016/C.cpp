@@ -13,7 +13,7 @@ typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef vector<vvl> vvvl;
 constexpr ll INF = numeric_limits<ll>::max()/4;
-constexpr ll n_max = 2e5+10;
+constexpr ll n_max = 20;
 #define int ll
 
 template <typename A, typename B>
@@ -59,8 +59,6 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
-
-
 template< typename T>
 struct UnionFind{
 private:
@@ -78,6 +76,13 @@ public:
         for(int i = 0; i < n; i++){
             par[i] = i;
         }
+    }
+
+    void init(){
+        par.assign(n, 0);
+        rank.assign(n, 0);
+        sz.assign(n, 0);
+        iota(all(par), 0);
     }
 
     //木の根を求める
@@ -114,21 +119,34 @@ public:
     // 集合の数を返す
     int num_of_s(){
         set<int> st;
-        for(int i = 0; i < n; i++) st.insert(root(i));
+        rep(i,0,par.size()) st.insert(root(i));
         return st.size();
     }
 };
 
-int main(){
-    int n,m; cin >> n >> m;
-    UnionFind<ll> uf(n);
+signed main(){
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    ll n,m; cin >> n >> m;
+    vector<Pll> v(m);
     rep(i,0,m){
-        int a,b;cin >> a >> b;
-        a--;b--;
-        uf.unite(a,b);
+        ll x,y; cin >> x >> y;
+        x--;y--;
+        v[i] = {x, y};
     }
-    set<int> st;
-    rep(i,0,n) st.insert(uf.root(i));
-    cout << st.size()-1 << endl;
-    return 0;
+    ll ans = 0;
+    UnionFind<ll> uf(n);
+    rep(i,0,(1LL << n)){
+        uf.init();
+        bitset<n_max> bs(i);
+        rep(j,0,m){
+            ll f = v[j].first, t = v[j].second;
+            if(bs[f] != bs[t]){
+                uf.unite(f, t);
+            }
+        }
+        if(uf.num_of_s() == 1)ans++;
+    }
+
+    cout << ans / 2 << endl;
 }
