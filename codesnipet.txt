@@ -136,7 +136,11 @@
             "template<typename T>",
             "struct graph{",
             "    std::vector<std::vector<edge<T> > > data;",
+            "    graph(){};",
             "    graph(int v):data(v){};",
+            "    void resize(int n){",
+            "        data.resize(n);",
+            "    }",
             "    void add_edge(edge<T> &e){",
             "        data[e.f].push_back(e);",
             "    }",
@@ -155,6 +159,10 @@
             "        return r;",
             "    }",
             "};",
+            "    template<typename T>",
+            "    string to_string(edge<T> e){",
+            "        return \"(\" + to_string(e.f) + \", \" + to_string(e.t) + \", \" + to_string(e.c) + \")\";",
+            "    }\n",
         ]
     },
     "include": {
