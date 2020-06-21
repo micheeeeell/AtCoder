@@ -14,7 +14,7 @@ for i in {0..25}; do
         fi
         continue
     fi
-    cat ~/win/atcoder/ShellScripts/template.cpp > ${file_name}.cpp
+    cat ~/gitwork/AtCoder/ShellScripts/template.cpp > ${file_name}.cpp
     echo "$file_name.cpp was made."
     if [ $file_name = $file_end ]; then
         break
