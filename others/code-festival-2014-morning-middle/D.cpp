@@ -196,21 +196,27 @@ using mint = modint<MOD>;
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll a,b; cin >> a >> b;
-    ll c,d; cin >> c >> d;
-    vector dp(c+1, vector<mint>(d+1, 0)), dp2(c+1, vector<mint>(d+1)), dp3(c+1, vector<mint>(d+1));
+    ll n; cin >> n;
+    vector<ll> p(n), l(n);
+    for(int i = 0; i < n; i++) cin >> p[i] >> l[i];
     
-    dp[a][b] = 1;
-    rep(i,b,d){
-        dp[a][i+1] = dp[a][i] * a;
+    vector dp(n, vector<mint>());
+    
+    dp[0].resize(l[0] * 2 + 2);
+    rep(i,1,l[0] * 2 + 2)dp[0][i] = i;
+    debug(dp[0]);
+    ll pl = p[0] - l[0] - 1;
+    rep(i,1,n){
+        ll sz = l[i] * 2 + 2;
+        dp[i].resize(sz);
+        ll le = p[i]-l[i], ri = p[i]+l[i];
+        rep(j,le, ri+1){
+            dp[i][j-le+1] = dp[i-1][min(max(0LL, j-pl-1), ll(dp[i-1].size()-1))];
+        }
+        rep(j,1,sz)dp[i][j] += dp[i][j-1];
+        debug(dp[i]);
+        pl = p[i] - l[i] - 1;
     }
-    rep(i,a,c){
-        dp[i+1][b] = dp[i][b] * b;
-    }
-    debug(dp);
-    rep(i,a,c)rep(j,b,d){
-        dp[i+1][j+1] = dp[i+1][j] * mint(i+1) + dp[i][j+1] * mint(j+1) - dp[i][j] * mint(i * j);
-    }
-    debug(dp);
-    cout << dp[c][d] << endl;
+
+    cout << dp[n-1].back() << endl;
 }

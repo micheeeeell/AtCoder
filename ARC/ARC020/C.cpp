@@ -142,7 +142,7 @@ class modint {
     constexpr modint& operator++() noexcept {
         return (*this) += modint(1);
     }
-    // constexpr modint operator++(int) {
+    // constexpr modint operator++(modint) {
     //     modint tmp(*this);
     //     operator++();
     //     return tmp;
@@ -156,9 +156,9 @@ class modint {
     //     return tmp;
     // }
     template<typename T>
-    friend constexpr modint modpow(const modint &mt, T n) noexcept {
+    friend constexpr modint<Modulus> modpow(const modint<Modulus> &mt, T n) noexcept {
         if(n < 0){
-            modint t = (modint(1) / mt);
+            modint t = (modint<Modulus>(1) / mt);
             return modpow(t, -n);
         }
         modint res = 1, tmp = mt;
@@ -169,12 +169,11 @@ class modint {
         }
         return res;
     }
-
-    friend constexpr string to_string(const modint &mt) noexcept {
-        return to_string(mt.a);
-    }
 };
 
+const ll MOD = 1e9+7;
+// const ll MOD = 998244353;
+using mint = modint<MOD>;
 // 標準入出力対応
 template<std::int_fast64_t Modulus>
 std::ostream &operator<<(std::ostream &out, const modint<Modulus> &m) {
@@ -185,32 +184,70 @@ template<std::int_fast64_t Modulus>
 std::istream &operator>>(std::istream &in, modint<Modulus> &m) {
     ll a;
     in >> a;
-    m = modint<Modulus>(a);
+    m = mint(a);
     return in;
 }
 
-const ll MOD = 1e9+7;
-// const ll MOD = 998244353;
-using mint = modint<MOD>;
+
+string to_string(mint m){
+    return to_string(m.a);
+}
+
+ll modpow(ll mt, ll t, ll mod){
+    ll ret = 1, tmp = mt;
+    while(t){
+        if(t & 1){
+            ret *= tmp;
+            ret %= mod;
+        }
+        tmp *= tmp;
+        tmp %= mod;
+        t >>= 1;
+    }
+    return ret;
+}
+
+ll dfs(ll &c, ll k, ll mod){
+    if(k == 1)return 1;
+    ll t = k / 2;
+    ll res;
+    if(k & 1){
+        res = dfs(c, t, mod) * (1 + modpow(c, t+1, mod));
+        res %= mod;
+        res += modpow(c, t, mod);
+    }
+    else{
+        res = dfs(c, t, mod) * (1 + modpow(c, t, mod));
+    }
+    return res % mod;
+}
+
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll a,b; cin >> a >> b;
-    ll c,d; cin >> c >> d;
-    vector dp(c+1, vector<mint>(d+1, 0)), dp2(c+1, vector<mint>(d+1)), dp3(c+1, vector<mint>(d+1));
-    
-    dp[a][b] = 1;
-    rep(i,b,d){
-        dp[a][i+1] = dp[a][i] * a;
+    ll n; cin >> n;
+    vector<Pll> v(n);
+    rep(i,0,n)cin >> v[i].first >> v[i].second;
+    ll b; cin >> b;
+    reverse(all(v));
+    ll base = 1;
+    ll ans = 0;
+    rep(i,0,n){
+        ll t = v[i].first;
+        ll c = 1;
+        while(t){
+            c *= 10;
+            t /= 10;
+        }
+        c %= b;
+        ll tmp = base * v[i].first % b;
+        tmp = tmp * dfs(c, v[i].second, b) % b;
+        ans = (ans + tmp) % b;
+        base *= modpow(c, v[i].second, b);
+        base %= b;
+        debug(c, ans, base, dfs(c, v[i].second, b));
     }
-    rep(i,a,c){
-        dp[i+1][b] = dp[i][b] * b;
-    }
-    debug(dp);
-    rep(i,a,c)rep(j,b,d){
-        dp[i+1][j+1] = dp[i+1][j] * mint(i+1) + dp[i][j+1] * mint(j+1) - dp[i][j] * mint(i * j);
-    }
-    debug(dp);
-    cout << dp[c][d] << endl;
+
+    cout << ans << endl;
 }

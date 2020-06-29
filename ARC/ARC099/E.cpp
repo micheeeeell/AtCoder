@@ -61,12 +61,25 @@ template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
 
+
+vector<vector<ll>> graph;
+vector<ll> color;
+bool ok = true;
+void dfs(ll now, ll c){
+    color[now] = c;
+    for(auto &to : graph[now]){
+        if(color[to] == -1) dfs(to, c ^ 1);
+        else if(color[to] == c) ok = false;
+    }
+}
+
+
 template< typename T>
 struct UnionFind{
 private:
     vector<T> par;
     vector<T> rank;
-    vector<T> sz;
+    vector<Pll> sz;
     int n;
 
 public:
@@ -74,9 +87,16 @@ public:
     UnionFind(int n): n(n) {
         par.resize(n,0);
         rank.resize(n,0);
-        sz.resize(n,1);
         for(int i = 0; i < n; i++){
             par[i] = i;
+        }
+    }
+
+    void init(vector<ll> &color){
+        sz.resize(n);
+        rep(i,0,n){
+            if(color[i] == 0)sz[i].first = 1;
+            else sz[i].second = 1;
         }
     }
 
@@ -97,114 +117,95 @@ public:
         }
         
         par[y] = x;
-        sz[x] += sz[y];
+        sz[x].first += sz[y].first;
+        sz[x].second += sz[y].second;
         if(rank[x] == rank[y]) rank[x]++; 
     }
 
     //xとyが同じ集合に属するか否か
-    bool issame(int x, int y){
+    bool same(int x, int y){
         return root(x) == root(y);
     }
 
     //xが属する集合のサイズを返す
-    int size(int x){
+    Pll size(int x){
         return sz[root(x)];
     }
 
     // 集合の数を返す
     int num_of_s(){
-        vector<int> cnt(n);
-        int ans = 0;
-        for(int i = 0; i < n;i++){
-            if(!cnt[root(i)])ans++, cnt[root(i)] = 1;
-        }
-        return ans;
+        set<int> st;
+        for(int i = 0; i < n; i++) st.insert(root(i));
+        return st.size();
     }
 };
 
-template<class Abel>
-struct WeightedUnionFind{
-    vector<int> par;
-    vector<int> rank;
-    vector<Abel> diff_weight;
-    int n;
-    Abel M0;
-
-    WeightedUnionFind(int n, Abel M0 = 0):n(n), M0(M0){
-        init(n, M0);
-    }
-
-    void init(int n, Abel M0 = 0){
-        par.resize(n);
-        rank.resize(n);
-        diff_weight.resize(n);
-        for(int i = 0; i < n; i++){
-            par[i] = i;
-            rank[i] = 0;
-            diff_weight[i] = M0;
-        }
-    }
-
-    int root(int x){
-        if(par[x] == x) return x;
-        else{
-            int r = root(par[x]);
-            diff_weight[x] += diff_weight[par[x]];
-            return par[x] = r;
-        }
-    }
-
-    Abel weight(int x){
-        root(x);
-        return diff_weight[x];
-    }
-
-    // w(x) + w == w(y)となるように併合
-    bool unite(int x, int y, Abel &w){
-        w += weight(x) - weight(y);
-        x = root(x);
-        y = root(y);
-        if(x == y) return w == 0;
-
-        if(rank[x] < rank[y]){
-            swap(x, y);
-            w = -w;
-        }
-
-        par[y] = x;
-        diff_weight[y] = w;
-        if(rank[x] == rank[y])rank[x]++;
-        return true;
-    }
-
-    bool issame(int x, int y){
-        return root(x) == root(y);
-    }
-
-
-    Abel diff(int x, int y){
-        return weight(y) - weight(x);
-    }
-};
 
 signed main(){
-    while(true){
-        ll n,m; cin >> n >> m;
-        if(n == 0 && m == 0)return 0;
-        WeightedUnionFind<ll> uf(n);
-        rep(i,0,m){
-            string s;cin >> s;
-            if(s == "!"){
-                ll a,b,w; cin >> a >> b >> w;
-                a--;b--;
-                uf.unite(a, b, w);
-            }
-            else{
-                ll a,b; cin >> a >> b;
-                a--;b--;
-                if(uf.same(a, b))cout << uf.diff(a, b) << "\n";
-                else cout << "UNKNOWN" << "\n";
-            }
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    ll n,m; cin >> n >> m;
+    graph.resize(n);
+    color.resize(n, -1);
+
+    vector<vector<bool>> gt(n, vector<bool>(n, 1));
+    rep(i,0,m){
+        ll a,b; cin >> a >> b;
+        a--;b--;
+        gt[a][b] = 0;
+        gt[b][a] = 0;
+    }
+
+    rep(i,0,n)rep(j,i+1,n){
+        if(gt[i][j]){
+            graph[i].emplace_back(j);
+            graph[j].emplace_back(i);
         }
     }
+
+    rep(i,0,n){
+        if(color[i] == -1){
+            dfs(i, 0);
+        }
+    }
+
+    if(!ok){
+        cout << -1 << endl;
+        return 0;
+    }
+
+    UnionFind<ll> uf(n);
+    uf.init(color);
+    rep(i,0,n){
+        for(auto &j : graph[i]){
+            uf.unite(i, j);
+        }
+    }
+
+    vector<ll> used(n, 0);
+    vector<Pll> item;
+    rep(i,0,n){
+        if(used[uf.root(i)])continue;
+        item.emplace_back(uf.size(i));
+        used[uf.root(i)] = 1;
+    }
+    debug(item);
+    vector dp(n+1, vector<ll>(n+1,0));
+    dp[0][0] = 1;
+    rep(i,0,item.size()){
+        rep(j,0,n+1){
+            if(j >= item[i].first)chmax(dp[i+1][j], dp[i][j - item[i].first]);
+            if(j >= item[i].second)chmax(dp[i+1][j], dp[i][j - item[i].second]);
+        }
+    }
+    debug(dp);
+    ll ans = INF;
+    rep(i,0,n+1){
+        if(dp[item.size()][i]){
+            ll t1 = i, t2 = n - i;
+            chmin(ans, t1 * (t1-1) / 2 + t2 * (t2 - 1) / 2);
+        }
+    }
+
+    cout << ans << endl;
 }

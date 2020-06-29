@@ -169,48 +169,91 @@ class modint {
         }
         return res;
     }
-
-    friend constexpr string to_string(const modint &mt) noexcept {
-        return to_string(mt.a);
-    }
 };
-
-// 標準入出力対応
-template<std::int_fast64_t Modulus>
-std::ostream &operator<<(std::ostream &out, const modint<Modulus> &m) {
-    out << m.a;
-    return out;
-}
-template<std::int_fast64_t Modulus>
-std::istream &operator>>(std::istream &in, modint<Modulus> &m) {
-    ll a;
-    in >> a;
-    m = modint<Modulus>(a);
-    return in;
-}
 
 const ll MOD = 1e9+7;
 // const ll MOD = 998244353;
 using mint = modint<MOD>;
+// 標準入出力対応
+std::ostream &operator<<(std::ostream &out, const modint<MOD> &m) {
+    out << m.a;
+    return out;
+}
+std::istream &operator>>(std::istream &in, modint<MOD> &m) {
+    ll a;
+    in >> a;
+    m = mint(a);
+    return in;
+}
+
+
+string to_string(mint m){
+    return to_string(m.a);
+}
+
+template<class T> struct BiCoef {
+    vector<T> fact_, inv_, finv_;
+    constexpr BiCoef() {}
+    constexpr BiCoef(int n) noexcept : fact_(n, 1), inv_(n, 1), finv_(n, 1) {
+        init(n);
+    }
+    constexpr void init(int n) noexcept {
+        fact_.assign(n, 1), inv_.assign(n, 1), finv_.assign(n, 1);
+        int MOD = fact_[0].getmod();
+        for(int i = 2; i < n; i++){
+            fact_[i] = fact_[i-1] * i;
+            inv_[i] = -inv_[MOD%i] * (MOD/i);
+            finv_[i] = finv_[i-1] * inv_[i];
+        }
+    }
+    constexpr T com(int n, int k) const noexcept {
+        if (n < k || n < 0 || k < 0) return 0;
+        return fact_[n] * finv_[k] * finv_[n-k];
+    }
+    constexpr T fact(int n) const noexcept {
+        if (n < 0) return 0;
+        return fact_[n];
+    }
+    constexpr T inv(int n) const noexcept {
+        if (n < 0) return 0;
+        return inv_[n];
+    }
+    constexpr T finv(int n) const noexcept {
+        if (n < 0) return 0;
+        return finv_[n];
+    }
+};
+
+BiCoef<mint> bc(n_max);
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
+    
+    ll n; cin >> n;
     ll a,b; cin >> a >> b;
     ll c,d; cin >> c >> d;
-    vector dp(c+1, vector<mint>(d+1, 0)), dp2(c+1, vector<mint>(d+1)), dp3(c+1, vector<mint>(d+1));
+
+    vector dp(n+1, vector<mint>(b - a + 2));
+
+    dp[0][0] = 1;
     
-    dp[a][b] = 1;
-    rep(i,b,d){
-        dp[a][i+1] = dp[a][i] * a;
+    rep(i,0,n+1){
+        rep(j,0,b-a+1){
+            dp[i][j+1] += dp[i][j];
+            rep(k,c,d+1){
+                if(i + k * (j + a) > n)break;
+                mint t = dp[i][j] * bc.com(n-i, k * (j + a));
+                t *= bc.fact(k * (j + a));
+                t /= bc.fact(k) * modpow(bc.fact(j + a), k);
+                dp[i + k * (j + a)][j + 1] += t;
+            }
+        }
     }
-    rep(i,a,c){
-        dp[i+1][b] = dp[i][b] * b;
-    }
-    debug(dp);
-    rep(i,a,c)rep(j,b,d){
-        dp[i+1][j+1] = dp[i+1][j] * mint(i+1) + dp[i][j+1] * mint(j+1) - dp[i][j] * mint(i * j);
-    }
-    debug(dp);
-    cout << dp[c][d] << endl;
+
+    // debug(dp);
+    mint ans = 0;
+    rep(i,0,b-a+2)ans += dp[n][i];
+
+    cout << dp[n][b-a+1] << endl;
 }

@@ -82,7 +82,7 @@ int main(){
     }
 
     build_sieve();
-    rep(i,n)cout << is_prime[i] << " ";
-    cout << endl;
+    // rep(i,n)cout << is_prime[i] << " ";
+    // cout << endl;
     return 0;
 }
