@@ -93,7 +93,7 @@ int main(){
     rep(i,q){
         ll ret = 0;
         ret += LCA.dep[a[i]] + LCA.dep[b[i]];
-        ret -= 2 * LCA.dep[LCA.query(a[i], b[i])];
+        ret -= 2 * LCA.dep[LCA.lca(a[i], b[i])];
         cout << ret + 1 << "\n";
     }
 }

@@ -14,7 +14,7 @@ typedef vector<vl> vvl;
 typedef vector<vvl> vvvl;
 constexpr ll INF = numeric_limits<ll>::max()/4;
 constexpr ll n_max = 2e5+10;
-#define int ll
+// #define int ll
 
 template <typename A, typename B>
 string to_string(pair<A, B> p);

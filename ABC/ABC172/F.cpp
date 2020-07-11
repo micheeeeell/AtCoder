@@ -69,8 +69,24 @@ signed main(){
     ll sum = 0;
     rep(i,2,n)sum ^= a[i];
     debug(sum);
-    rep(x, 0, a[0]){
-        ll t = (a[0] - x) ^ (a[1] + x);
-        debug(bitset<10>(t), t, x);
+    ll d = a[0] + a[1];
+    if((d + sum) & 1){
+        cout << -1 << "\n";
+        return 0;
     }
+    ll x = (d - sum) / 2;
+    ll ans = x;
+    const ll LOG = 64;
+    if((x & sum) != 0){
+        debug(x, sum);
+        cout << -1 << "\n";
+        return 0;
+    }
+    rrep(i, LOG, 0){
+        if((sum >> i) & 1){
+            if((ans | (1LL << i)) <= a[0])ans |= (1LL << i);
+        }
+    }
+    debug(x, ans);
+    cout << ((a[0] >= ans && ans > 0) ? a[0] - ans : -1) << "\n";
 }

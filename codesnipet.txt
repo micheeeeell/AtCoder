@@ -131,6 +131,9 @@
             "    bool operator> (const edge &rhs) const {",
             "        return (*this).c > rhs.c;",
             "    }",
+            "    friend string to_string(edge<T> e){",
+            "        return \"(\" + to_string(e.f) + \", \" + to_string(e.t) + \", \" + to_string(e.c) + \")\";",
+            "    }\n",
             "};",
             "",
             "template<typename T>",
@@ -159,10 +162,7 @@
             "        return r;",
             "    }",
             "};",
-            "    template<typename T>",
-            "    string to_string(edge<T> e){",
-            "        return \"(\" + to_string(e.f) + \", \" + to_string(e.t) + \", \" + to_string(e.c) + \")\";",
-            "    }\n",
+
         ]
     },
     "include": {
@@ -530,7 +530,7 @@
             "clock_t end = clock();",
             "",
             "const double time = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000.0;",
-            "printf(\"time %lf[ms]\", time);",
+            "printf(\"time %lf[ms]\n\", time);",
         ]
     },
 }

@@ -13,7 +13,6 @@ ll modinv(ll a, ll m){
     u %= m;
     if(u < 0) u += m;
     return u;
-
 }
 int main(){
     int a,m;
