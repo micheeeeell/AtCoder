@@ -27,7 +27,7 @@ vector<ll> topo_sort(vvl &graph){
     for(auto &vec : graph){
         for(auto &to : vec)in[to]++;
     }
-    rep(i,v)if(in[i] == 0){
+    for(int i = 0 ; i < v; i++)if(in[i] == 0){
         que.emplace(i);
         ans.emplace_back(i);
     }

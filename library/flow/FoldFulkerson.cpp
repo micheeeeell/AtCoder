@@ -26,6 +26,7 @@ const int n_max = 1e5+10;
 // うしさんありがとうございます
 // flow_tはflowのデータ型
 // 検証：ABC010_D 浮気防止
+// 2020/07/12 追記　ARC074-FでTLEを確認、若干バグってるかも（Dinic法でAC確認）->　単純な計算量的な問題ぽい
 template<typename flow_t>
 struct FoldFulkerson {
     struct edge {

@@ -175,6 +175,7 @@ struct LazySegmentTree {
 int main(){
     ll n,q; cin >> n >> q;
     vector<ll> a(n,0);
+    // 区間和取得、区間加算の例
     auto f = [](ll a, ll b){ return a + b; };
     auto g = [](ll a, ll x, int num){ return a + x * num; };
     auto h = [](ll a, ll b){ return a + b; };

@@ -56,11 +56,11 @@ struct graph{
     }
 };
 
-bitset<n_max> used(0);
 // edgeのvectorを返すので注意
 template<typename T>
 vector<edge<T>> prim(graph<T> &g, ll root){
     ll n = g.size();
+    bitset<n_max> used(0);
     priority_queue< edge<T>, vector<edge<T>>, greater<edge<T>> > pq;
     for(auto &e : g.data[root]){
         pq.emplace(e);
@@ -71,7 +71,7 @@ vector<edge<T>> prim(graph<T> &g, ll root){
     while(!pq.empty() && used.count() < n){
         auto e = pq.top();pq.pop();
         if(used[e.t])continue;
-        assert(used[e.f]);
+        
         used[e.t] = 1;
         ret.emplace_back(e);
         for(auto &ed : g.data[e.t]){

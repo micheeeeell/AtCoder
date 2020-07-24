@@ -1,7 +1,7 @@
 #!/bin/bash
 problemurl=$1
 problemname=$2
-export $(cat .env | xargs);
+export $(cat ~/gitwork/AtCoder/ShellScripts/.env | xargs);
 echo $USERNAME
 echo $PASS
 oj login -u $USERNAME -p $PASS "https://atcoder.jp/"

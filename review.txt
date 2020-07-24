@@ -1,0 +1,14 @@
+解説ACリスト
+https://atcoder.jp/contests/arc100/tasks/arc100_c
+https://atcoder.jp/contests/arc068/tasks/arc068_c
+https://atcoder.jp/contests/arc097/tasks/arc097_c
+https://atcoder.jp/contests/arc056/tasks/arc056_c
+https://atcoder.jp/contests/arc054/tasks/arc054_c
+https://atcoder.jp/contests/arc052/tasks/arc052_c
+https://atcoder.jp/contests/arc048/tasks/arc048_c (惜しかった)
+https://atcoder.jp/contests/arc044/tasks/arc044_c (惜)
+https://atcoder.jp/contests/arc037/tasks/arc037_d
+https://atcoder.jp/contests/arc036/tasks/arc036_c
+https://atcoder.jp/contests/m-solutions2019/tasks/m_solutions2019_e
+https://atcoder.jp/contests/jsc2019-final-open/tasks/jsc2019_final_a
+https://atcoder.jp/contests/tenka1-2019-beginner/tasks/tenka1_2019_d

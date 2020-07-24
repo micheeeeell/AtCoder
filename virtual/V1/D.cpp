@@ -1,87 +1,89 @@
+#ifdef LOCAL
 #define _GLIBCXX_DEBUG
+#endif
 #include<bits/stdc++.h>
 using namespace std;
-#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
-#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
-#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
-#define debug(x) cerr << #x << ": " << (x) << "\n";
+#define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
+#define rrep(i,s,t) for(ll i = (ll)(s-1);(ll)(t) <= i; i--)
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
 typedef long double ld;
-typedef pair<int,int> P;
 typedef pair<ll,ll> Pll;
 typedef vector<ll> vl;
-typedef vector<vector<ll>> vvl;
-typedef vector<vector<vector<ll>>> vvvl;
-const ll INF = numeric_limits<ll>::max()/4;
-const int n_max = 1e5+10;
+typedef vector<vl> vvl;
+typedef vector<vvl> vvvl;
+constexpr ll INF = numeric_limits<ll>::max()/4;
+constexpr ll n_max = 2e5+10;
 #define int ll
-void print() {
-    cout << endl;
+
+template <typename A, typename B>
+string to_string(pair<A, B> p);
+string to_string(const string &s) {return '"' + s + '"';}
+string to_string(const char *c) {return to_string((string) c);}
+string to_string(bool b) {return (b ? "true" : "false");}
+template <size_t N>
+string to_string(bitset<N> v){
+    string res = "";
+    for(size_t i = 0; i < N; i++) res += static_cast<char>('0' + v[i]);
+    return res;
 }
-
-// template <class Head, class... Tail>
-// void print(Head&& head, Tail&&... tail) {
-//     cout << head;
-//     if (sizeof...(tail) != 0) cout << " ";
-//     print(forward<Tail>(tail)...);
-// }
-
-template <class T>
-void print(vector<T> &vec) {
-    for (auto& a : vec) {
-        cout << a;
-        if (&a != &vec.back()) cout << " ";
+template <typename A>
+string to_string(A v) {
+    bool first = true;
+    string res = "{";
+    for(const auto &x : v) {
+        if(!first) res += ", ";
+        first = false;
+        res += to_string(x);
     }
-    cout << endl;
+    res += "}";
+    return res;
+}
+template <typename A, typename B>
+string to_string(pair<A, B> p){return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";}
+
+void debug_out() {cerr << endl;}
+template<typename Head, typename... Tail>
+void debug_out(Head H, Tail... T) {
+    cerr << " " << to_string(H);
+    debug_out(T...);
 }
 
-template <class T>
-void print(vector<T> &vec, ll k){
-   ll n = vec.size();
-   k = min(k, n);
-   rep(i,k-1)cout << vec[i] << " ";
-   cout << vec[k-1] << endl;
-}
+#ifdef LOCAL
+#define debug(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
+#else
+#define debug(...) 42
+#endif
 
-template <class T>
-void print(vector<vector<T>> &df) {
-    for (auto& vec : df) {
-        print(vec);
-    }
-}
+template<class T>
+bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
+template<class T>
+bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-template<class T, class U>
-void print(pair<T,U> &p){
-    print(p.first, p.second);
-}
-
-vector<ll> sum(n_max), pat(n_max);
-ll dfs(ll i,ll  x){
-    if(x <= 0)return 0;
-    if(sum[i] == x)return pat[i];
-    if(i == 0)return 1;
-    if(x == sum[i-1] + 2)return pat[i-1]+1;
-    if(x > sum[i-1] + 2){
-        return pat[i-1] + dfs(i-1, x - sum[i-1] - 2) + 1;
-    }
-    return dfs(i-1, x-1);
-}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
-    ll n,x; cin >> n >> x;
-    // n--;
-
-    sum[0] = 1;
-    pat[0] = 1;
-    reps(i,n){
-        sum[i] = sum[i-1] * 2 + 3;
-        pat[i] = pat[i-1] * 2 + 1;
+    ll k; cin >> k;
+    vector<ll> ans, last;
+    rep(i,1,10)ans.emplace_back(i);
+    last = ans;
+    while(ans.size() < k){
+        vector<ll> temp;
+        for(auto &t : last){
+            ll num = t % 10;
+            temp.emplace_back(t * 10 + num);
+            ans.emplace_back(t * 10 + num);
+            if(num != 0){
+                temp.emplace_back(t * 10 + num - 1);
+                ans.emplace_back(t * 10 + num - 1);
+            }
+            if(num != 9){
+                temp.emplace_back(t * 10 + num + 1);
+                ans.emplace_back(t * 10 + num + 1);
+            }
+        }
+        last = temp;
     }
-    // print(sum, 4);print(pat, 4);
-
-    cout << dfs(n,x) << endl;
+    sort(all(ans));
+    cout << ans[k-1] << "\n";
 }
