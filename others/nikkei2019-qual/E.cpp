@@ -60,13 +60,13 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-
 template< typename T>
 struct UnionFind{
 private:
     vector<T> par;
     vector<T> rank;
     vector<T> sz;
+    vector<T> val;
     int n;
 
 public:
@@ -75,9 +75,14 @@ public:
         par.resize(n,0);
         rank.resize(n,0);
         sz.resize(n,1);
+        val.resize(n);
         for(int i = 0; i < n; i++){
             par[i] = i;
         }
+    }
+
+    void init(vector<T> &v){
+        val = v;
     }
 
     //木の根を求める
@@ -98,6 +103,7 @@ public:
         
         par[y] = x;
         sz[x] += sz[y];
+        val[x] += val[y];
         if(rank[x] == rank[y]) rank[x]++; 
     }
 
@@ -111,6 +117,10 @@ public:
         return sz[root(x)];
     }
 
+    T get_val(int x){
+        return val[root(x)];
+    }
+
     // 集合の数を返す
     int num_of_s(){
         vector<int> cnt(n);
@@ -122,89 +132,111 @@ public:
     }
 };
 
-template<class Abel>
-struct WeightedUnionFind{
-    vector<int> par;
-    vector<int> rank;
-    vector<Abel> diff_weight;
-    int n;
-    Abel M0;
-
-    WeightedUnionFind(int n, Abel M0 = 0):n(n), M0(M0){
-        init(n, M0);
+template<typename T>
+struct edge{
+    int f,t;
+    T c;
+    int id;
+    edge(){};
+    edge(int f,int t,T c,int id = 0):f(f),t(t),c(c),id(id){};
+    bool operator< (const edge &rhs) const {
+        return (*this).c < rhs.c;
+    }
+    bool operator> (const edge &rhs) const {
+        return (*this).c > rhs.c;
+    }
+    friend string to_string(edge<T> e){
+        return "(" + to_string(e.f) + ", " + to_string(e.t) + ", " + to_string(e.c) + ", " + to_string(e.id) + ")";
     }
 
-    void init(int n, Abel M0 = 0){
-        par.resize(n);
-        rank.resize(n);
-        diff_weight.resize(n);
-        for(int i = 0; i < n; i++){
-            par[i] = i;
-            rank[i] = 0;
-            diff_weight[i] = M0;
-        }
+};
+
+template<typename T>
+struct graph{
+    std::vector<std::vector<edge<T> > > data;
+    graph(){};
+    graph(int v):data(v){};
+    void resize(int n){
+        data.resize(n);
     }
-
-    int root(int x){
-        if(par[x] == x) return x;
-        else{
-            int r = root(par[x]);
-            diff_weight[x] += diff_weight[par[x]];
-            return par[x] = r;
-        }
+    void add_edge(edge<T> &e){
+        data[e.f].push_back(e);
     }
-
-    Abel weight(int x){
-        root(x);
-        return diff_weight[x];
+    void add_edge(int f,int t,T c,int id){
+        data[f].emplace_back(f,t,c,id);
     }
-
-    // w(x) + w == w(y)となるように併合
-    bool unite(int x, int y, Abel &w){
-        w += weight(x) - weight(y);
-        x = root(x);
-        y = root(y);
-        if(x == y) return w == 0;
-
-        if(rank[x] < rank[y]){
-            swap(x, y);
-            w = -w;
-        }
-
-        par[y] = x;
-        diff_weight[y] = w;
-        if(rank[x] == rank[y])rank[x]++;
-        return true;
+    size_t size(){
+        return data.size();
     }
-
-    bool issame(int x, int y){
-        return root(x) == root(y);
+    vector<edge<T>> operator[](int n){
+        return data[n];
     }
-
-
-    Abel diff(int x, int y){
-        return weight(y) - weight(x);
+    std::vector<edge<T>> make_edges(){
+        std::vector<edge<T>> r;
+        for(auto &i:data)std::copy(i.begin(),i.end(),std::back_inserter(r));
+        return r;
     }
 };
 
 signed main(){
-    while(true){
-        ll n,m; cin >> n >> m;
-        if(n == 0 && m == 0)return 0;
-        WeightedUnionFind<ll> uf(n);
-        rep(i,0,m){
-            string s;cin >> s;
-            if(s == "!"){
-                ll a,b,w; cin >> a >> b >> w;
-                a--;b--;
-                uf.unite(a, b, w);
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    ll n,m; cin >> n >> m;
+    vector<ll> x(n);
+    for(int i = 0; i < n; i++) cin >> x[i];
+    graph<ll> g(n);
+    vector<edge<ll>> edges(m);
+    rep(i,0,m){
+        ll a,b,y; cin >> a >> b >> y;
+        a--;b--;
+        edges[i] = {a, b, y, i};
+    }
+    sort(all(edges));
+    UnionFind<ll> uf(n);
+    uf.init(x);
+    ll cnt = 0;
+    vector<ll> canbe(m);
+    rep(i,0,m){
+        auto &[a, b, y, id] = edges[i];
+        id = i;
+        g.add_edge(edges[i]);
+        g.add_edge(b,a,y,i);
+        if(uf.issame(a, b)){
+            if(uf.get_val(a) >= y)canbe[i] = 1;
+        }
+        else{
+            if(uf.get_val(a) + uf.get_val(b) >= y){
+                canbe[i] = 1;
             }
-            else{
-                ll a,b; cin >> a >> b;
-                a--;b--;
-                if(uf.issame(a, b))cout << uf.diff(a, b) << "\n";
-                else cout << "UNKNOWN" << "\n";
-            }
+            uf.unite(a, b);
         }
     }
+    debug(edges);
+    debug(canbe);
+    vector<ll> used(m);
+    rrep(i,m,0){
+        if(used[i])continue;
+        if(!canbe[i])continue;
+        queue<ll> que;
+        auto &[a, b, y, id] = edges[i];
+        que.emplace(a);que.emplace(b);
+        used[id] = 1;
+        cnt++;
+        while(!que.empty()){
+            auto t = que.front();que.pop();
+            debug(t);
+            for(auto &e : g[t]){
+                if(used[e.id])continue;
+                debug(e);
+                if(e.c <= y){
+                    cnt++;
+                    que.emplace(e.t);
+                    used[e.id] = 1;
+                }
+            }
+        }
+        debug(i, used);
+    }
+
+    cout << m - cnt  << "\n";
 }

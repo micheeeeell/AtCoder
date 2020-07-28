@@ -12,3 +12,9 @@ https://atcoder.jp/contests/arc036/tasks/arc036_c
 https://atcoder.jp/contests/m-solutions2019/tasks/m_solutions2019_e
 https://atcoder.jp/contests/jsc2019-final-open/tasks/jsc2019_final_a
 https://atcoder.jp/contests/tenka1-2019-beginner/tasks/tenka1_2019_d
+https://atcoder.jp/contests/caddi2018/tasks/caddi2018_c
+https://atcoder.jp/contests/nikkei2019-qual/tasks/nikkei2019_qual_e
+https://atcoder.jp/contests/m-solutions2020/tasks/m_solutions2020_f
+https://atcoder.jp/contests/m-solutions2020/tasks/m_solutions2020_e
+https://atcoder.jp/contests/arc035/tasks/arc035_d
+https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_e

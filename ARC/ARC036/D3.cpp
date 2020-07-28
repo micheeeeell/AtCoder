@@ -60,7 +60,6 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-
 template< typename T>
 struct UnionFind{
 private:
@@ -120,91 +119,74 @@ public:
         }
         return ans;
     }
-};
 
-template<class Abel>
-struct WeightedUnionFind{
-    vector<int> par;
-    vector<int> rank;
-    vector<Abel> diff_weight;
-    int n;
-    Abel M0;
-
-    WeightedUnionFind(int n, Abel M0 = 0):n(n), M0(M0){
-        init(n, M0);
-    }
-
-    void init(int n, Abel M0 = 0){
-        par.resize(n);
-        rank.resize(n);
-        diff_weight.resize(n);
-        for(int i = 0; i < n; i++){
-            par[i] = i;
-            rank[i] = 0;
-            diff_weight[i] = M0;
-        }
-    }
-
-    int root(int x){
-        if(par[x] == x) return x;
-        else{
-            int r = root(par[x]);
-            diff_weight[x] += diff_weight[par[x]];
-            return par[x] = r;
-        }
-    }
-
-    Abel weight(int x){
-        root(x);
-        return diff_weight[x];
-    }
-
-    // w(x) + w == w(y)となるように併合
-    bool unite(int x, int y, Abel &w){
-        w += weight(x) - weight(y);
-        x = root(x);
-        y = root(y);
-        if(x == y) return w == 0;
-
-        if(rank[x] < rank[y]){
-            swap(x, y);
-            w = -w;
-        }
-
-        par[y] = x;
-        diff_weight[y] = w;
-        if(rank[x] == rank[y])rank[x]++;
-        return true;
-    }
-
-    bool issame(int x, int y){
-        return root(x) == root(y);
-    }
-
-
-    Abel diff(int x, int y){
-        return weight(y) - weight(x);
+    vector<T> get_par(){
+        return par;
     }
 };
 
 signed main(){
-    while(true){
-        ll n,m; cin >> n >> m;
-        if(n == 0 && m == 0)return 0;
-        WeightedUnionFind<ll> uf(n);
-        rep(i,0,m){
-            string s;cin >> s;
-            if(s == "!"){
-                ll a,b,w; cin >> a >> b >> w;
-                a--;b--;
-                uf.unite(a, b, w);
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    ll n,q; cin >> n >> q;
+    vector<ll> g(n, -1);
+    UnionFind<ll> uf(n);
+    rep(i,0,q){
+        ll w,x,y; cin >> w >> x >> y;
+        ll z; cin >> z;
+        z %= 2;
+        x--;y--;
+        x = uf.root(x);
+        y = uf.root(y);
+        if(w == 1){
+            if(z == 1){
+                ll gx = g[x], gy = g[y];
+                if(gy != -1)uf.unite(gy, x);
+                if(gx != -1)uf.unite(gx, y);
+                x = uf.root(x); y = uf.root(y);
+                if(x != y){
+                    g[x] = y; g[y] = x;
+                }
             }
             else{
-                ll a,b; cin >> a >> b;
-                a--;b--;
-                if(uf.issame(a, b))cout << uf.diff(a, b) << "\n";
-                else cout << "UNKNOWN" << "\n";
+                ll gx = g[x], gy = g[y];
+                if(uf.issame(x, y))continue;
+
+
+                if(gy != -1 && gx != -1){
+                    uf.unite(gx, gy);
+                    uf.unite(x, y);
+                    x = uf.root(x); gx = uf.root(gx);
+                    g[x] = gx;
+                    g[gx] = x;
+                }
+                else{
+                    uf.unite(x, y);
+                    x = uf.root(x);
+                    if(gx != -1){
+                        gx = uf.root(gx);
+                        g[x] = gx;
+                        g[gx] = x;
+                    }
+                    if(gy != -1){
+                        gy = uf.root(gy);
+                        g[x] = gy;
+                        g[gy] = x;
+                    }
+                }
+
             }
+        }
+        else{
+            if(uf.issame(x, y)){
+                cout << "YES" << "\n";
+            }
+            else{
+                cout << "NO" << "\n";
+            }
+
+            debug(g);
+            debug(uf.get_par());
         }
     }
 }

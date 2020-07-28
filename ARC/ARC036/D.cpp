@@ -60,7 +60,6 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-
 template< typename T>
 struct UnionFind{
 private:
@@ -120,91 +119,101 @@ public:
         }
         return ans;
     }
-};
 
-template<class Abel>
-struct WeightedUnionFind{
-    vector<int> par;
-    vector<int> rank;
-    vector<Abel> diff_weight;
-    int n;
-    Abel M0;
-
-    WeightedUnionFind(int n, Abel M0 = 0):n(n), M0(M0){
-        init(n, M0);
-    }
-
-    void init(int n, Abel M0 = 0){
-        par.resize(n);
-        rank.resize(n);
-        diff_weight.resize(n);
-        for(int i = 0; i < n; i++){
-            par[i] = i;
-            rank[i] = 0;
-            diff_weight[i] = M0;
-        }
-    }
-
-    int root(int x){
-        if(par[x] == x) return x;
-        else{
-            int r = root(par[x]);
-            diff_weight[x] += diff_weight[par[x]];
-            return par[x] = r;
-        }
-    }
-
-    Abel weight(int x){
-        root(x);
-        return diff_weight[x];
-    }
-
-    // w(x) + w == w(y)となるように併合
-    bool unite(int x, int y, Abel &w){
-        w += weight(x) - weight(y);
-        x = root(x);
-        y = root(y);
-        if(x == y) return w == 0;
-
-        if(rank[x] < rank[y]){
-            swap(x, y);
-            w = -w;
-        }
-
-        par[y] = x;
-        diff_weight[y] = w;
-        if(rank[x] == rank[y])rank[x]++;
-        return true;
-    }
-
-    bool issame(int x, int y){
-        return root(x) == root(y);
-    }
-
-
-    Abel diff(int x, int y){
-        return weight(y) - weight(x);
+    vector<T> get_par(){
+        return par;
     }
 };
 
+void YES(bool ok){
+    cout << (ok ? "YES" : "NO") << endl;
+}
 signed main(){
-    while(true){
-        ll n,m; cin >> n >> m;
-        if(n == 0 && m == 0)return 0;
-        WeightedUnionFind<ll> uf(n);
-        rep(i,0,m){
-            string s;cin >> s;
-            if(s == "!"){
-                ll a,b,w; cin >> a >> b >> w;
-                a--;b--;
-                uf.unite(a, b, w);
+    cin.tie(nullptr);
+    ios::sync_with_stdio(false);
+    ll n,q; cin >> n >> q;
+    UnionFind<ll> uf(n), syu(n);
+    vector<ll> is_bip(n, 1), g(n, -1);
+    rep(i,0,q){
+        ll w,x,y; cin >> w >> x >> y;
+        ll z; cin >> z;
+        z %= 2;
+        x--;y--;
+        if(w == 2){
+            if(!uf.issame(x, y)){
+                YES(false);
+                continue;
+            }
+            if(!is_bip[uf.root(x)]){
+                YES(true);
+                continue;
+            }
+
+            if(syu.issame(x, y)){
+                YES(true);
+                continue;
             }
             else{
-                ll a,b; cin >> a >> b;
-                a--;b--;
-                if(uf.issame(a, b))cout << uf.diff(a, b) << "\n";
-                else cout << "UNKNOWN" << "\n";
+                YES(false);
+                continue;
             }
         }
+        else{
+            
+            if(uf.issame(x, y)){    // 同じ連結成分内
+                // 二部グラフでないなら何もしない
+                if(!is_bip[uf.root(x)])continue;
+                // z=0なら同じ縮約成分、違うなら違う縮約成分でOK
+                if(syu.issame(x, y) && z == 0)continue;
+                if((!syu.issame(x, y)) && z == 1)continue;
+                is_bip[uf.root(x)] = 0;
+            }
+            else{
+                // どちらかが二部グラフでない場合
+                if((!is_bip[uf.root(x)]) || (!is_bip[uf.root(y)])){
+                    uf.unite(x, y);
+                    is_bip[uf.root(x)] = 0;
+                }
+                else {
+                    if(z == 0){
+                        ll gx = g[syu.root(x)], gy = g[syu.root(y)];
+                        if(gx != -1 && gy != -1){
+                            uf.unite(x, y);
+                            syu.unite(x, y);
+                            syu.unite(gx, gy);
+                            g[syu.root(x)] = syu.root(gx);
+                            g[syu.root(gx)] = syu.root(x);
+                        }
+                        else{
+                            uf.unite(x, y);
+                            syu.unite(x, y);
+                            if(gx != -1){
+                                g[syu.root(x)] = syu.root(gx);
+                                g[syu.root(gx)] = syu.root(x);
+                            }
+                            if(gy != -1){
+                                g[syu.root(x)] = syu.root(gy);
+                                g[syu.root(gy)] = syu.root(x);
+                            }
+                        }
+                    }
+                    else{
+                        ll gx = g[syu.root(x)], gy = g[syu.root(y)];
+                        if(gx != -1){
+                            syu.unite(gx, y);
+                        }
+                        if(gy != -1){
+                            syu.unite(gy, x);
+                        }
+                        uf.unite(x, y);
+                        g[syu.root(x)] = syu.root(y);
+                        g[syu.root(y)] = syu.root(x);
+                    }
+                }
+            }
+        }
+
+        debug(g);
+        debug(uf.get_par(), syu.get_par(), is_bip);
     }
 }
