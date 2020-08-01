@@ -13,7 +13,7 @@ typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef vector<vvl> vvvl;
 constexpr ll INF = numeric_limits<ll>::max()/4;
-constexpr ll n_max = 2e5+10;
+constexpr ll n_max = 4e6+10;
 #define int ll
 
 template <typename A, typename B>
@@ -59,85 +59,50 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+template <class T>
 
-void answer(vector<string> &s){
-    for(auto &t : s)cout << t << "\n";
+void print(vector<T> &vec, ll k){
+    ll n = vec.size();
+    k = min(k, n);
+    for(int i = 0; i < k-1; i++) cout << vec[i] << " ";
+    cout << vec[k-1] << endl;
 }
-
+template <class T>
+void print(vector<vector<T>> &vec, ll k){
+    ll n = vec[0].size();
+    k = min(k, n);
+    for(auto &i : vec)print(i, k);
+}
+template<size_t N>
+void print(bitset<N> &bs, ll k){
+    ll n = min(ll(N), k);
+    for(int i = 0; i < k-1; i++){
+        cout << bs[i];
+    }
+    cout << endl;
+}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
+
     ll n; cin >> n;
-    vector<string> ans(n, string(n, '.'));
-    if(n == 2){
-        cout << -1 << "\n";
-        return 0;
+    vector<ll> a(n);
+    ll sum = 0;
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+        sum += a[i];
     }
-    if(n == 3){
-        vector<string> s3 = {
-            "aad", "b.d", "bcc"
-        };
-        answer(s3);
-        return 0;
-    }
-    vector<string> s4 = {
-        "aade",
-        "bbde",
-        "cfgg",
-        "cfhh"
-    };
-    vector<string> s5 = {
-        "a.hhj",
-        "a.g.j",
-        "bbgii",
-        "cc.ef",
-        ".ddef"
-    };
-    vector<string> s6 = {
-        "aad.ii",
-        "b.dj..",
-        "bccj..",
-        ".kkeeh",
-        "l..f.h",
-        "l..fgg"
-    };
-    vector<string> s7 = {
-        "a.jj.dd",
-        "ae..hh.",
-        ".e.ll.m",
-        "n.i...m",
-        "n.i..g.",
-        ".ff..gc",
-        "bb.kk.c"
-    };
-
-    ll t = n % 4;
-    n -= t + 4;
-    for(int i = 0; i < n; i += 4){
-        rep(ii,0,4)rep(jj,0,4){
-            ans[i + ii][i + jj] = s4[ii][jj];
-        }
-    }
-    if(t == 0){
-        rep(i,0,4)rep(j,0,4){
-            ans[n+i][n+j] = s4[i][j];
-        }
-    }
-    if(t == 1){
-        rep(i,0,5)rep(j,0,5){
-            ans[n+i][n+j] = s5[i][j];
-        }
-    }
-    if(t == 2){
-        rep(i,0,6)rep(j,0,6){
-            ans[n+i][n+j] = s6[i][j];
-        }
-    }
-    if(t == 3){
-        rep(i,0,7)rep(j,0,7){
-            ans[n+i][n+j] = s7[i][j];
-        }
+    bitset<n_max> dp;
+    dp[0] = 1;
+    rep(i, 0, n) {
+        dp |= dp << a[i];
     }
 
-    answer(ans);
+    // print(dp, 10);
+    rep(i, (sum + 1) / 2, n_max) {
+        if(dp[i]){
+            cout << i << "\n";
+            return 0;
+        }
+    }
 }

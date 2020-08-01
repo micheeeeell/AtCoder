@@ -18,3 +18,5 @@ https://atcoder.jp/contests/m-solutions2020/tasks/m_solutions2020_f
 https://atcoder.jp/contests/m-solutions2020/tasks/m_solutions2020_e
 https://atcoder.jp/contests/arc035/tasks/arc035_d
 https://atcoder.jp/contests/panasonic2020/tasks/panasonic2020_e
+https://atcoder.jp/contests/agc036/tasks/agc036_c
+https://atcoder.jp/contests/agc020/tasks/agc020_c

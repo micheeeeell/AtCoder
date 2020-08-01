@@ -108,8 +108,11 @@ struct SCC {
     public:
     int V;
     graph<T> g;
+    // 元のグラフのノードが所属するグループ
     vector<int> cmp;
+    // 最終的なdagグラフ
     graph<T> dag;
+    // cmpの逆、dagのグループごとにどのノードが入っているか
     vector<vector<int>> group;
 
     SCC(){};

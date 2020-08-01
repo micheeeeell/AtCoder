@@ -60,84 +60,45 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-void answer(vector<string> &s){
-    for(auto &t : s)cout << t << "\n";
+const ll N = 5e6+10;
+bitset<N> is_prime(0);
+void build_sieve(){
+    is_prime = ~is_prime;
+    is_prime[0] = is_prime[1] = 0;
+    for(ll i = 2; i < N; ++i)if(is_prime[i]){
+        for(ll j = 2*i; j < N; j+=i)is_prime[j] = 0;
+    }
 }
 
+ll hs_pow(ll x, ll n, ll MOD){
+    ll ret = 1;
+    while(n){
+        if((n % 2) == 0){
+            x = x*x % MOD;
+            n >>= 1;
+        }
+        else{
+            ret = ret * x % MOD;
+            n >>= 1;
+        }
+        // cout << ret  << ' ' << n  << ' ' << x << endl;
+    }
+    return ret;
+}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n; cin >> n;
-    vector<string> ans(n, string(n, '.'));
-    if(n == 2){
-        cout << -1 << "\n";
-        return 0;
-    }
-    if(n == 3){
-        vector<string> s3 = {
-            "aad", "b.d", "bcc"
-        };
-        answer(s3);
-        return 0;
-    }
-    vector<string> s4 = {
-        "aade",
-        "bbde",
-        "cfgg",
-        "cfhh"
-    };
-    vector<string> s5 = {
-        "a.hhj",
-        "a.g.j",
-        "bbgii",
-        "cc.ef",
-        ".ddef"
-    };
-    vector<string> s6 = {
-        "aad.ii",
-        "b.dj..",
-        "bccj..",
-        ".kkeeh",
-        "l..f.h",
-        "l..fgg"
-    };
-    vector<string> s7 = {
-        "a.jj.dd",
-        "ae..hh.",
-        ".e.ll.m",
-        "n.i...m",
-        "n.i..g.",
-        ".ff..gc",
-        "bb.kk.c"
-    };
-
-    ll t = n % 4;
-    n -= t + 4;
-    for(int i = 0; i < n; i += 4){
-        rep(ii,0,4)rep(jj,0,4){
-            ans[i + ii][i + jj] = s4[ii][jj];
+    build_sieve();
+    ll t; cin >> t;
+    while(t--){
+        ll a,p; cin >> a >> p;
+        if(!is_prime[p]){
+            cout << -1 << "\n";
+            continue;
         }
-    }
-    if(t == 0){
-        rep(i,0,4)rep(j,0,4){
-            ans[n+i][n+j] = s4[i][j];
+        if(a % p == 0){
+            cout << 0 << "\n";
         }
+        else cout << 1 << "\n";
     }
-    if(t == 1){
-        rep(i,0,5)rep(j,0,5){
-            ans[n+i][n+j] = s5[i][j];
-        }
-    }
-    if(t == 2){
-        rep(i,0,6)rep(j,0,6){
-            ans[n+i][n+j] = s6[i][j];
-        }
-    }
-    if(t == 3){
-        rep(i,0,7)rep(j,0,7){
-            ans[n+i][n+j] = s7[i][j];
-        }
-    }
-
-    answer(ans);
 }

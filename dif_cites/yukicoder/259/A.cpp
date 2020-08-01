@@ -60,84 +60,15 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-void answer(vector<string> &s){
-    for(auto &t : s)cout << t << "\n";
-}
-
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n; cin >> n;
-    vector<string> ans(n, string(n, '.'));
-    if(n == 2){
-        cout << -1 << "\n";
-        return 0;
-    }
-    if(n == 3){
-        vector<string> s3 = {
-            "aad", "b.d", "bcc"
-        };
-        answer(s3);
-        return 0;
-    }
-    vector<string> s4 = {
-        "aade",
-        "bbde",
-        "cfgg",
-        "cfhh"
-    };
-    vector<string> s5 = {
-        "a.hhj",
-        "a.g.j",
-        "bbgii",
-        "cc.ef",
-        ".ddef"
-    };
-    vector<string> s6 = {
-        "aad.ii",
-        "b.dj..",
-        "bccj..",
-        ".kkeeh",
-        "l..f.h",
-        "l..fgg"
-    };
-    vector<string> s7 = {
-        "a.jj.dd",
-        "ae..hh.",
-        ".e.ll.m",
-        "n.i...m",
-        "n.i..g.",
-        ".ff..gc",
-        "bb.kk.c"
-    };
-
-    ll t = n % 4;
-    n -= t + 4;
-    for(int i = 0; i < n; i += 4){
-        rep(ii,0,4)rep(jj,0,4){
-            ans[i + ii][i + jj] = s4[ii][jj];
-        }
-    }
-    if(t == 0){
-        rep(i,0,4)rep(j,0,4){
-            ans[n+i][n+j] = s4[i][j];
-        }
-    }
-    if(t == 1){
-        rep(i,0,5)rep(j,0,5){
-            ans[n+i][n+j] = s5[i][j];
-        }
-    }
-    if(t == 2){
-        rep(i,0,6)rep(j,0,6){
-            ans[n+i][n+j] = s6[i][j];
-        }
-    }
-    if(t == 3){
-        rep(i,0,7)rep(j,0,7){
-            ans[n+i][n+j] = s7[i][j];
-        }
-    }
-
-    answer(ans);
+    ll n,d; cin >> n >> d;
+    vector<ll> x(n);
+    for(int i = 0; i < n; i++) cin >> x[i];
+    vector<ll> v(n);
+    for(int i = 0; i < n; i++) cin >> v[i];
+    ll sum = 0;
+    rep(i,0,n)sum += v[i];
+    cout << (sum + d - 1) / sum << "\n";
 }

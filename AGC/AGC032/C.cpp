@@ -60,84 +60,65 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-void answer(vector<string> &s){
-    for(auto &t : s)cout << t << "\n";
+void YES(bool ok){
+    cout << (ok ? "Yes" : "No") << endl;
 }
-
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n; cin >> n;
-    vector<string> ans(n, string(n, '.'));
-    if(n == 2){
-        cout << -1 << "\n";
-        return 0;
+    ll n,m; cin >> n >> m;
+    vector<vector<ll>> graph(n);
+    vector<ll> in(n);
+    for(int i = 0; i < m; i++) {
+        ll a,b;cin >> a >> b;
+        a--;b--;
+        graph[a].emplace_back(b);
+        graph[b].emplace_back(a);
+        in[a]++;in[b]++;
     }
-    if(n == 3){
-        vector<string> s3 = {
-            "aad", "b.d", "bcc"
-        };
-        answer(s3);
-        return 0;
-    }
-    vector<string> s4 = {
-        "aade",
-        "bbde",
-        "cfgg",
-        "cfhh"
-    };
-    vector<string> s5 = {
-        "a.hhj",
-        "a.g.j",
-        "bbgii",
-        "cc.ef",
-        ".ddef"
-    };
-    vector<string> s6 = {
-        "aad.ii",
-        "b.dj..",
-        "bccj..",
-        ".kkeeh",
-        "l..f.h",
-        "l..fgg"
-    };
-    vector<string> s7 = {
-        "a.jj.dd",
-        "ae..hh.",
-        ".e.ll.m",
-        "n.i...m",
-        "n.i..g.",
-        ".ff..gc",
-        "bb.kk.c"
-    };
-
-    ll t = n % 4;
-    n -= t + 4;
-    for(int i = 0; i < n; i += 4){
-        rep(ii,0,4)rep(jj,0,4){
-            ans[i + ii][i + jj] = s4[ii][jj];
-        }
-    }
-    if(t == 0){
-        rep(i,0,4)rep(j,0,4){
-            ans[n+i][n+j] = s4[i][j];
-        }
-    }
-    if(t == 1){
-        rep(i,0,5)rep(j,0,5){
-            ans[n+i][n+j] = s5[i][j];
-        }
-    }
-    if(t == 2){
-        rep(i,0,6)rep(j,0,6){
-            ans[n+i][n+j] = s6[i][j];
-        }
-    }
-    if(t == 3){
-        rep(i,0,7)rep(j,0,7){
-            ans[n+i][n+j] = s7[i][j];
-        }
+    bool ok = true;
+    vector<ll> fc;
+    ll oc = 0;
+    rep(i,0,n){
+        ok &= (~in[i] & 1);
+        if(in[i] == 4)fc.emplace_back(i);
+        if(in[i] == 6)oc++;
     }
 
-    answer(ans);
+    if(!ok){
+        YES(false);
+        return 0;
+    }
+    
+    if(oc || fc.size() >= 3){
+        YES(true);
+        return 0;
+    }
+
+    if(fc.size() <= 1){
+        YES(false);
+        return 0;
+    }
+
+    ll st = fc[0], ed = fc[1];
+    assert(fc.size() == 2);
+    vector<ll> used(n);
+    auto dfs = [&](auto self, ll now, ll pre = -1)->void{
+        if(pre != -1)used[now] = 1;
+        for(auto k&to : graph[now]){
+            if(to == pre)continue;
+            if(to == ed)continue;
+            if(used[to])continue;
+            self(self, to, now);
+        }
+    };
+
+    dfs(dfs, st);
+    debug(used, st, ed);
+    if(used[st]){
+        YES(true);
+    }
+    else{
+        YES(false);
+    }
 }

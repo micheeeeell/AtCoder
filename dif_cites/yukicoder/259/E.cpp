@@ -13,7 +13,7 @@ typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef vector<vvl> vvvl;
 constexpr ll INF = numeric_limits<ll>::max()/4;
-constexpr ll n_max = 2e5+10;
+constexpr ll n_max = 1e4+10;
 #define int ll
 
 template <typename A, typename B>
@@ -60,84 +60,37 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-void answer(vector<string> &s){
-    for(auto &t : s)cout << t << "\n";
-}
-
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     ll n; cin >> n;
-    vector<string> ans(n, string(n, '.'));
-    if(n == 2){
-        cout << -1 << "\n";
-        return 0;
-    }
-    if(n == 3){
-        vector<string> s3 = {
-            "aad", "b.d", "bcc"
-        };
-        answer(s3);
-        return 0;
-    }
-    vector<string> s4 = {
-        "aade",
-        "bbde",
-        "cfgg",
-        "cfhh"
-    };
-    vector<string> s5 = {
-        "a.hhj",
-        "a.g.j",
-        "bbgii",
-        "cc.ef",
-        ".ddef"
-    };
-    vector<string> s6 = {
-        "aad.ii",
-        "b.dj..",
-        "bccj..",
-        ".kkeeh",
-        "l..f.h",
-        "l..fgg"
-    };
-    vector<string> s7 = {
-        "a.jj.dd",
-        "ae..hh.",
-        ".e.ll.m",
-        "n.i...m",
-        "n.i..g.",
-        ".ff..gc",
-        "bb.kk.c"
-    };
-
-    ll t = n % 4;
-    n -= t + 4;
-    for(int i = 0; i < n; i += 4){
-        rep(ii,0,4)rep(jj,0,4){
-            ans[i + ii][i + jj] = s4[ii][jj];
+    ll ans = 0;
+    set<tuple<ll,ll,ll>> st;
+    rep(a,1,n_max)rep(b,1,n_max){
+        ll num = 4 * a * a * b * b - 16 * n * n;
+        if(num < 0)continue;
+        ll s = sqrt(num);
+        if(s * s != num){
+            continue;
         }
-    }
-    if(t == 0){
-        rep(i,0,4)rep(j,0,4){
-            ans[n+i][n+j] = s4[i][j];
+        // debug(a, b, s, num);
+        ll C = s + a * a + b * b;
+        ll c = sqrt(C);
+        if(c * c == C){
+            debug(a, b, c);
+            ll mi = min({a,b,c}), ma = max({a,b,c});
+            ll mid = a + b + c - mi - ma;
+            st.insert({mi, mid, ma});
         }
+        // C = a * a + b * b - s;
+        // if(C <= 0)continue;
+        // c = sqrt(C);
+        // if(c * c == C){
+        //     debug(a,b,c);
+        //     ll mi = min({a,b,c}), ma = max({a,b,c});
+        //     ll mid = a + b + c - mi - ma;
+        //     st.insert({mi, mid, ma});
+        // }
     }
-    if(t == 1){
-        rep(i,0,5)rep(j,0,5){
-            ans[n+i][n+j] = s5[i][j];
-        }
-    }
-    if(t == 2){
-        rep(i,0,6)rep(j,0,6){
-            ans[n+i][n+j] = s6[i][j];
-        }
-    }
-    if(t == 3){
-        rep(i,0,7)rep(j,0,7){
-            ans[n+i][n+j] = s7[i][j];
-        }
-    }
-
-    answer(ans);
+    cout << st.size() << "\n";
 }
