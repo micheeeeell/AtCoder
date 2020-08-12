@@ -59,31 +59,150 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+template<std::int_fast64_t Modulus>
+class modint {
+    using i64 = int_fast64_t;
+
+    public:
+    i64 a;
+
+    constexpr modint(const i64 x = 0) noexcept {
+        this -> a = x % Modulus;
+        if(a < 0){
+            a += Modulus;
+        }
+    }
+    constexpr int getmod() { return Modulus; }
+    constexpr modint operator - () const noexcept {
+        return a ? Modulus - a : 0;
+    }
+    constexpr const i64 &value() const noexcept {return a;}
+    constexpr modint operator+(const modint rhs) const noexcept {
+        return modint(*this) += rhs;
+    }
+    constexpr modint operator-(const modint rhs) const noexcept {
+        return modint(*this) -= rhs;
+    }
+    constexpr modint operator*(const modint rhs) const noexcept {
+        return modint(*this) *= rhs;
+    }
+    constexpr modint operator/(const modint rhs) const noexcept {
+        return modint(*this) /= rhs;
+    }
+    constexpr modint &operator+=(const modint rhs) noexcept {
+        a += rhs.a;
+        if(a >= Modulus) {
+            a -= Modulus;
+        }
+        return *this;
+    }
+    constexpr modint &operator-=(const modint rhs) noexcept {
+        if(a < rhs.a) {
+            a += Modulus;
+        }
+        a -= rhs.a;
+        return *this;
+    }
+    constexpr modint &operator*=(const modint rhs) noexcept {
+        a = a * rhs.a % Modulus;
+        return *this;
+    }
+    constexpr modint &operator/=(modint rhs) noexcept {
+        i64 a_ = rhs.a, b = Modulus, u = 1, v = 0;
+        while(b){
+            i64 t = a_/b;
+            a_ -= t * b; swap(a_,b);
+            u -= t * v; swap(u,v);
+        }
+        a = a * u % Modulus;
+        if(a < 0) a += Modulus;
+        return *this;
+    }
+    
+    // 自前実装
+    constexpr bool operator==(const modint rhs) noexcept {
+        return a == rhs.a;
+    }
+    constexpr bool operator!=(const modint rhs) noexcept {
+        return a != rhs.a;
+    }
+    constexpr bool operator>(const modint rhs) noexcept {
+        return a > rhs.a;
+    }
+    constexpr bool operator>=(const modint rhs) noexcept {
+        return a >= rhs.a;
+    }
+    constexpr bool operator<(const modint rhs) noexcept {
+        return a < rhs.a;
+    }
+    constexpr bool operator<=(const modint rhs) noexcept {
+        return a <= rhs.a;
+    }
+    constexpr modint& operator++() noexcept {
+        return (*this) += modint(1);
+    }
+    // constexpr modint operator++(int) {
+    //     modint tmp(*this);
+    //     operator++();
+    //     return tmp;
+    // }
+    constexpr modint& operator--() noexcept {
+        return (*this) -= modint(1);
+    }
+    // constexpr modint operator--(int) {
+    //     modint tmp(*this);
+    //     operator--();
+    //     return tmp;
+    // }
+    template<typename T>
+    friend constexpr modint modpow(const modint &mt, T n) noexcept {
+        if(n < 0){
+            modint t = (modint(1) / mt);
+            return modpow(t, -n);
+        }
+        modint res = 1, tmp = mt;
+        while(n){
+            if(n & 1)res *= tmp;
+            tmp *= tmp;
+            n /= 2;
+        }
+        return res;
+    }
+
+    friend constexpr string to_string(const modint &mt) noexcept {
+        return to_string(mt.a);
+    }
+};
+
+// 標準入出力対応
+template<std::int_fast64_t Modulus>
+std::ostream &operator<<(std::ostream &out, const modint<Modulus> &m) {
+    out << m.a;
+    return out;
+}
+template<std::int_fast64_t Modulus>
+std::istream &operator>>(std::istream &in, modint<Modulus> &m) {
+    ll a;
+    in >> a;
+    m = modint<Modulus>(a);
+    return in;
+}
+
+const ll MOD = 1e9+7;
+// const ll MOD = 998244353;
+using mint = modint<MOD>;
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll k; cin >> k;
-    vector<ll> ans, last;
-    rep(i,1,10)ans.emplace_back(i);
-    last = ans;
-    while(ans.size() < k){
-        vector<ll> temp;
-        for(auto &t : last){
-            ll num = t % 10;
-            temp.emplace_back(t * 10 + num);
-            ans.emplace_back(t * 10 + num);
-            if(num != 0){
-                temp.emplace_back(t * 10 + num - 1);
-                ans.emplace_back(t * 10 + num - 1);
-            }
-            if(num != 9){
-                temp.emplace_back(t * 10 + num + 1);
-                ans.emplace_back(t * 10 + num + 1);
-            }
-        }
-        last = temp;
+    ll n; cin >> n;
+    string s;cin >> s;
+    vector<ll> cnt(26);
+    rep(i,0,n){
+        ll t = s[i] - 'a';
+        cnt[t]++;
     }
-    sort(all(ans));
-    cout << ans[k-1] << "\n";
+    mint ans = 1;
+    rep(i,0,26)ans *= cnt[i] + 1;
+    cout << ans - mint(1) << "\n";
 }

@@ -59,48 +59,245 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+template<std::int_fast64_t Modulus>
+class modint {
+    using i64 = int_fast64_t;
 
+    public:
+    i64 a;
+
+    constexpr modint(const i64 x = 0) noexcept {
+        this -> a = x % Modulus;
+        if(a < 0){
+            a += Modulus;
+        }
+    }
+    constexpr int getmod() { return Modulus; }
+    constexpr modint operator - () const noexcept {
+        return a ? Modulus - a : 0;
+    }
+    constexpr const i64 &value() const noexcept {return a;}
+    constexpr modint operator+(const modint rhs) const noexcept {
+        return modint(*this) += rhs;
+    }
+    constexpr modint operator-(const modint rhs) const noexcept {
+        return modint(*this) -= rhs;
+    }
+    constexpr modint operator*(const modint rhs) const noexcept {
+        return modint(*this) *= rhs;
+    }
+    constexpr modint operator/(const modint rhs) const noexcept {
+        return modint(*this) /= rhs;
+    }
+    constexpr modint &operator+=(const modint rhs) noexcept {
+        a += rhs.a;
+        if(a >= Modulus) {
+            a -= Modulus;
+        }
+        return *this;
+    }
+    constexpr modint &operator-=(const modint rhs) noexcept {
+        if(a < rhs.a) {
+            a += Modulus;
+        }
+        a -= rhs.a;
+        return *this;
+    }
+    constexpr modint &operator*=(const modint rhs) noexcept {
+        a = a * rhs.a % Modulus;
+        return *this;
+    }
+    constexpr modint &operator/=(modint rhs) noexcept {
+        i64 a_ = rhs.a, b = Modulus, u = 1, v = 0;
+        while(b){
+            i64 t = a_/b;
+            a_ -= t * b; swap(a_,b);
+            u -= t * v; swap(u,v);
+        }
+        a = a * u % Modulus;
+        if(a < 0) a += Modulus;
+        return *this;
+    }
+    
+    // 自前実装
+    constexpr bool operator==(const modint rhs) noexcept {
+        return a == rhs.a;
+    }
+    constexpr bool operator!=(const modint rhs) noexcept {
+        return a != rhs.a;
+    }
+    constexpr bool operator>(const modint rhs) noexcept {
+        return a > rhs.a;
+    }
+    constexpr bool operator>=(const modint rhs) noexcept {
+        return a >= rhs.a;
+    }
+    constexpr bool operator<(const modint rhs) noexcept {
+        return a < rhs.a;
+    }
+    constexpr bool operator<=(const modint rhs) noexcept {
+        return a <= rhs.a;
+    }
+    constexpr modint& operator++() noexcept {
+        return (*this) += modint(1);
+    }
+    // constexpr modint operator++(int) {
+    //     modint tmp(*this);
+    //     operator++();
+    //     return tmp;
+    // }
+    constexpr modint& operator--() noexcept {
+        return (*this) -= modint(1);
+    }
+    // constexpr modint operator--(int) {
+    //     modint tmp(*this);
+    //     operator--();
+    //     return tmp;
+    // }
+    template<typename T>
+    friend constexpr modint modpow(const modint &mt, T n) noexcept {
+        if(n < 0){
+            modint t = (modint(1) / mt);
+            return modpow(t, -n);
+        }
+        modint res = 1, tmp = mt;
+        while(n){
+            if(n & 1)res *= tmp;
+            tmp *= tmp;
+            n /= 2;
+        }
+        return res;
+    }
+
+    friend constexpr string to_string(const modint &mt) noexcept {
+        return to_string(mt.a);
+    }
+};
+
+// 標準入出力対応
+template<std::int_fast64_t Modulus>
+std::ostream &operator<<(std::ostream &out, const modint<Modulus> &m) {
+    out << m.a;
+    return out;
+}
+template<std::int_fast64_t Modulus>
+std::istream &operator>>(std::istream &in, modint<Modulus> &m) {
+    ll a;
+    in >> a;
+    m = modint<Modulus>(a);
+    return in;
+}
+
+const ll MOD = 1e9+7;
+// const ll MOD = 998244353;
+using mint = modint<MOD>;
+
+template<class T> struct BiCoef {
+    vector<T> fact_, inv_, finv_;
+    constexpr BiCoef() {}
+    constexpr BiCoef(int n) noexcept : fact_(n, 1), inv_(n, 1), finv_(n, 1) {
+        init(n);
+    }
+    constexpr void init(int n) noexcept {
+        fact_.assign(n, 1), inv_.assign(n, 1), finv_.assign(n, 1);
+        int MOD = fact_[0].getmod();
+        for(int i = 2; i < n; i++){
+            fact_[i] = fact_[i-1] * i;
+            inv_[i] = -inv_[MOD%i] * (MOD/i);
+            finv_[i] = finv_[i-1] * inv_[i];
+        }
+    }
+    constexpr T com(int n, int k) const noexcept {
+        if (n < k || n < 0 || k < 0) return 0;
+        return fact_[n] * finv_[k] * finv_[n-k];
+    }
+    constexpr T fact(int n) const noexcept {
+        if (n < 0) return 0;
+        return fact_[n];
+    }
+    constexpr T inv(int n) const noexcept {
+        if (n < 0) return 0;
+        return inv_[n];
+    }
+    constexpr T finv(int n) const noexcept {
+        if (n < 0) return 0;
+        return finv_[n];
+    }
+};
+void print() {
+    cout << endl;
+}
+
+template <class Head, class... Tail>
+void print(Head&& head, Tail&&... tail) {
+    cout << head;
+    if (sizeof...(tail) != 0) cout << " ";
+    print(forward<Tail>(tail)...);
+}
+
+template <class T>
+void print(vector<T> &vec) {
+    for (auto& a : vec) {
+        cout << a;
+        if (&a != &vec.back()) cout << "\n";
+    }
+    cout << endl;
+}
+
+template <class T>
+void print(vector<vector<T>> &df) {
+    for (auto& vec : df) {
+        print(vec);
+    }
+}
+
+BiCoef<mint> bc(n_max);
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n,p; cin >> n >> p;
-    string s;cin >> s;
-
-    if(p == 2 || p == 5){
-        reverse(all(s));
-        ll ans = 0;
-        rep(i,0,n){
-            ll t = s[i] - '0';
-            if(t % p == 0){
-                ans += n-i;
-            }
+    ll n; cin >> n;
+    vector<vector<ll>> graph(n);
+    for(int i = 0; i < n-1; i++) {
+        ll a,b;cin >> a >> b;
+        a--;b--;
+        graph[a].emplace_back(b);
+        graph[b].emplace_back(a);
+    }
+    vector<ll> sub(n);
+    auto pre_dfs = [&](auto self, ll now, ll pre = -1) -> void{
+        for(auto &to : graph[now]){
+            if(to == pre)continue;
+            self(self, to, now);
+            sub[now] += sub[to];
         }
-        cout << ans << "\n";
-        return 0;
-    }
-
-    vector<ll> v(n), pow(n);
-
-    pow[0] = 1;
-    rep(i,1,n){
-        pow[i] = pow[i-1] * 10 % p;
-    }
-    reverse(all(s));
-    rep(i,0,n){
-        ll t = s[i] - '0';
-        v[i] = pow[i] * t % p;
-        if(i)v[i] = (v[i] + v[i-1]) % p;
-    }
-    debug(v);
-    map<ll, ll> mp;
-    mp[0] = 1;
-    ll ans = 0;
-    rep(i,0,n){
-        if(mp.count(v[i])){
-            ans += mp[v[i]];
+        sub[now]++;
+    };
+    pre_dfs(pre_dfs, 0);
+    
+    vector<mint> dp(n);
+    auto dfs = [&](auto self, ll now, ll pre = -1) -> void{
+        dp[now] = bc.fact(sub[now] - 1);
+        for(auto &to : graph[now]){
+            if(to == pre)continue;
+            self(self, to, now);
+            dp[now] /= bc.fact(sub[to]);
+            dp[now] *= dp[to];
         }
-        mp[v[i]]++;
-    }
+    };
+    dfs(dfs, 0);
+    debug(dp);
 
-    cout << ans << "\n";
+    vector<mint> ans(n);
+    ans[0] = dp[0];
+    auto calc = [&](auto self, ll now, ll pre = -1) -> void{
+        for(auto &to : graph[now]){
+            if(to == pre)continue;
+            ans[to] = bc.com(n-1, sub[to] - 1);
+            ans[to] *= ans[now] / bc.com(n-1, sub[to]);
+            self(self, to, now);
+        }
+    };
+
+    calc(calc, 0);
+    print(ans);
 }

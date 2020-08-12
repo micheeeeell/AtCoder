@@ -1,13 +1,10 @@
-// #define LOCAL
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
 #include<bits/stdc++.h>
 using namespace std;
-#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
-#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
-#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
+#define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
+#define rrep(i,s,t) for(ll i = (ll)(s-1);(ll)(t) <= i; i--)
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
 typedef long double ld;
@@ -22,7 +19,7 @@ constexpr ll n_max = 2e5+10;
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
-string to_string(const char c) {return to_string((string) &c);}
+string to_string(const char *c) {return to_string((string) c);}
 string to_string(bool b) {return (b ? "true" : "false");}
 template <size_t N>
 string to_string(bitset<N> v){
@@ -66,24 +63,17 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
-    ll n,k; cin >> n >> k;
-    vector<ll> x(n);
-    rep(i,n) cin >> x[i];
-    priority_queue<Pll> pq;
-    rep(i,k)pq.emplace(x[i], i+1);
-    cout << pq.top().second << "\n";
-    for(int i = k; i < n; i++){
-        auto p = pq.top();pq.pop();
-        if(p.first < x[i]){
-            cout << p.second << "\n";
-            pq.emplace(p);
-        }
-        else{
-            pq.emplace(x[i], i+1);
-            cout << pq.top().second << "\n";
+    ll n,x; cin >> n >> x;
+    vector<ll> a(n+1);
+    for(int i = 0; i < n; i++) cin >> a[i+1];
+    ll ans = 0;
+    rep(i,0,n){
+        if(a[i] + a[i+1] >= x){
+            ans += a[i] + a[i+1] - x;
+            a[i+1] = x - a[i];
         }
     }
 
-    
+    cout << ans << "\n";
+
 }

@@ -63,33 +63,24 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    string s;cin >> s;
-    ll t; cin >> t;
-    ll x = 0, y = 0;
-    ll cnt = 0;
-    for(auto &c : s){
-        if(c == 'U')y++;
-        if(c == 'D')y--;
-        if(c == 'R')x++;
-        if(c == 'L')x--;
-        if(c == '?')cnt++;
+    ll n,k; cin >> n >> k;
+    vector<double> v(n);
+    rep(i,0,n){
+        cin >> v[i];
+        v[i] = ((v[i] + 1.0) * v[i] / 2.0) / v[i];
     }
-    ll ans = abs(x) + abs(y);
-    if(t == 1){
-        cout << ans + cnt << endl;
-        return 0;
+    debug(v);
+    double ans = 0;
+    rep(i,0,k){
+        ans += v[i];
     }
-    else{
-        if(ans >= cnt){
-            ans -= cnt;
-        }
-        else{
-            cnt -= ans;
-            ans = 0;
-            ans = cnt % 2;
-        }
+    double temp = ans;
+    rep(j,k,n){
+        temp += v[j];
+        temp -= v[j - k];
+        chmax(ans, temp);
+    }
 
-        cout << ans << endl;
-        return 0;
-    }
+    cout << fixed << setprecision(15);
+    cout << ans << "\n";
 }

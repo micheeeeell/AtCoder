@@ -1,13 +1,10 @@
-// #define LOCAL
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
 #include<bits/stdc++.h>
 using namespace std;
-#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
-#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
-#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
+#define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
+#define rrep(i,s,t) for(ll i = (ll)(s-1);(ll)(t) <= i; i--)
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
 typedef long double ld;
@@ -22,7 +19,7 @@ constexpr ll n_max = 2e5+10;
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
-string to_string(const char c) {return to_string((string) &c);}
+string to_string(const char *c) {return to_string((string) c);}
 string to_string(bool b) {return (b ? "true" : "false");}
 template <size_t N>
 string to_string(bitset<N> v){
@@ -62,183 +59,171 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
-template<std::int_fast64_t Modulus>
-class modint {
-    using i64 = int_fast64_t;
 
-    public:
-    i64 a;
+template <typename Monoid>
+struct SegmentTree {
+    using F = function<Monoid(Monoid, Monoid)>;
 
-    constexpr modint(const i64 x = 0) noexcept {
-        this -> a = x % Modulus;
-        if(a < 0){
-            a += Modulus;
+    int sz;
+    vector<Monoid> seg;
+
+    const F f;
+    const Monoid M1;
+    SegmentTree(const int n, const F f, const Monoid &M1) : f(f), M1(M1) {
+        sz = 1;
+        while(sz < n) sz <<= 1;
+        seg.assign(2 * sz, M1);
+    }
+
+    void set(int k, const Monoid &x) {
+        seg[k + sz] = x;
+    }
+
+    void build(vector<Monoid> &vec) {
+        for(int i = 0; i < vec.size(); i++) set(i, vec[i]);
+        for(int k = sz - 1; k > 0; k--) {
+            seg[k] = f(seg[2 * k + 0], seg[2 * k + 1]);
         }
     }
-    constexpr int getmod() { return Modulus; }
-    constexpr modint operator - () const noexcept {
-        return a ? Modulus - a : 0;
-    }
-    constexpr const i64 &value() const noexcept {return a;}
-    constexpr modint operator+(const modint rhs) const noexcept {
-        return modint(*this) += rhs;
-    }
-    constexpr modint operator-(const modint rhs) const noexcept {
-        return modint(*this) -= rhs;
-    }
-    constexpr modint operator*(const modint rhs) const noexcept {
-        return modint(*this) *= rhs;
-    }
-    constexpr modint operator/(const modint rhs) const noexcept {
-        return modint(*this) /= rhs;
-    }
-    constexpr modint &operator+=(const modint rhs) noexcept {
-        a += rhs.a;
-        if(a >= Modulus) {
-            a -= Modulus;
+
+    void update(int k, const Monoid &x) {
+        k += sz;
+        seg[k] = x;
+        while(k >>= 1) {
+            seg[k] = f(seg[2 * k + 0], seg[2 * k + 1]);
         }
-        return *this;
     }
-    constexpr modint &operator-=(const modint rhs) noexcept {
-        if(a < rhs.a) {
-            a += Modulus;
+
+    Monoid query(int a, int b) {
+        Monoid L = M1, R = M1;
+        for(a += sz, b += sz; a < b; a >>= 1, b >>= 1) {
+            if(a & 1) L = f(L, seg[a++]);
+            if(b & 1) R = f(seg[--b], R);
         }
-        a -= rhs.a;
-        return *this;
+        return f(L, R);
     }
-    constexpr modint &operator*=(const modint rhs) noexcept {
-        a = a * rhs.a % Modulus;
-        return *this;
+
+    Monoid operator[](const int &k) const {
+        return seg[k + sz];
     }
-    constexpr modint &operator/=(modint rhs) noexcept {
-        i64 a_ = rhs.a, b = Modulus, u = 1, v = 0;
-        while(b){
-            i64 t = a_/b;
-            a_ -= t * b; swap(a_,b);
-            u -= t * v; swap(u,v);
+
+    template <typename C>
+    int find_subtree(int a, const C &check, Monoid &M, bool type) {
+        while(a < sz) {
+            Monoid nxt =
+                type ? f(seg[2 * a + type], M) : f(M, seg[2 * a + type]);
+            if(check(nxt))
+                a = 2 * a + type;
+            else
+                M = nxt, a = 2 * a + 1 - type;
         }
-        a = a * u % Modulus;
-        if(a < 0) a += Modulus;
-        return *this;
+        return a - sz;
     }
-    
-    // 自前実装
-    constexpr bool operator==(const modint rhs) noexcept {
-        return a == rhs.a;
-    }
-    constexpr bool operator!=(const modint rhs) noexcept {
-        return a != rhs.a;
-    }
-    constexpr bool operator>(const modint rhs) noexcept {
-        return a > rhs.a;
-    }
-    constexpr bool operator>=(const modint rhs) noexcept {
-        return a >= rhs.a;
-    }
-    constexpr bool operator<(const modint rhs) noexcept {
-        return a < rhs.a;
-    }
-    constexpr bool operator<=(const modint rhs) noexcept {
-        return a <= rhs.a;
-    }
-    constexpr modint& operator++() noexcept {
-        return (*this) += modint(1);
-    }
-    // constexpr modint operator++(int) {
-    //     modint tmp(*this);
-    //     operator++();
-    //     return tmp;
-    // }
-    constexpr modint& operator--() noexcept {
-        return (*this) -= modint(1);
-    }
-    // constexpr modint operator--(int) {
-    //     modint tmp(*this);
-    //     operator--();
-    //     return tmp;
-    // }
-    template<typename T>
-    friend constexpr modint modpow(const modint &mt, T n) noexcept {
-        if(n < 0){
-            modint t = (modint(1) / mt);
-            return modpow(t, -n);
+
+    template <typename C>
+    int find_first(int a, const C &check) {
+        Monoid L = M1;
+        if(a <= 0) {
+            if(check(f(L, seg[1]))) return find_subtree(1, check, L, false);
+            return -1;
         }
-        modint res = 1, tmp = mt;
-        while(n){
-            if(n & 1)res *= tmp;
-            tmp *= tmp;
-            n /= 2;
+        int b = sz;
+        for(a += sz, b += sz; a < b; a >>= 1, b >>= 1) {
+            if(a & 1) {
+                Monoid nxt = f(L, seg[a]);
+                if(check(nxt)) return find_subtree(a, check, L, false);
+                L = nxt;
+                ++a;
+            }
         }
-        return res;
+        return -1;
+    }
+
+    template <typename C>
+    int find_last(int b, const C &check) {
+        Monoid R = M1;
+        if(b >= sz) {
+            if(check(f(seg[1], R))) return find_subtree(1, check, R, true);
+            return -1;
+        }
+        int a = sz;
+        for(b += sz; a < b; a >>= 1, b >>= 1) {
+            if(b & 1) {
+                Monoid nxt = f(seg[--b], R);
+                if(check(nxt)) return find_subtree(b, check, R, true);
+                R = nxt;
+            }
+        }
+        return -1;
     }
 };
-
-const ll MOD = 1e9+7;
-using mint = modint<MOD>;
-// 標準入出力対応
-std::ostream &operator<<(std::ostream &out, const modint<MOD> &m) {
-    out << m.a;
-    return out;
-}
-std::istream &operator>>(std::istream &in, modint<MOD> &m) {
-    ll a;
-    in >> a;
-    m = mint(a);
-    return in;
-}
-
-
-string to_string(mint m){
-    return to_string(m.a);
-}
-
-template <class T>
-void print(vector<T> &vec, ll k){
-    ll n = vec.size();
-    k = min(k, n);
-    rep(i,k-1)cout << vec[i] << " ";
-    cout << vec[k-1] << endl;
-}
-template <class T>
-void print(vector<vector<T>> &vec, ll k){
-    ll n = vec[0].size();
-    k = min(k, n);
-    for(auto &i : vec)print(i, k);
-}
-
-vector<vector<ll>> graph(n_max);
-vector<ll> cnt(n_max);
-vector<mint> dp(n_max);
-ll n;
-void dfs(ll now, ll par = -1){
-    ll c = 1;
-    mint r = 1;
-    for(auto &to : graph[now]){
-        if(to == par)continue;
-        dfs(to, now);
-        c += cnt[to];
-        r += modpow(mint(2), cnt[to]) - 1;
-    }
-    r += modpow(mint(2), n - c) - 1;
-    cnt[now] = c;
-    dp[now] = modpow(mint(2), n-1) - r;
-}
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    cin >> n;
-    rep(i,n-1) {
-        ll a,b;cin >> a >> b;
-        a--;b--;
-        graph[a].emplace_back(b);
-        graph[b].emplace_back(a);
+    ll n; cin >> n;
+    vector<ll> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    auto f = [](ll a, ll b){return a + b;};
+    SegmentTree<ll> seg(n, f, 0);
+    seg.build(a);
+    ll ans = INF;
+    rep(i, 2, n-1){
+        ll l = seg.query(0, i);
+        auto c = [&](ll x){return x * 2 >= l;};
+        ll id = seg.find_first(0, c);
+        Pll temp = {0, INF};
+        if(id > 1){
+            ll L = seg.query(0, id-1);
+            ll R = seg.query(id-1, i);
+            if(temp.second - temp.first > max(L, R) - min(L, R)){
+                temp = {min(L, R), max(L, R)};
+            }
+        }
+        if(id+1 < i){
+            ll L = seg.query(0, id + 1);
+            ll R = seg.query(id + 1, i);
+            if(temp.second - temp.first > max(L, R) - min(L, R)) {
+                temp = {min(L, R), max(L, R)};
+            }
+        }
+        if(id > 0 && id < i){
+            ll L = seg.query(0, id);
+            ll R = seg.query(id, i);
+            if(temp.second - temp.first > max(L, R) - min(L, R)) {
+                temp = {min(L, R), max(L, R)};
+            }
+        }
+
+
+        ll r = seg.query(i, n);
+        auto c2 = [&](ll x){return x * 2 >= r;};
+        id = seg.find_first(i, c2);
+        Pll temp2 = {0, INF};
+        if(id-1 > i) {
+            ll L = seg.query(i, id - 1);
+            ll R = seg.query(id - 1, n);
+            if(temp2.second - temp2.first > max(L, R) - min(L, R)) {
+                temp2 = {min(L, R), max(L, R)};
+            }
+        }
+        if(id + 1 < n) {
+            ll L = seg.query(i, id + 1);
+            ll R = seg.query(id + 1, n);
+            if(temp2.second - temp2.first > max(L, R) - min(L, R)) {
+                temp2 = {min(L, R), max(L, R)};
+            }
+        }
+        if(id > i && id < n) {
+            ll L = seg.query(i, id);
+            ll R = seg.query(id, n);
+            if(temp2.second - temp2.first > max(L, R) - min(L, R)) {
+                temp2 = {min(L, R), max(L, R)};
+            }
+        }
+
+        chmin(ans, max(temp.second, temp2.second) - min(temp.first, temp2.first));
     }
-    dfs(0);
-    mint ans = 0;
-    rep(i,n)ans += dp[i];
-    // print(dp,10);
-    // print(cnt,10);
-    debug(ans);
-    cout << ans / modpow(mint(2), n) << endl;
+
+    cout << ans << "\n";
 }

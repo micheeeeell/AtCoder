@@ -59,19 +59,84 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+void print() {
+    cout << endl;
+}
+
+template <class Head, class... Tail>
+void print(Head&& head, Tail&&... tail) {
+    cout << head;
+    if (sizeof...(tail) != 0) cout << " ";
+    print(forward<Tail>(tail)...);
+}
+
+template <class T>
+void print(vector<T> &vec) {
+    for (auto& a : vec) {
+        cout << a;
+        if (&a != &vec.back()) cout << " ";
+    }
+    cout << endl;
+}
+
+template <class T>
+void print(vector<vector<T>> &df) {
+    for (auto& vec : df) {
+        print(vec);
+    }
+}
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n; cin >> n;
-    vector<ll> a(n);
-    for(int i = 0; i < n; i++) cin >> a[i];
-    deque<ll> b;
+    string s;cin >> s;
+    bool isl = false;
+    ll n = s.size();
+    ll rcnt = 0;
+    ll cnt = 0;
+    ll pos = 0;
+    vector<ll> ans(n);
     rep(i,0,n){
-        if(i & 1)b.emplace_front(a[i]);
-        else b.emplace_back(a[i]);
+        if(s[i] == 'R'){
+            if(isl){
+                isl = false;
+                if(cnt % 2 == 0){
+                    ans[pos] = cnt / 2;
+                    ans[pos + 1] = cnt / 2;
+                }
+                else{
+                    if(rcnt % 2 == 0){
+                        ans[pos] = cnt / 2;
+                        ans[pos + 1] = cnt / 2 + 1;
+                    }
+                    else{
+                        ans[pos] = cnt/ 2 + 1;
+                        ans[pos + 1] = cnt / 2;
+                    }
+                }
+                cnt = 1;rcnt = 1;
+            }
+            else{ 
+                rcnt++;cnt++;
+            }
+        }
+        else{
+            if(s[i - 1] == 'R') pos = i-1;
+            isl = true;
+            cnt++;
+        }
     }
-    if(n & 1)reverse(all(b));
-    for(auto &t : b)cout << t << " ";
-    cout << "\n";
+    if(cnt % 2 == 0) {
+        ans[pos] = cnt / 2;
+        ans[pos + 1] = cnt / 2;
+    } else {
+        if(rcnt % 2 == 0) {
+            ans[pos] = cnt / 2;
+            ans[pos + 1] = cnt / 2 + 1;
+        } else {
+            ans[pos] = cnt / 2 + 1;
+            ans[pos + 1] = cnt / 2;
+        }
+    }
+    print(ans);
 }

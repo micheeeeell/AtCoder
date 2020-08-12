@@ -1,13 +1,10 @@
-#define LOCAL
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
 #include<bits/stdc++.h>
 using namespace std;
-#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
-#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
-#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
+#define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
+#define rrep(i,s,t) for(ll i = (ll)(s-1);(ll)(t) <= i; i--)
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
 typedef long double ld;
@@ -22,7 +19,7 @@ constexpr ll n_max = 2e5+10;
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
-string to_string(const char c) {return to_string((string) &c);}
+string to_string(const char *c) {return to_string((string) c);}
 string to_string(bool b) {return (b ? "true" : "false");}
 template <size_t N>
 string to_string(bitset<N> v){
@@ -62,10 +59,20 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+void YES(bool ok){
+    cout << (ok ? "Yes" : "No") << endl;
+}
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n,k; cin >> n >> k;
-    cout << n - k + 1 << endl;
+    string s;cin >> s;
+    ll n = s.size();
+    ll t = 0;
+    rep(i,0,n){
+        if(t == 0 && s[i] == 'C')t++;
+        if(t == 1 && s[i] == 'F')t++;
+    }
+
+    YES(t == 2);
 }

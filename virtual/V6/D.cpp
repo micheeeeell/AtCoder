@@ -13,7 +13,7 @@ typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef vector<vvl> vvvl;
 constexpr ll INF = numeric_limits<ll>::max()/4;
-constexpr ll n_max = 2e5+10;
+constexpr ll n_max = 1e7;
 #define int ll
 
 template <typename A, typename B>
@@ -63,23 +63,26 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n; cin >> n;
-    vector<ll> a(n);
-    map<ll,ll> mp;
-    for(int i = 0; i < n; i++){
-        cin >> a[i];
-        mp[a[i]]++;
+    ll n,k; cin >> n >> k;
+    vector<ll> v(10);
+    for(int i = 0; i < k; i++){
+        ll d;
+        cin >> d;
+        v[d] = 1;
     }
-    rep(i,0,n){
-        for(ll j = a[i] * 2; j <= 1e9; j *= 2){
-            if(mp.count(j))mp[j] = 0;
+    auto check = [&](ll x){
+        bool ok = true;
+        while(x){
+            ll t = x % 10;
+            if(v[t])return false;
+            x /= 10;
+        }
+        return true;
+    };
+    rep(i,n, n_max){
+        if(check(i)){
+            cout << i << "\n";
+            return 0;
         }
     }
-
-    ll ans = 0;
-    rep(i,0,n){
-        ans += mp[a[i]];
-    }
-
-    cout << ans << endl;
 }

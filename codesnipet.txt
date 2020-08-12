@@ -153,7 +153,7 @@
             "    size_t size(){",
             "        return data.size();",
             "    }",
-            "    vector<edge<T>> operator[](int n){",
+            "    vector<edge<T>> &operator[](int n){",
             "        return data[n];",
             "    }",
             "    std::vector<edge<T>> make_edges(){",

@@ -1,53 +1,123 @@
+#ifdef LOCAL
 #define _GLIBCXX_DEBUG
+#endif
 #include<bits/stdc++.h>
 using namespace std;
-#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
-#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
-#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
-#define debug(x) cerr << #x << ": " << (x) << "\n";
+#define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
+#define rrep(i,s,t) for(ll i = (ll)(s-1);(ll)(t) <= i; i--)
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
 typedef long double ld;
-typedef pair<int,int> P;
 typedef pair<ll,ll> Pll;
 typedef vector<ll> vl;
-typedef vector<vector<ll>> vvl;
-typedef vector<vector<vector<ll>>> vvvl;
-const ll INF = numeric_limits<ll>::max()/4;
-const int n_max = 1e5+10;
+typedef vector<vl> vvl;
+typedef vector<vvl> vvvl;
+constexpr ll INF = numeric_limits<ll>::max()/4;
+constexpr ll n_max = 2e5+10;
 #define int ll
+
+template <typename A, typename B>
+string to_string(pair<A, B> p);
+string to_string(const string &s) {return '"' + s + '"';}
+string to_string(const char *c) {return to_string((string) c);}
+string to_string(bool b) {return (b ? "true" : "false");}
+template <size_t N>
+string to_string(bitset<N> v){
+    string res = "";
+    for(size_t i = 0; i < N; i++) res += static_cast<char>('0' + v[i]);
+    return res;
+}
+template <typename A>
+string to_string(A v) {
+    bool first = true;
+    string res = "{";
+    for(const auto &x : v) {
+        if(!first) res += ", ";
+        first = false;
+        res += to_string(x);
+    }
+    res += "}";
+    return res;
+}
+template <typename A, typename B>
+string to_string(pair<A, B> p){return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";}
+
+void debug_out() {cerr << endl;}
+template<typename Head, typename... Tail>
+void debug_out(Head H, Tail... T) {
+    cerr << " " << to_string(H);
+    debug_out(T...);
+}
+
+#ifdef LOCAL
+#define debug(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
+#else
+#define debug(...) 42
+#endif
+
+template<class T>
+bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
+template<class T>
+bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n; cin >> n;
-    using Pld = pair<double, double>;
-    vector<Pld> a(n), b(n);
-    Pld c1 = {0, 0}, c2 = {0, 0};
-    rep(i,n){
-        ld x,y; cin >> x >> y;
-        a[i] = {x, y};
-        c1.first += x;
-        c1.second += y;
+    ll n,A,B; cin >> n >> A >> B;
+    vector<tuple<ll, ll, ll> > av(n / 2), bv(n - n / 2);
+    for(auto &[a, b, c] : av) {
+        cin >> a >> b >> c;
     }
-    rep(i,n){
-        ld x, y; cin >> x >> y;
-        b[i] = {x, y};
-        c2.first += x;
-        c2.second += y;
+    for(auto &[a, b, c] : bv) {
+        cin >> a >> b >> c;
     }
-    c1.first /= ld(n);
-    c1.second /= ld(n);
-    c2.first /= ld(n);
-    c2.second /= ld(n);
+    map<Pll, ll> ma, mb;
+    ll na = n / 2, nb = n - na;
+    ll ans = INF;
+    rep(i, 0, 1LL << na) {
+        ll at = 0, bt = 0, ct = 0;
+        rep(j, 0, na) {
+            if((i >> j) & 1) {
+                auto &[a, b, c] = av[j];
+                at += a;
+                bt += b;
+                ct += c;
+            }
+        }
+        if(!ma.count({at, bt})) ma[{at, bt}] = ct;
+        else{
+            chmin(ma[{at, bt}], ct);
+        }
+    }
+    rep(i, 0, 1LL << nb) {
+        ll at = 0, bt = 0, ct = 0;
+        rep(j, 0, nb) {
+            if((i >> j) & 1) {
+                auto &[a, b, c] = bv[j];
+                at += a;
+                bt += b;
+                ct += c;
+            }
+        }
+        if(!mb.count({at, bt}))
+            mb[{at, bt}] = ct;
+        else {
+            chmin(mb[{at, bt}], ct);
+        }
+    }
 
-    ld dist1 = 0, dist2 = 0;
-    rep(i,n){
-        dist1 += hypot(a[i].first - c1.first, a[i].second - c1.second);
-        dist2 += hypot(b[i].first - c2.first, b[i].second - c2.second);
+    for(auto &p : ma) {
+        auto &[a, b] = p.first;
+        debug(p);
+        for(ll s = A; s < 410; s += A) {
+            ll t = B * (s / A);
+            if(s < a || t < b) continue;
+            if(mb.count({s - a, t - b})) {
+                chmin(ans, p.second + mb[{s - a, t - b}]);
+            }
+        }
     }
 
-    cout << fixed << setprecision(15);
-    cout << dist2 / dist1 << endl;
+
+    cout << (ans != INF ? ans : -1) << "\n";
 }

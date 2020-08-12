@@ -1,13 +1,10 @@
-// #define LOCAL
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
 #include<bits/stdc++.h>
 using namespace std;
-#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
-#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
-#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
+#define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
+#define rrep(i,s,t) for(ll i = (ll)(s-1);(ll)(t) <= i; i--)
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
 typedef long double ld;
@@ -22,7 +19,7 @@ constexpr ll n_max = 2e5+10;
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
-string to_string(const char c) {return to_string((string) &c);}
+string to_string(const char *c) {return to_string((string) c);}
 string to_string(bool b) {return (b ? "true" : "false");}
 template <size_t N>
 string to_string(bitset<N> v){
@@ -66,49 +63,16 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
-    ll n; cin >> n;
-    string s;cin >> s;
-    vector<ll> v(n);
-    rep(i,n){
-        if(s[i] == 'A')v[i] = 0;
-        if(s[i] == 'B')v[i] = 1;
-        if(s[i] == 'X')v[i] = 2;
-        if(s[i] == 'Y')v[i] = 3;
+    ll n,m; cin >> n >> m;
+    ll g = gcd(n, m);
+    string s, t;cin >> s >> t;
+    bool ok = true;
+    ll sp = 0, tp = 0;
+    for(; sp < n; sp += n / g){
+        ok &= s[sp] == t[tp];
+        tp += m / g;
     }
 
-
-
-    Pll l, r;
-    ll ans = INF;
-    rep(i,4)rep(j,4){
-        rep(ii,4)rep(jj,4){
-            l = {i,j};
-            r = {ii, jj};
-            ll temp = 0;
-            for(int id = 0; id < n; id++){
-                if(id == n-1){
-                    temp++;
-                    continue;
-                }
-                if(v[id] == l.first && v[id+1] == l.second){
-                    temp++;
-                    id++;
-                    continue;
-                }
-                if(v[id] == r.first && v[id+1] == r.second){
-                    temp++;
-                    id++;
-                    continue;
-                }
-                temp++;
-            }
-
-            if(chmin(ans, temp)){
-                debug(l, r, temp);
-            }
-        }
-    }
-
-    cout << ans << endl;
+    if(ok)cout << n * (m / g) << "\n";
+    else cout << -1 << "\n";
 }

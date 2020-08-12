@@ -60,20 +60,97 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+template <typename T>
+struct UnionFind {
+   private:
+    vector<T> par;
+    vector<T> rank;
+    vector<T> sz;
+    int n;
+
+   public:
+    // n要素で親を初期化、par[x]はxの親を表す
+    UnionFind(int n) : n(n) {
+        par.resize(n, 0);
+        rank.resize(n, 0);
+        sz.resize(n, 1);
+        for(int i = 0; i < n; i++) {
+            par[i] = i;
+        }
+    }
+
+    //木の根を求める
+    int root(int x) {
+        if(par[x] == x)
+            return x;
+        else
+            return par[x] = root(par[x]);
+    }
+
+    // xとyの属する集合を併合
+    void unite(int x, int y) {
+        x = root(x);
+        y = root(y);
+        if(x == y) return;
+
+        if(rank[x] < rank[y]) {
+            swap(x, y);
+        }
+
+        par[y] = x;
+        sz[x] += sz[y];
+        if(rank[x] == rank[y]) rank[x]++;
+    }
+
+    // xとyが同じ集合に属するか否か
+    bool issame(int x, int y) {
+        return root(x) == root(y);
+    }
+
+    // xが属する集合のサイズを返す
+    int size(int x) {
+        return sz[root(x)];
+    }
+
+    // 集合の数を返す
+    int num_of_s() {
+        vector<int> cnt(n);
+        int ans = 0;
+        for(int i = 0; i < n; i++) {
+            if(!cnt[root(i)]) ans++, cnt[root(i)] = 1;
+        }
+        return ans;
+    }
+};
+
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n,z,w; cin >> n >> z >> w;
-    vector<ll> a(n);
-    for(int i = 0; i < n; i++) cin >> a[i];
-    ll ans = 0;
-    if(n > 1){
-        ans = max(abs(a[n-1] - a[n-2]), abs(a[n-1] - w));
-    }
-    else{
-        ans = abs(a[n-1] - w);
-    }
+    ll w,h; cin >> w >> h;
+    vector<ll> p(w);
+    for(int i = 0; i < w; i++) cin >> p[i];
+    vector<ll> q(h);
+    for(int i = 0; i < h; i++) cin >> q[i];
 
-    cout << ans << endl;
-    
+    priority_queue<Pll, vector<Pll>, greater<Pll>> pq;
+    ll ans = 0;
+    rep(i,0,w){
+        pq.emplace(p[i], 0);
+    }
+    rep(i,0,h){
+        pq.emplace(q[i], 1);
+    }
+    h++;w++;
+    while(!pq.empty()){
+        auto [v, t] = pq.top();pq.pop();
+        if(t == 0){
+            ans += v * h;
+            w--;
+        }
+        else{
+            ans += v * w;
+            h--;
+        }
+    }
+    cout << ans << "\n";
 }

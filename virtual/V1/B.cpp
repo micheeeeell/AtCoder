@@ -63,13 +63,8 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
-    ll a,b,c; cin >> a >> b >> c;
-    ll x; cin >> x;
-    ll ans = 0;
-    rep(i,0,a+1)rep(j,0,b+1)rep(k,0,c+1){
-        if(i * 500 + j * 100 + k * 50 == x)ans++;
-    }
-
-    cout << ans << "\n";
+    ll n,k; cin >> n >> k;
+    n %= k;
+    n = min(abs(n), abs(n - k));
+    cout << n << "\n";
 }

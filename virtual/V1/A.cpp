@@ -63,25 +63,20 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll a,b; cin >> a >> b;
-    ll c,d; cin >> c >> d;
-    ll turn = 0;
-    while(1){
-        if(~turn & 1){
-            c -= b;
+    ll n; cin >> n;
+    auto c = [&](ll x){
+        bool ok = true;
+        ll t = x % 10;
+        while(x){
+            ok &= x % 10 == t;
+            x /= 10;
         }
-        else{
-            a -= d;
+        return ok;
+    };
+    rep(i,n,1000){
+        if(c(i)){
+            cout << i << "\n";
+            return 0;
         }
-        if(c <= 0 || a <= 0)break;
-        turn ^= 1;
     }
-
-    if(c <= 0){
-        cout << "Yes" << "\n";
-    }
-    else{
-        cout << "No" << "\n";
-    }
-
 }

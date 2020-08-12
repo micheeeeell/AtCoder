@@ -59,61 +59,29 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
-void print() {
-    cout << endl;
-}
-
-template <class Head, class... Tail>
-void print(Head&& head, Tail&&... tail) {
-    cout << head;
-    if (sizeof...(tail) != 0) cout << " ";
-    print(forward<Tail>(tail)...);
-}
-
-template <class T>
-void print(vector<T> &vec) {
-    for (auto& a : vec) {
-        cout << a;
-        if (&a != &vec.back()) cout << "\n";
-    }
-    cout << endl;
-}
-
-template <class T>
-void print(vector<vector<T>> &df) {
-    for (auto& vec : df) {
-        print(vec);
-    }
-}
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n,m; cin >> n >> m;
-    vector<vector<ll>> graph(n);
-    vector<ll> in(n);
-    for(int i = 0; i < n-1+m; i++) {
-        ll a,b;cin >> a >> b;
-        a--;b--;
-        graph[a].emplace_back(b);
-        in[b]++;
-    }
-    ll root = -1;
-    rep(i,0,n)if(in[i] == 0)root = i;
-    vector<ll> par(n);
-    par[root] = 0;
-    queue<ll> que;
-    que.emplace(root);
-    while(!que.empty()){
-        ll t = que.front();que.pop();
-        for(auto &to : graph[t]){
-            in[to]--;
-            if(!in[to]){
-                par[to] = t+1;
-                que.emplace(to);
+    string s;cin >> s;
+    ll n = s.size();
+    ll k; cin >> k;
+    vector dp(n + 1, vector(2, vector<ll>(5)));
+    dp[0][0][0] = 1;
+    rep(i,0,n){
+        ll t = s[i] - '0';
+        rep(small, 0, 2){
+            rep(j,0,k+1)rep(d,0,10){
+                ll i_ = i + 1;
+                ll small_ = small;
+                ll j_ = j;
+                if(!small && d > t)continue;
+                if(t > d)small_ = 1;
+                if(d != 0)j_++;
+                dp[i_][small_][j_] += dp[i][small][j];
             }
         }
     }
-
-    print(par);
+    debug(dp);
+    cout << dp[n][0][k] + dp[n][1][k] << "\n";
 }

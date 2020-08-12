@@ -1,13 +1,10 @@
-#define LOCAL
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
 #include<bits/stdc++.h>
 using namespace std;
-#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define rrep(i,x) for(ll i = (ll)(x)-1;0 <= i; i--)
-#define reps(i,x) for(ll i = 1; i < (ll)(x)+1; i++)
-#define rreps(i,x) for(ll i = (ll)(x); 1 <= i; i--)
+#define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
+#define rrep(i,s,t) for(ll i = (ll)(s-1);(ll)(t) <= i; i--)
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
 typedef long double ld;
@@ -22,7 +19,7 @@ constexpr ll n_max = 2e5+10;
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
-string to_string(const char c) {return to_string((string) &c);}
+string to_string(const char *c) {return to_string((string) c);}
 string to_string(bool b) {return (b ? "true" : "false");}
 template <size_t N>
 string to_string(bitset<N> v){
@@ -67,28 +64,16 @@ signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     ll n; cin >> n;
-    vector<ll> cnt(5);
-    rep(i,n){
-        string s;cin >> s;
-        if(s[0] == 'M')cnt[0]++;
-        if(s[0] == 'A')cnt[1]++;
-        if(s[0] == 'R')cnt[2]++;
-        if(s[0] == 'C')cnt[3]++;
-        if(s[0] == 'H')cnt[4]++;    
-    }
-
-    ll ans = 0;
-    rep(i, (1LL << 5)){
-        bitset<5> bs(i);
-        if(bs.count() != 3)continue;
-        ll temp = 1;
-        rep(j,5){
-            if(bs[j]){
-                temp *= cnt[j];
+    auto c = [&](ll x, ll y, ll z){
+        return x * x + y * y + z * z + x * y + y * z + x * z;
+    };
+    vector<ll> ans(n+1);
+    for(int x = 1; x * x <= n; x++){
+        for(int y = 1; y * y <= n; y++){
+            for(int z = 1; z * z <= n; z++){
+                if(c(x, y, z) <= n)ans[c(x, y, z)]++;
             }
         }
-        ans += temp;
     }
-
-    cout << ans << endl;
+    rep(i,1,n+1)cout << ans[i] << "\n";
 }

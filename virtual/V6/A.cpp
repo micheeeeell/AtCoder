@@ -65,15 +65,6 @@ void YES(bool ok){
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    string s;cin >> s;
-    ll n = s.size();
-    bool ok = true;
-    rep(i,0,n){
-        ok &= s[i] == s[n-i-1];
-    }
-    rep(i,0,n/2){
-        ok &= s[i] == s[n/2-1-i];
-    }
-
-    YES(ok);
+    ll a,b,c; cin >> a >> b >> c;
+    cout << min(c, b / a) << "\n";
 }
