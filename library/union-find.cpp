@@ -63,13 +63,13 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
 template< typename T>
 struct UnionFind{
-private:
+    private:
     vector<T> par;
     vector<T> rank;
     vector<T> sz;
     int n;
 
-public:
+    public:
     //n要素で親を初期化、par[x]はxの親を表す
     UnionFind(int n): n(n) {
         par.resize(n,0);
