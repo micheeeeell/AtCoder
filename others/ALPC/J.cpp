@@ -2,6 +2,8 @@
 #define _GLIBCXX_DEBUG
 #endif
 #include<bits/stdc++.h>
+#include<atcoder/all>
+using namespace atcoder;
 using namespace std;
 #define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
 #define rrep(i,s,t) for(ll i = (ll)(s-1);(ll)(t) <= i; i--)
@@ -60,26 +62,34 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+ll op(ll a, ll b){return max(a, b);};
+ll e(){return -1;};
+ll target;
+bool f(ll x){
+    return x < target;
+}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll h,w,d; cin >> h >> w >> d;
-    vector<Pll> pos(h * w);
-    rep(i,0,h)rep(j,0,w){
-        ll a; cin >> a;
-        a--;
-        pos[a] = {i, j};
-    }
-    vector<ll> dp(h * w);
-    rep(i,0,h*w){
-        if(i - d < 0)continue;
-        dp[i] = dp[i - d] + abs(pos[i].first - pos[i-d].first) + abs(pos[i].second - pos[i-d].second);
-    }
-
-    ll q; cin >> q;
+    ll n,q; cin >> n >> q;
+    vector<ll> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    segtree<ll, op, e> seg(a);
     rep(i,0,q){
-        ll l,r; cin >> l >> r;
-        l--;r--;
-        cout << dp[r] - dp[l] << "\n";
+        ll t,x,y; cin >> t >> x >> y;
+        if(t == 1){
+            x--;
+            seg.set(x, y);
+        }
+        else if(t == 2){
+            x--;
+            cout << seg.prod(x, y) << "\n";
+        }
+        else{
+            target = y;
+            x--;
+            ll id = seg.max_right<f>(x);
+            cout << id + 1 << "\n";
+        }
     }
 }

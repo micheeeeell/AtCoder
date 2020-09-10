@@ -55,6 +55,7 @@ void debug_out(Head H, Tail... T) {
 #define debug(...) 42
 #endif
 
+
 template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
@@ -157,9 +158,9 @@ struct WaveletMatrix {
 
     WaveletMatrix(int n, vector<T> &v) : n(n) {
         max_ = *max_element(v.begin(), v.end()) + 1;
-        // LOG = get_num_of_bit(max_); // ->max_が小、cが大きいとバグる
+        // LOG = get_num_of_bit(max_);
         LOG = 64;
-        
+
         bv.assign(LOG, bitVector(n));
         border.resize(LOG);
         cumulative_sum.resize(LOG + 1, vector<T>(n + 1, 0));
@@ -624,83 +625,31 @@ struct WaveletMatrix {
     }
 };
 
-
-void print() {
-    cout << endl;
-}
-
-template <class Head, class... Tail>
-void print(Head&& head, Tail&&... tail) {
-    cout << head;
-    if (sizeof...(tail) != 0) cout << " ";
-    print(forward<Tail>(tail)...);
-}
-
-template <class T>
-void print(vector<T> &vec) {
-    for (auto& a : vec) {
-        cout << a;
-        if (&a != &vec.back()) cout << " ";
-    }
-    cout << endl;
-}
-
-template <class T>
-void print(vector<vector<T>> &df) {
-    for (auto& vec : df) {
-        print(vec);
-    }
-}
-
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
-    vector<int> b = {0,0,1,1,1,0,1,1,0,0,0,1,0,1,0,1,1};
-    ll n = b.size();
-    bitVector V(n);
-    rep(i,0,n)V.set(i, b[i]);
-    V.build();
+    ll n,t; cin >> n >> t;
+    ll min_ = 0;
+    vector<ll> a(n);
+    for(int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    vector<ll> sum(n + 1);
     rep(i,0,n){
-        cout << V.access(i) << " ";
+        sum[i + 1] = sum[i] + a[i];
+        chmin(min_, sum[i+1]);
     }
-    cout << endl;
-    debug(V.rank(4,8,1), V.rank(17,1), V.select(6,1));
-    debug(V.rank(4,12,0), V.rank(17,0), V.select(6,0));
-    print("Wavelet Matrix");
-    vector<ll> v = {5,4,5,5,2,1,5,6,1,3,5,0};
-    n = v.size();
-    WaveletMatrix<ll> wm(n, v);
-    print(wm.border);
-    rep(i,0,3){
-        rep(j,0,n){
-            cout << wm.bv[i].access(j) << " ";
-        }
-        cout << endl;
-    }
-    rep(i,0,n){
-        cout << wm.access(i) << " ";
-    }
-    cout << endl;
     rep(i,0,n+1){
-        cout << wm.rank(i, 5) << " ";
+        sum[i] -= min_;
+        if(t < 0)sum[i] += abs(t);
     }
-    cout << endl;
+    debug(sum);
+    WaveletMatrix<ll> wm(n+1, sum);
+    ll ans = 0;
+    rep(i,0,n){
+        ans += wm.rankLess(i+1, n+1, sum[i] + t);
+        debug(i, ans);
+    }
 
-    rep(i,0,7)debug(wm.select(i, 5));
-
-    rep(i,0,11)debug(i, wm.quantile(1, 11, i));
-
-    debug(wm.topk(1, 10, 6));
-    debug(wm.rangeSum(1, 10));
-
-    auto [r, rl, rm] = wm.rankAll(1, 10, 1024);
-    debug(r, rl, rm);
-
-    rep(i,3,10)debug(wm.prevValue(4, 8, 0, i));
-    rep(i,0,10)debug(wm.nextValue(4, 8, i, 10));
-
-    debug(wm.rangeMaxk(1, 10, 2));
-    debug(wm.rangeMink(1, 10, 2));
-    debug(wm.rangeList(1, 10, 3, 6));
+    cout << ans << "\n";
 }

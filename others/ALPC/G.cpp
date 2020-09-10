@@ -2,6 +2,8 @@
 #define _GLIBCXX_DEBUG
 #endif
 #include<bits/stdc++.h>
+#include<atcoder/all>
+using namespace atcoder;
 using namespace std;
 #define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
 #define rrep(i,s,t) for(ll i = (ll)(s-1);(ll)(t) <= i; i--)
@@ -59,27 +61,48 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+void print() {
+    cout << endl;
+}
+
+template <class Head, class... Tail>
+void print(Head&& head, Tail&&... tail) {
+    cout << head;
+    if (sizeof...(tail) != 0) cout << " ";
+    print(forward<Tail>(tail)...);
+}
+
+template <class T>
+void print(vector<T> &vec) {
+    for (auto& a : vec) {
+        cout << a;
+        if (&a != &vec.back()) cout << " ";
+    }
+    cout << endl;
+}
+
+template <class T>
+void print(vector<vector<T>> &df) {
+    for (auto& vec : df) {
+        print(vec);
+    }
+}
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll h,w,d; cin >> h >> w >> d;
-    vector<Pll> pos(h * w);
-    rep(i,0,h)rep(j,0,w){
-        ll a; cin >> a;
-        a--;
-        pos[a] = {i, j};
+    ll n,m; cin >> n >> m;
+    scc_graph g(n);
+    rep(i,0,m){
+        ll a,b; cin >> a >> b;
+        g.add_edge(a, b);
     }
-    vector<ll> dp(h * w);
-    rep(i,0,h*w){
-        if(i - d < 0)continue;
-        dp[i] = dp[i - d] + abs(pos[i].first - pos[i-d].first) + abs(pos[i].second - pos[i-d].second);
+    auto v = g.scc();
+
+    cout << v.size() << endl;
+    for(auto &t : v){
+        cout << t.size() << " ";
+        print(t);
     }
 
-    ll q; cin >> q;
-    rep(i,0,q){
-        ll l,r; cin >> l >> r;
-        l--;r--;
-        cout << dp[r] - dp[l] << "\n";
-    }
 }

@@ -198,5 +198,40 @@ signed main(){
     ios::sync_with_stdio(false);
     ll n,k; cin >> n >> k;
     string s;cin >> s;
+    vector dp(k + 1, vector<mint>(k + 1));
+    dp[0][0] = 1;
+    rep(i,0,n){
+        vector dp_(k + 1, vector<mint>(k + 1));
+        rep(j,0,k+1)rep(l,0,k+1){
+            ll j_ = j, l_ = l;
+            if(s[i] != '0'){
+                if(l == j){l_++; j_++;}
+                else{l_++;}
+                if(l_ <= k){
+                    dp_[j_][l_] += dp[j][l];
+                }
+            }
+            j_ = j, l_ = l;
+            if(s[i] != '1'){
+                if(l == 0){
+                    j_++;
+                }
+                else{
+                    l_--;
+                }
+                if(j_ <= k){
+                    dp_[j_][l_] += dp[j][l];
+                }
+            }
+        }
+        debug(i, dp_, dp);
+        swap(dp, dp_);
+    }
 
+    mint ans = 0;
+    rep(j,0,k+1)rep(l,0,k+1){
+        ans += dp[j][l];
+    }
+
+    cout << ans << endl;
 }

@@ -59,30 +59,14 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
-
-map<ll, int> prime(ll x) {
-    map<ll, int> e;
-    for(int i = 2; i * i <= x; i++) {
-        while(x % i == 0) {
-            e[i]++;
-            x /= i;
-        }
-    }
-    if(x != 1) e[x]++;
-    return e;
+void YES(bool ok){
+    cout << (ok ? "Yes" : "No") << endl;
 }
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n; cin >> n;
-    ll p; cin >> p;
-    auto mp = prime(p);
-    ll ans = 1;
-    for(auto pl : mp){
-        if(pl.second >= n){
-            ans *= pow(pl.first, pl.second / n);
-        }
-    }
-
-    cout << ans << "\n";
+    string s, t;cin >> s >> t;
+    sort(all(s));
+    sort(all(t), greater<char>());
+    YES(s < t);
 }

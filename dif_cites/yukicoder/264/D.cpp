@@ -60,26 +60,40 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+const int MAX = 1e6 + 10;
+
+long double fac[MAX];
+
+// テーブルを作る前処理
+void COMinit() {
+    fac[0] = 0;
+    fac[1] = 0;
+    rep(i,2,MAX){
+        fac[i] = fac[i-1] + log2(i);
+    }
+}
+
+long double com(int n, int k){
+    if(n < k) return 0;
+    if(n < 0 || k < 0) return 0;
+    return fac[n] - fac[k] - fac[n - k];
+}
+
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll h,w,d; cin >> h >> w >> d;
-    vector<Pll> pos(h * w);
-    rep(i,0,h)rep(j,0,w){
-        ll a; cin >> a;
-        a--;
-        pos[a] = {i, j};
-    }
-    vector<ll> dp(h * w);
-    rep(i,0,h*w){
-        if(i - d < 0)continue;
-        dp[i] = dp[i - d] + abs(pos[i].first - pos[i-d].first) + abs(pos[i].second - pos[i-d].second);
-    }
+    COMinit();
 
     ll q; cin >> q;
-    rep(i,0,q){
-        ll l,r; cin >> l >> r;
-        l--;r--;
-        cout << dp[r] - dp[l] << "\n";
+    while(q--){
+        ll n,m,k; cin >> n >> m >> k;
+        ld f = com(n, k) + log2(m);
+        ld s = k * log2(m) + log2(n - k + 1);
+        if(f > s){
+            cout << "Straight" << "\n";
+        }
+        else{
+            cout << "Flush" << "\n";
+        }
     }
 }

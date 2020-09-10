@@ -1,28 +1,34 @@
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-#define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
-#define rrep(i,s,t) for(ll i = (ll)(s-1);(ll)(t) <= i; i--)
+#define rep(i, s, t) for(ll i = (ll)(s); i < (ll)(t); i++)
+#define rrep(i, s, t) for(ll i = (ll)(s - 1); (ll)(t) <= i; i--)
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
 typedef long double ld;
-typedef pair<ll,ll> Pll;
+typedef pair<ll, ll> Pll;
 typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef vector<vvl> vvvl;
-constexpr ll INF = numeric_limits<ll>::max()/4;
-constexpr ll n_max = 2e5+10;
+constexpr ll INF = numeric_limits<ll>::max() / 4;
+constexpr ll n_max = 2e5 + 10;
 #define int ll
 
 template <typename A, typename B>
 string to_string(pair<A, B> p);
-string to_string(const string &s) {return '"' + s + '"';}
-string to_string(const char *c) {return to_string((string) c);}
-string to_string(bool b) {return (b ? "true" : "false");}
+string to_string(const string &s) {
+    return '"' + s + '"';
+}
+string to_string(const char *c) {
+    return to_string((string)c);
+}
+string to_string(bool b) {
+    return (b ? "true" : "false");
+}
 template <size_t N>
-string to_string(bitset<N> v){
+string to_string(bitset<N> v) {
     string res = "";
     for(size_t i = 0; i < N; i++) res += static_cast<char>('0' + v[i]);
     return res;
@@ -40,10 +46,14 @@ string to_string(A v) {
     return res;
 }
 template <typename A, typename B>
-string to_string(pair<A, B> p){return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";}
+string to_string(pair<A, B> p) {
+    return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";
+}
 
-void debug_out() {cerr << endl;}
-template<typename Head, typename... Tail>
+void debug_out() {
+    cerr << endl;
+}
+template <typename Head, typename... Tail>
 void debug_out(Head H, Tail... T) {
     cerr << " " << to_string(H);
     debug_out(T...);
@@ -55,10 +65,22 @@ void debug_out(Head H, Tail... T) {
 #define debug(...) 42
 #endif
 
-template<class T>
-bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
-template<class T>
-bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+template <class T>
+bool chmax(T &a, T b) {
+    if(a < b) {
+        a = b;
+        return true;
+    }
+    return false;
+}
+template <class T>
+bool chmin(T &a, T b) {
+    if(a > b) {
+        a = b;
+        return true;
+    }
+    return false;
+}
 
 random_device rnd;
 mt19937 mt(rnd());
@@ -74,7 +96,6 @@ struct SplayNode {
         right = nullptr;
         left = nullptr;
         size = 1;
-        value = e();
     }
 
     void rotate() {
@@ -258,48 +279,36 @@ struct SplayNode {
         root = insert(ind, ins, root);
         return get(mt() % root->size, root);
     }
-
-
-    friend SN *vector_init(vector<SN> &s, vector<Monoid> &v) {
-        int n = v.size();
-        assert(s.size() > v.size());
-        if(n == 0) return nullptr;
-        for(int i = 0; i < n; i++) {
-            s[i].value = v[i];
-        }
-
-        SN *root = &s[0];
-        for(int i = 0; i < n; i++) {
-            s[i + 1].left = root;
-            root->parent = &s[i + 1];
-            root = &s[i + 1];
-            root->update();
-            root = get(mt() % (i + 1), root);
-        }
-
-        return root;
-    }
 };
+
 template <typename Monoid, Monoid (*f)(Monoid, Monoid), Monoid (*e)()>
 using SN = SplayNode<Monoid, f, e>;
 
-ll f(ll a, ll b){return a;};
-ll e(){return 0;};
-signed main(){
+ll f(ll a, ll b){return a;}
+ll e(){return 0;}
+
+signed main() {
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
-    SN<ll, f, e>* root = nullptr;
-    ll q; cin >> q;
-    while(q--){
-        ll t,x; cin >> t >> x;
-        if(t == 1){
-            root = val_insert(x, root);
+    ll n, t;
+    cin >> n >> t;
+    vector<ll> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    vector<ll> sum(n + 1);
+    rep(i, 0, n) sum[i + 1] = sum[i] + a[i];
+    ll ans = 0;
+    SplayNode<ll, f, e> *root = nullptr;
+    // debug(sum);
+    rep(i, 0, n + 1) {
+        auto [r, ok] = upper_bound(sum[i] - t, root);
+        // debug(sum[i] - t, ok);
+        if(ok){
+            root = r;
+            ans += i - index_(root);
         }
-        else{
-            auto [tr, p] = remove(x-1, root);
-            cout << p->value << "\n";
-            root = tr;
-        }
+
+        root = val_insert(sum[i], root);
     }
+
+    cout << ans << endl;
 }

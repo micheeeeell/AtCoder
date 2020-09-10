@@ -60,26 +60,28 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+void YES(bool ok){
+    cout << (ok ? "Yes" : "No") << endl;
+    exit(0);
+}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll h,w,d; cin >> h >> w >> d;
-    vector<Pll> pos(h * w);
-    rep(i,0,h)rep(j,0,w){
-        ll a; cin >> a;
-        a--;
-        pos[a] = {i, j};
+    ll n,z; cin >> n >> z;
+    if(n > 2) YES(false);
+    if(n == 1){
+        YES(z >= 2);
     }
-    vector<ll> dp(h * w);
-    rep(i,0,h*w){
-        if(i - d < 0)continue;
-        dp[i] = dp[i - d] + abs(pos[i].first - pos[i-d].first) + abs(pos[i].second - pos[i-d].second);
+    z *= z;
+    bool ok = false;
+    auto c = [&](ll x){
+        if(x <= 0)return ;
+        ll r = sqrt(x);
+        if(r * r == x)ok = true;
+    };
+    rep(i,1,z){
+        c(z - i * i);
+        if(ok)break;
     }
-
-    ll q; cin >> q;
-    rep(i,0,q){
-        ll l,r; cin >> l >> r;
-        l--;r--;
-        cout << dp[r] - dp[l] << "\n";
-    }
+    YES(ok);
 }

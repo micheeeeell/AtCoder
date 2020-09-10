@@ -13,7 +13,7 @@ typedef vector<ll> vl;
 typedef vector<vl> vvl;
 typedef vector<vvl> vvvl;
 constexpr ll INF = numeric_limits<ll>::max()/4;
-constexpr ll n_max = 5e3+10;
+constexpr ll n_max = 2e5+10;
 #define int ll
 
 template <typename A, typename B>
@@ -60,37 +60,161 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+template<std::int_fast64_t Modulus>
+class modint {
+    using i64 = int_fast64_t;
+
+    public:
+    i64 a;
+
+    constexpr modint(const i64 x = 0) noexcept {
+        this -> a = x % Modulus;
+        if(a < 0){
+            a += Modulus;
+        }
+    }
+    constexpr int getmod() { return Modulus; }
+    constexpr modint operator - () const noexcept {
+        return a ? Modulus - a : 0;
+    }
+    constexpr const i64 &value() const noexcept {return a;}
+    constexpr modint operator+(const modint rhs) const noexcept {
+        return modint(*this) += rhs;
+    }
+    constexpr modint operator-(const modint rhs) const noexcept {
+        return modint(*this) -= rhs;
+    }
+    constexpr modint operator*(const modint rhs) const noexcept {
+        return modint(*this) *= rhs;
+    }
+    constexpr modint operator/(const modint rhs) const noexcept {
+        return modint(*this) /= rhs;
+    }
+    constexpr modint &operator+=(const modint rhs) noexcept {
+        a += rhs.a;
+        if(a >= Modulus) {
+            a -= Modulus;
+        }
+        return *this;
+    }
+    constexpr modint &operator-=(const modint rhs) noexcept {
+        if(a < rhs.a) {
+            a += Modulus;
+        }
+        a -= rhs.a;
+        return *this;
+    }
+    constexpr modint &operator*=(const modint rhs) noexcept {
+        a = a * rhs.a % Modulus;
+        return *this;
+    }
+    constexpr modint &operator/=(modint rhs) noexcept {
+        i64 a_ = rhs.a, b = Modulus, u = 1, v = 0;
+        while(b){
+            i64 t = a_/b;
+            a_ -= t * b; swap(a_,b);
+            u -= t * v; swap(u,v);
+        }
+        a = a * u % Modulus;
+        if(a < 0) a += Modulus;
+        return *this;
+    }
+    
+    // 自前実装
+    constexpr bool operator==(const modint rhs) noexcept {
+        return a == rhs.a;
+    }
+    constexpr bool operator!=(const modint rhs) noexcept {
+        return a != rhs.a;
+    }
+    constexpr bool operator>(const modint rhs) noexcept {
+        return a > rhs.a;
+    }
+    constexpr bool operator>=(const modint rhs) noexcept {
+        return a >= rhs.a;
+    }
+    constexpr bool operator<(const modint rhs) noexcept {
+        return a < rhs.a;
+    }
+    constexpr bool operator<=(const modint rhs) noexcept {
+        return a <= rhs.a;
+    }
+    constexpr modint& operator++() noexcept {
+        return (*this) += modint(1);
+    }
+    // constexpr modint operator++(int) {
+    //     modint tmp(*this);
+    //     operator++();
+    //     return tmp;
+    // }
+    constexpr modint& operator--() noexcept {
+        return (*this) -= modint(1);
+    }
+    // constexpr modint operator--(int) {
+    //     modint tmp(*this);
+    //     operator--();
+    //     return tmp;
+    // }
+    template<typename T>
+    friend constexpr modint modpow(const modint &mt, T n) noexcept {
+        if(n < 0){
+            modint t = (modint(1) / mt);
+            return modpow(t, -n);
+        }
+        modint res = 1, tmp = mt;
+        while(n){
+            if(n & 1)res *= tmp;
+            tmp *= tmp;
+            n /= 2;
+        }
+        return res;
+    }
+
+    friend constexpr string to_string(const modint &mt) noexcept {
+        return to_string(mt.a);
+    }
+};
+
+// 標準入出力対応
+template<std::int_fast64_t Modulus>
+std::ostream &operator<<(std::ostream &out, const modint<Modulus> &m) {
+    out << m.a;
+    return out;
+}
+template<std::int_fast64_t Modulus>
+std::istream &operator>>(std::istream &in, modint<Modulus> &m) {
+    ll a;
+    in >> a;
+    m = modint<Modulus>(a);
+    return in;
+}
+
+const ll MOD = 1e9+7;
+// const ll MOD = 998244353;
+using mint = modint<MOD>;
+
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     ll n; cin >> n;
-    vector<ll> a(3);
-    for(int i = 0; i < 3; i++) cin >> a[i];
-    vector<ll> b(3);
-    for(int i = 0; i < 3; i++) cin >> b[i];
+    vector<mint> x(n);
+    rep(i,0,n)cin >> x[i];
+    mint fact = 1;
+    vector<mint> dp(n-1);
+    dp[0] = 1;
+    rep(j,1,n-1){
+        dp[j] = dp[j-1] * j;
+        dp[j] += dp[j-1] + fact;
+        fact *= (j + 1);
+    }
+    debug(dp);
 
-    auto calc = [&](ll x, vector<ll> &f, vector<ll> &t){
-        ll res = 0;
-        ll sum = 0, re = 0, k, temp, temp2;
-        rep(i,0,n_max){
-            if(i * f[0] > x)break;
-            rep(j,0,n_max){
-                sum = i * f[0] + j * f[1];
-                if(sum > x)break;
-                re = x - sum;
-                k = re / f[2];
-                temp = i * t[0] + j * t[1] + k * t[2] + re % f[2];
-                temp2 = i * t[0] + j * t[1] + re;
-                debug(i,j,k,temp, temp2);
-                chmax(res, temp);
-                chmax(res, temp2);
-            }
-        }
-        return res;
-    };
+    mint ans = 0;
+    mint tfact = 1;
+    rep(i,0,n-1){
+        ans += (x[i+1] - x[i]) * dp[i] * fact / tfact;
+        tfact *= (i + 2);
+    }
 
-    n = calc(n, a, b);
-    debug(n);
-    n = calc(n, b, a);
-    cout << n << "\n";
+    cout << ans << "\n";
 }

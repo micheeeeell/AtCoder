@@ -63,17 +63,22 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n,k; cin >> n >> k;
-    if(k == 0){
-        cout << n * n << "\n";
-        return 0;
+    ll n,m; cin >> n >> m;
+    priority_queue<ll> pq;
+    rep(i,0,n){
+        ll a; cin >> a;
+        pq.emplace(a);
     }
+    rep(i,0,m){
+        ll t = pq.top();pq.pop();
+        t /= 2;
+        pq.emplace(t);
+    }
+
     ll ans = 0;
-    rep(i, k+1, n + 1){
-        for(int j = 0; j <= n; j += i){
-            if(j + k <= n)ans += min(j + i - 1, n) - (j + k) + 1;
-        }
-        debug(i, ans);
+    while(!pq.empty()){
+        ll t = pq.top();pq.pop();
+        ans += t;
     }
 
     cout << ans << "\n";

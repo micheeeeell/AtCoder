@@ -153,13 +153,11 @@ struct WaveletMatrix {
     int n;
     vector<int> border;
     unordered_map<T, int> first_id, count;
-    vector<vector<T>> cumulative_sum;
+    vector< vector<T> > cumulative_sum;
 
     WaveletMatrix(int n, vector<T> &v) : n(n) {
         max_ = *max_element(v.begin(), v.end()) + 1;
-        // LOG = get_num_of_bit(max_); // ->max_が小、cが大きいとバグる
-        LOG = 64;
-        
+        LOG = get_num_of_bit(max_);
         bv.assign(LOG, bitVector(n));
         border.resize(LOG);
         cumulative_sum.resize(LOG + 1, vector<T>(n + 1, 0));
@@ -168,8 +166,8 @@ struct WaveletMatrix {
 
     void build(vector<T> &v) {
         vector<T> pre, suf, vec = v;
-        for(int i = 0; i < n; i++) {
-            cumulative_sum[0][i + 1] = cumulative_sum[0][i] + vec[i];
+        for(int i = 0; i < n; i++){
+            cumulative_sum[0][i+1] = cumulative_sum[0][i] + vec[i];
         }
 
         for(int i = 0; i < LOG; i++) {
@@ -186,9 +184,8 @@ struct WaveletMatrix {
             int id = 0;
             for(auto &a : pre) vec[id++] = a;
             for(auto &a : suf) vec[id++] = a;
-            for(int j = 0; j < n; j++) {
-                cumulative_sum[i + 1][j + 1] =
-                    cumulative_sum[i + 1][j] + vec[j];
+            for(int j = 0; j < n; j++){
+                cumulative_sum[i+1][j+1] = cumulative_sum[i+1][j] + vec[j];
             }
             pre.clear();
             suf.clear();
@@ -435,14 +432,23 @@ struct WaveletMatrix {
         return res;
     }
 
-    T rangeSum(int l, int r, T x, T y) {
+    // T rangeSum(int l, int r, T x, T y){
+    //     auto v = rangeList(l, r, x, y);
+    //     T res = 0;
+    //     for(auto &[val, freq] : v){
+    //         res += val * freq;
+    //     }
+    //     return res;
+    // }
+
+    T rangeSum(int l, int r, T x, T y){
         return rangeSum(l, r, 0, 0, x, y);
     }
 
-    T rangeSum(int l, int r, int depth, T c, T x, T y) {
-        if(l == r) return 0;
-        if(depth == LOG) {
-            if(x <= c && c < y) {
+    T rangeSum(int l, int r, int depth, T c, T x, T y){
+        if(l == r)return 0;
+        if(depth == LOG){
+            if(x <= c && c < y){
                 return c * (r - l);
             }
             return 0;
@@ -450,11 +456,11 @@ struct WaveletMatrix {
 
         T next_c = (T)1 << (LOG - depth - 1) | c;
         T all_one_c = (((T)1 << (LOG - depth - 1)) - 1) | next_c;
-        if(all_one_c < x || y <= c) {
+        if(all_one_c < x || y <= c){
             return 0;
         }
 
-        if(x <= c && all_one_c < y) {
+        if(x <= c && all_one_c < y){
             return cumulative_sum[depth][r] - cumulative_sum[depth][l];
         }
 
@@ -463,8 +469,7 @@ struct WaveletMatrix {
         int l1 = l - l0 + border[depth];
         int r1 = r - r0 + border[depth];
 
-        return rangeSum(l0, r0, depth + 1, c, x, y) +
-               rangeSum(l1, r1, depth + 1, next_c, x, y);
+        return rangeSum(l0, r0, depth+1, c, x, y) + rangeSum(l1, r1, depth+1, next_c, x, y);
     }
 
     // [l, r)でxより小さい数の出現回数
@@ -623,8 +628,6 @@ struct WaveletMatrix {
         return bit_num;
     }
 };
-
-
 void print() {
     cout << endl;
 }
@@ -656,51 +659,21 @@ signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     
-    vector<int> b = {0,0,1,1,1,0,1,1,0,0,0,1,0,1,0,1,1};
-    ll n = b.size();
-    bitVector V(n);
-    rep(i,0,n)V.set(i, b[i]);
-    V.build();
-    rep(i,0,n){
-        cout << V.access(i) << " ";
+    ll n,k; cin >> n >> k;
+    vector<ll> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    WaveletMatrix<ll> wm(n, a);
+    ll ans = INF;
+    rep(i,0,n-k+1){
+        ll m = 0;
+        m = wm.quantile(i, i + k, (k + 1) / 2);
+        ll tmp = 0;
+        ll less_freq = wm.rangeFreq(i, i+k, 0, m), more_freq = k - less_freq;
+        ll less_sum = wm.rangeSum(i, i+k, 0, m), more_sum = wm.rangeSum(i, i+k, m, INF);
+        tmp = less_freq * m - less_sum + more_sum - m * more_freq;
+        debug(i, m, tmp, less_freq, less_sum, more_freq, more_sum);
+        chmin(ans, tmp);
     }
-    cout << endl;
-    debug(V.rank(4,8,1), V.rank(17,1), V.select(6,1));
-    debug(V.rank(4,12,0), V.rank(17,0), V.select(6,0));
-    print("Wavelet Matrix");
-    vector<ll> v = {5,4,5,5,2,1,5,6,1,3,5,0};
-    n = v.size();
-    WaveletMatrix<ll> wm(n, v);
-    print(wm.border);
-    rep(i,0,3){
-        rep(j,0,n){
-            cout << wm.bv[i].access(j) << " ";
-        }
-        cout << endl;
-    }
-    rep(i,0,n){
-        cout << wm.access(i) << " ";
-    }
-    cout << endl;
-    rep(i,0,n+1){
-        cout << wm.rank(i, 5) << " ";
-    }
-    cout << endl;
 
-    rep(i,0,7)debug(wm.select(i, 5));
-
-    rep(i,0,11)debug(i, wm.quantile(1, 11, i));
-
-    debug(wm.topk(1, 10, 6));
-    debug(wm.rangeSum(1, 10));
-
-    auto [r, rl, rm] = wm.rankAll(1, 10, 1024);
-    debug(r, rl, rm);
-
-    rep(i,3,10)debug(wm.prevValue(4, 8, 0, i));
-    rep(i,0,10)debug(wm.nextValue(4, 8, i, 10));
-
-    debug(wm.rangeMaxk(1, 10, 2));
-    debug(wm.rangeMink(1, 10, 2));
-    debug(wm.rangeList(1, 10, 3, 6));
+    cout << ans << endl;
 }

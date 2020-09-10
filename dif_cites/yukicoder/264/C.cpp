@@ -60,31 +60,22 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+void YES(bool ok){
+    cout << (ok ? "Yes" : "No") << endl;
+    exit(0);
+}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     ll n; cin >> n;
-    vector<ll> a(3);
-    for(int i = 0; i < 3; i++) cin >> a[i];
-    vector<ll> b(3);
-    for(int i = 0; i < 3; i++) cin >> b[i];
-    vector<ll> dp(n + 1);
-    rep(i,0,3){
-        rep(j,0,n+1){
-            chmax(dp[j], j);
-            if(j >= a[i])chmax(dp[j], dp[j - a[i]] + b[i]);
+    vector<ll> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    ll b = 0;
+    rrep(i,n,0){
+        if((a[i] + b) % (i + 1) != 0){
+            YES(false);
         }
-        debug(dp);
+        b += (a[i] + b) / (i + 1);
     }
-    debug(dp);
-    ll m = dp.back();
-    vector<ll> dp2(m + 1);
-    rep(i,0,3){
-        rep(j,0,m+1){
-            chmax(dp2[j], j);
-            if(j >= b[i])chmax(dp2[j], dp2[j - b[i]] + a[i]);
-        }
-    }
-
-    cout << dp2.back() << "\n";
+    YES(true);
 }

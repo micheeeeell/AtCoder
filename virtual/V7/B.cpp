@@ -64,11 +64,14 @@ signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     ll n; cin >> n;
-    set<string> st;
+    vector<ll> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    sort(all(a), greater<ll>());
+    ll al = 0, bo = 0;
     rep(i,0,n){
-        string s;cin >> s;
-        st.insert(s);
+        if(~i & 1)al += a[i];
+        else bo += a[i];
     }
 
-    cout << (st.size() == 3 ? "Three" : "Four") << "\n";
+    cout << al - bo << endl;
 }

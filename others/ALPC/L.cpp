@@ -2,6 +2,8 @@
 #define _GLIBCXX_DEBUG
 #endif
 #include<bits/stdc++.h>
+#include<atcoder/all>
+using namespace atcoder;
 using namespace std;
 #define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
 #define rrep(i,s,t) for(ll i = (ll)(s-1);(ll)(t) <= i; i--)
@@ -60,26 +62,60 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+struct S {
+    ll num;
+    ll o, z;
+    ll rev(){
+        ll a = o + z;
+        ll res = a * (a - 1) / 2;
+        res -= num;
+        res -= o * (o - 1) / 2 + z * (z - 1) / 2;
+        return res;
+    }
+};
+S op(S l, S r){
+    return S{l.num + r.num + l.o * r.z, l.o + r.o, l.z + r.z};
+}
+
+S e(){
+    return S{0, 0, 0};
+}
+
+S mapping(bool is_rev, S x){
+    return is_rev ? S{x.rev(), x.z, x.o} : x;
+}
+
+bool composition(bool f, bool g){
+    return f ^ g;
+}
+
+bool id(){
+    return false;
+}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll h,w,d; cin >> h >> w >> d;
-    vector<Pll> pos(h * w);
-    rep(i,0,h)rep(j,0,w){
-        ll a; cin >> a;
-        a--;
-        pos[a] = {i, j};
-    }
-    vector<ll> dp(h * w);
-    rep(i,0,h*w){
-        if(i - d < 0)continue;
-        dp[i] = dp[i - d] + abs(pos[i].first - pos[i-d].first) + abs(pos[i].second - pos[i-d].second);
+    ll n,q; cin >> n >> q;
+    vector<S> a(n);
+    rep(i,0,n){
+        ll t; cin >> t;
+        if(t)a[i] = S{0, 1, 0};
+        else a[i] = S{0, 0, 1};
     }
 
-    ll q; cin >> q;
+    lazy_segtree<S, op, e, bool, mapping, composition, id> lseg(a);
+
     rep(i,0,q){
-        ll l,r; cin >> l >> r;
-        l--;r--;
-        cout << dp[r] - dp[l] << "\n";
+        ll t; cin >> t;
+        if(t == 1){
+            ll l,r; cin >> l >> r;
+            l--;
+            lseg.apply(l, r, true);
+        }
+        else{
+            ll l,r; cin >> l >> r;
+            l--;
+            cout << lseg.prod(l, r).num << "\n";
+        }
     }
 }

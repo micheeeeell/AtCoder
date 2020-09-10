@@ -62,16 +62,7 @@ void prime_map(ll x, map<ll,ll> &map_){
     // return map_;
 }
 
-// エラストテネスの篩
-const ll N = 1e6+10;
-bitset<N> is_prime(0);
-void build_sieve(){
-    is_prime = ~is_prime;
-    is_prime[0] = is_prime[1] = 0;
-    for(ll i = 2; i < N; ++i)if(is_prime[i]){
-        for(ll j = 2*i; j < N; j+=i)is_prime[j] = 0;
-    }
-}
+
 
 int main(){
     ll n; cin >> n;

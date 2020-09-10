@@ -97,7 +97,7 @@ bool dfs(ll s, ll now, ll pre = -1){
 // 極小閉路ではないので注意
 bool closed_path(){
     ll n = graph.size();
-    used.resize(n, 0);
+    used.assign(n, 0);
     ll s = -1;
     for(int i = 0; i < graph.size(); i++){
         if(!used[i]) chmax(s, pre_dfs(i));

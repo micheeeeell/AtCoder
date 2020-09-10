@@ -63,23 +63,37 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll h,w,d; cin >> h >> w >> d;
-    vector<Pll> pos(h * w);
-    rep(i,0,h)rep(j,0,w){
-        ll a; cin >> a;
-        a--;
-        pos[a] = {i, j};
-    }
-    vector<ll> dp(h * w);
-    rep(i,0,h*w){
-        if(i - d < 0)continue;
-        dp[i] = dp[i - d] + abs(pos[i].first - pos[i-d].first) + abs(pos[i].second - pos[i-d].second);
-    }
+    ll n; cin >> n;
+    vector<ll> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    vector<ll> b(n);
+    for(int i = 0; i < n; i++) cin >> b[i];
 
-    ll q; cin >> q;
-    rep(i,0,q){
-        ll l,r; cin >> l >> r;
-        l--;r--;
-        cout << dp[r] - dp[l] << "\n";
+    vector<vector<ll>> graph(n);
+    for(int i = 0; i < n-1; i++) {
+        ll u,v;cin >> u >> v;
+        u--;v--;
+        graph[u].emplace_back(v);
+        graph[v].emplace_back(u);
     }
+    
+
+    vector<ll> dp0(n), dp1(n);
+
+    auto dfs = [&](auto self, ll now, ll pre = -1) -> void{
+        ll res0 = 0, res1 = 0;
+        for(auto &to : graph[now]){
+            if(to == pre)continue;
+
+            self(self, to, now);
+            res0 += max(dp1[to], dp0[to]);
+            res1 += max(dp1[to] + b[now] + b[to], dp0[to]);
+        }
+        dp0[now] = res0 + a[now];
+        dp1[now] = res1;
+    };
+
+    dfs(dfs, 0);
+    debug(dp0, dp1);
+    cout << max(dp0[0], dp1[0]) << endl;
 }
