@@ -1,25 +1,65 @@
+#ifdef LOCAL
+#define _GLIBCXX_DEBUG
+#endif
 #include<bits/stdc++.h>
-#include<iostream>
-#include<cstdio>
-#include<vector>
-#include<string>
-#include<algorithm>
-#include<map>
 using namespace std;
-#define rep(i,x) for(ll i = 0; i < (ll)(x); i++)
-#define pb push_back
-#define eb emplace_back
-#define debug(x) cerr << #x << ": " << (x) << "\n";
+#define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
+#define rrep(i,s,t) for(ll i = (ll)(s-1);(ll)(t) <= i; i--)
 #define all(x) (x).begin(), (x).end()
 typedef long long ll;
 typedef long double ld;
-typedef pair<int,int> P;
 typedef pair<ll,ll> Pll;
 typedef vector<ll> vl;
-typedef vector<vector<ll>> vvl;
-typedef vector<vector<vector<ll>>> vvvl;
-const ll INF = numeric_limits<ll>::max()/4;
-const int n_max = 1e5+10;
+typedef vector<vl> vvl;
+typedef vector<vvl> vvvl;
+constexpr ll INF = numeric_limits<ll>::max()/4;
+constexpr ll n_max = 2e5+10;
+#define int ll
+const long double pi = 3.14159265358979323846;
+
+template <typename A, typename B>
+string to_string(pair<A, B> p);
+string to_string(const string &s) {return '"' + s + '"';}
+string to_string(const char *c) {return to_string((string) c);}
+string to_string(bool b) {return (b ? "true" : "false");}
+template <size_t N>
+string to_string(bitset<N> v){
+    string res = "";
+    for(size_t i = 0; i < N; i++) res += static_cast<char>('0' + v[i]);
+    return res;
+}
+template <typename A>
+string to_string(A v) {
+    bool first = true;
+    string res = "{";
+    for(const auto &x : v) {
+        if(!first) res += ", ";
+        first = false;
+        res += to_string(x);
+    }
+    res += "}";
+    return res;
+}
+template <typename A, typename B>
+string to_string(pair<A, B> p){return "(" + to_string(p.first) + ", " + to_string(p.second) + ")";}
+
+void debug_out() {cerr << endl;}
+template<typename Head, typename... Tail>
+void debug_out(Head H, Tail... T) {
+    cerr << " " << to_string(H);
+    debug_out(T...);
+}
+
+#ifdef LOCAL
+#define debug(...) cerr << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
+#else
+#define debug(...) 42
+#endif
+
+template<class T>
+bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
+template<class T>
+bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
 // SegmentTree(n, f, g, h, M1, OM0):= サイズ n の初期化。
 // ここで f は2つの区間の要素をマージする二項演算, 
@@ -28,6 +68,10 @@ const int n_max = 1e5+10;
 // M1 はモノイドの単位元, 
 // OM0 は作用素の単位元である。
 // update(a, b, x) := 区間 [a,b) に作用素 x を適用する。
+// set(id, x) := id番目の要素をxに変更する(一点更新)
+// dataの一番下（元のデータ）はsetによって変えない限り常に変わらない(seg[id]で現在のid番目の要素に直接アクセスできる)
+// seg[id] == seg.query(id, id+1)とは限らない
+
 template <typename Monoid, typename OperatorMonoid = Monoid>
 struct LazySegmentTree {
     using F = function<Monoid(Monoid, Monoid)>;
@@ -55,11 +99,13 @@ struct LazySegmentTree {
     }
 
     void set(int k, const Monoid &x) {
-        data[k + sz] = x;
+        thrust(k += sz);
+        data[k] = x;
+        recalc(k);
     }
 
     void build(vector<Monoid> &vec) {
-        for(int i = 0; i < vec.size(); i++) set(i, vec[i]);
+        for(int i = 0; i < vec.size(); i++) data[i + sz] = vec[i];
         for(int k = sz - 1; k > 0; k--) {
             data[k] = f(data[2 * k + 0], data[2 * k + 1]);
         }
@@ -189,7 +235,7 @@ struct LazySegmentTree {
 // LazySegmentTree<ll, ll> seg(W, f, g, h, INF, -1);
 
 
-int main(){
+signed main(){
     ll n,q; cin >> n >> q;
     vector<ll> a(n,0);
     // 区間和取得、区間加算の例
@@ -200,17 +246,18 @@ int main(){
     // debug(seg.sz);
     // debug(seg.length(1));
     seg.build(a);
-    rep(i,q){
-        ll qry; cin >> qry;
-        if(qry == 0){
-            ll s,t,x; cin >> s >> t >> x;
-            s--;t--;
-            seg.update(s,t+1, x);
-        }
-        else {
-            ll s,t; cin >> s >> t;
-            s--;t--;
-            cout << seg.query(s, t+1) << "\n";
-        }
-    }
+    debug(seg);
+    // rep(i,q){
+    //     ll qry; cin >> qry;
+    //     if(qry == 0){
+    //         ll s,t,x; cin >> s >> t >> x;
+    //         s--;t--;
+    //         seg.update(s,t+1, x);
+    //     }
+    //     else {
+    //         ll s,t; cin >> s >> t;
+    //         s--;t--;
+    //         cout << seg.query(s, t+1) << "\n";
+    //     }
+    // }
 }

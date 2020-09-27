@@ -25,3 +25,4 @@ https://atcoder.jp/contests/arc017/tasks/arc017_4
 https://atcoder.jp/contests/abc163/tasks/abc163_f
 https://atcoder.jp/contests/abc128/tasks/abc128_f
 https://atcoder.jp/contests/agc021/tasks/agc021_d
+https://atcoder.jp/contests/code-festival-2016-qualc/tasks/codefestival_2016_qualC_d

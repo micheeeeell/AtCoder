@@ -30,7 +30,7 @@ signed main(){
     rep(i,w){
         ll p; cin >> p;
         pq.emplace(p, 0);
-    }
+    }SCHED_OTHER
     rep(i,h){
         ll q; cin >> q;
         pq.emplace(q, 1);
