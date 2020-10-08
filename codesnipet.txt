@@ -196,6 +196,7 @@
             "constexpr ll INF = numeric_limits<ll>::max()/4;",
             "constexpr ll n_max = 2e5+10;",
             "#define int ll",
+            "const long double pi = 3.14159265358979323846;",
             "",
             "template <typename A, typename B>",
             "string to_string(pair<A, B> p);",
@@ -330,8 +331,8 @@
         ]
     },
 
-    "modint_container": {
-        "prefix": "modint_con",
+    "modint_library": {
+        "prefix": "modint_lib",
         "body": [
             "template<std::int_fast64_t Modulus>",
             "class modint {",
@@ -465,9 +466,12 @@
             "const ll MOD = 1e9+7;",
             "// const ll MOD = 998244353;",
             "using mint = modint<MOD>;",
-
+            "",
+            "template<typename T, typename U>",
+            "mint modpow(const T t, U n){return modpow(mint(t), n);}",
+            
         ],
-        "description": "modint_container"
+        "description": "modint"
     },
 
     "bicoef": {
@@ -512,8 +516,8 @@
     "grid_template": {
         "prefix": "grid_temp",
         "body": [
-            "ll dx[] = {0,0,1,-1};",
-            "ll dy[] = {1,-1,0,0};",
+            "ll dx[] = {0,1,-1,0};",
+            "ll dy[] = {1,0,0,-1};",
             "auto is_out = [&](ll x, ll y){",
             "   if(x < 0 || x >= h || y < 0 || y >= w)return true;",
             "   return false;",

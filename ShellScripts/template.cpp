@@ -15,6 +15,7 @@ typedef vector<vvl> vvvl;
 constexpr ll INF = numeric_limits<ll>::max()/4;
 constexpr ll n_max = 2e5+10;
 #define int ll
+const long double pi = 3.14159265358979323846;
 
 template <typename A, typename B>
 string to_string(pair<A, B> p);
