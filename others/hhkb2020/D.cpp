@@ -60,6 +60,7 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+
 template<std::int_fast64_t Modulus>
 class modint {
     using i64 = int_fast64_t;
@@ -196,134 +197,32 @@ using mint = modint<MOD>;
 template<typename T, typename U>
 mint modpow(const T t, U n){return modpow(mint(t), n);}
 
-mint solve(string &s, ll k){
-    ll n = s.size();
-    vector<ll> next(n);
-    {
-        vector<ll> tmp(n, -1);
-        ll p = 0;
-        rep(i, 0, n) {
-            if (s[i] == '(') {
-                tmp[p++] = i;
-            } else {
-                --p;
-                next[tmp[p]] = i;
-            }
-        }
-    }
-    // debug(next);
 
-    // [l, r]となるようにする（閉区間）
-    auto calc = [&](auto self, ll l, ll r) -> vector<mint> {
-        ll len = r - l + 1;
-        vector<mint> res(len + 1);
-
-        vector<mint> tmp1, tmp2;
-        if (r - l == 1) {
-            tmp1 = {1, 2, 1};
-            tmp2 = {1};
-        } else if (next[l] == r) {
-            tmp1 = self(self, l + 1, r - 1);
-            tmp2 = {1, 2, 1};
-        } else {
-            ll nl = next[l];
-            tmp1 = self(self, l, nl);
-            tmp2 = self(self, nl + 1, r);
-        }
-        ll m1 = tmp1.size(), m2 = tmp2.size();
-        rep(i, 0, m1) rep(j, 0, m2) {
-            res[i + j] += tmp1[i] * tmp2[j];
-        }
-        if (next[l] == r) {
-            rep(i, 0, len + 1) if (abs(2 * i - len) > k) {
-                res[i] = 0;
-            }
-        }
-        // debug(l, r, res);
-        return res;
-    };
-
-    ll l = 0;
-    mint ans = 1;
-    while (l < n) {
-        ll r = next[l];
-        ll len = r - l + 1;
-        auto v = calc(calc, l, r);
-        mint tmp = 0;
-        rep(i, 0, len + 1) if (abs(2 * i - len) <= k) tmp += v[i];
-        l = r + 1;
-        ans *= tmp;
-    }
-
-    return ans;
-}
-
-mint guchoku(string const& s, ll k){
-    ll n = s.size();
-    vector<ll> next(n);
-    {
-        vector<ll> tmp(n, -1);
-        ll p = 0;
-        rep(i, 0, n) {
-            if (s[i] == '(') {
-                tmp[p++] = i;
-            } else {
-                --p;
-                next[tmp[p]] = i;
-            }
-        }
-    }
-    mint ans = 0;
-    rep(i, 0, 1LL << n) {
-        vector<ll> v(n), sum(n + 1);
-        rep(j,0,n){
-            if((i >> j) & 1){
-                v[j] = 1;
-            }
-        }
-        rep(j, 0, n) sum[j + 1] = sum[j] + v[j];
-        bool ok = true;
-        rep(j, 0, n) {
-            if(next[j]){
-                ll t = sum[next[j] + 1] - sum[j];
-                ll len = next[j] - j + 1;
-
-                ok &= (abs(2 * t - len) <= k);
-            }
-        }
-        if (ok) ans += 1;
-    }
-
-    return ans;
-}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll n = 16;
-    vector<ll> v(n);
-    iota(all(v), 0);
-    random_device rand;
-    mt19937 mt(rand());
-    string s(n, '.');
-    debug(guchoku("(()())", 2));
-
-    // return 0;
-
-
-    rep(i, 0, 1000) {
-        shuffle(all(v), mt);
-        for (int j = 0; j < n; j+= 2){
-            ll l = v[j], r = v[j + 1];
-            if (l > r) swap(l, r);
-            s[l] = '(';
-            s[r] = ')';
+    ll t; cin >> t;
+    while(t--){
+        ll n,a,b; cin >> n >> a >> b;
+        if(a + b > n){
+            cout << 0 << "\n";
+            continue;
         }
-
-        ll k = mt() % (n + 1);
-
-        if(guchoku(s, k) != solve(s, k)){
-            debug(s, k, guchoku(s, k), solve(s, k));
-            return 0;
-        }
+        if (a > b) swap(a, b);
+        mint tmp = (n - a) * (n - a);
+        tmp /= 4;
+        debug(tmp);
+        ll k = (n - a);
+        ll r = min(n - b + 1, a + b - 1);
+        mint sub = (k - 2 * (r - a)) * (k - 2 * (r - a));
+        sub /= 4;
+        tmp -= sub;
+        tmp += a * (n - a + 1);
+        debug(tmp);
+        tmp *= tmp;
+        mint ans = (n - a + 1) * (n - a + 1);
+        ans *= (n - b + 1) * (n - b + 1);
+        ans -= tmp;
+        cout << ans << "\n";
     }
 }
