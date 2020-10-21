@@ -60,15 +60,61 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-vector<vector<ll>> graph;
+template<typename T>
+struct edge{
+    int f,t;
+    T c;
+    int id;
+    edge(){};
+    edge(int f,int t,T c,int id = 0):f(f),t(t),c(c),id(id){};
+    bool operator< (const edge &rhs) const {
+        return (*this).c < rhs.c;
+    }
+    bool operator> (const edge &rhs) const {
+        return (*this).c > rhs.c;
+    }
+    friend string to_string(edge<T> e){
+        return "(" + to_string(e.f) + ", " + to_string(e.t) + ", " + to_string(e.c) + ")";
+    }
+
+};
+
+template<typename T>
+struct graph{
+    std::vector<std::vector<edge<T> > > data;
+    graph(){};
+    graph(int v):data(v){};
+    void resize(int n){
+        data.resize(n);
+    }
+    void add_edge(edge<T> &e){
+        data[e.f].push_back(e);
+    }
+    void add_edge(int f,int t,T c){
+        data[f].emplace_back(f,t,c);
+    }
+    size_t size(){
+        return data.size();
+    }
+    vector<edge<T>> &operator[](int n){
+        return data[n];
+    }
+    std::vector<edge<T>> make_edges(){
+        std::vector<edge<T>> r;
+        for(auto &i:data)std::copy(i.begin(),i.end(),std::back_inserter(r));
+        return r;
+    }
+};
+
+graph<ll> g;
 vector<ll> used;
 ll pre_dfs(ll now, ll pre = -1){
     used[now] = 1;
     ll ret = -1;
-    for(auto &to : graph[now]){
-        if(to == pre)continue;
-        if(used[to]) return to;
-        chmax(ret, pre_dfs(to, now));
+    for(auto &e : g[now]){
+        if(e.t == pre)continue;
+        if(used[e.t]) return e.t;
+        chmax(ret, pre_dfs(e.t, now));
     }
 
     return ret;
@@ -78,28 +124,29 @@ vector<ll> path;
 bool dfs(ll s, ll now, ll pre = -1){
     used[now] = 1;
     bool ret = false;
-    for(auto &to : graph[now]){
-        if(to == pre)continue;
-        if(to == s){
-            path.emplace_back(now+1);
+    for(auto &e : g[now]){
+        if(e.t == pre)continue;
+        if(e.t == s){
+            path.emplace_back(now);
             return true;
         }
-        if(used[to])continue;
-        ret |= dfs(s, to, now);
+        if(used[e.t])continue;
+        ret |= dfs(s, e.t, now);
         if(ret)break;
     }
-    if(ret)path.emplace_back(now+1);
+    if(ret)path.emplace_back(now);
     return ret;
 }
 
 // グラフ中の閉路をpathに入れる
 // 返り値は閉路があるかどうか
 // 極小閉路ではないので注意
+// 有向グラフに限る（無向グラフの場合はトポロジカルソートをして、残ったノード内でdfsをするとよい）
 bool closed_path(){
-    ll n = graph.size();
+    ll n = g.size();
     used.assign(n, 0);
     ll s = -1;
-    for(int i = 0; i < graph.size(); i++){
+    for(int i = 0; i < n; i++){
         if(!used[i]) chmax(s, pre_dfs(i));
     }
     if(s == -1) return false;
