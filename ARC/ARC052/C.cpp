@@ -61,7 +61,6 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
-
 template<typename T>
 struct edge{
     int f,t;
@@ -154,95 +153,46 @@ struct graph{
     }
 };
 
-template <typename T>
-struct LinearSystemIncidence {
-    vector<T> x, c;
-    graph<T> g;
-    vector<int> used;
-    int n, cnt;
+auto c2 = [](ll a) { return a * (a - 1) / 2; };
 
-    LinearSystemIncidence(int n) : n(n), g(n), used(n), cnt(0){};
+vector<ll> dijkstra(graph<ll> & g, ll s, vector<ll> &bmin) {
+    ll n = g.size();
+    vector<ll> res(n, INF);
+    res[s] = 0;
+    using state = tuple<ll, ll, ll>;
+    priority_queue<state, vector<state>, greater<state>> pq;
 
-    void add_edge(int f, int t) {
-        g.add_edge(f, t, (T)1, cnt);
-        g.add_edge(t, f, (T)-1, cnt++);
-    }
+    ll m = sqrt(2 * n) + 10;
+    vector dp(n, vector<ll>(m, INF));
 
-    T dfs(int u) {
-        used[u] = 1;
-        T r = c[u];
-        for (auto &e : g[u]) {
-            if (used[e.t]) continue;
-            T y = dfs(e.t);
-            if (e.c == 1)
-                x[e.id] = y;
-            else
-                x[e.id] = (T)0 - y;
-            r = r + y;
+    pq.emplace(0, 0, s);
+    dp[s][0] = 0;
+    while (!pq.empty()) {
+        auto [c, num, t] = pq.top();
+        pq.pop();
+        debug(c, num, t);
+
+        if (c > dp[t][num-bmin[t]]) continue;
+        for (auto &e : g[t]){
+            ll cd = c;
+            ll nd = num;
+            if (e.c == 0) {
+                cd++;
+            } else {
+                cd += num + 1;
+                nd++;
+            }
+
+            if (c2(nd) - c2(bmin[e.t]) < n && cd < dp[e.t][nd - bmin[e.t]]) {
+                chmin(res[e.t], cd);
+                pq.emplace(cd, nd, e.t);
+                dp[e.t][nd - bmin[e.t]] = cd;
+            }
         }
-        return r;
     }
 
-    pair<bool, vector<T>> solve(vector<T> &v) {
-        assert(v.size() == n);
-        c = v;
-        x.resize(cnt, 0);
-        fill(all(used), 0);
-        for (int u = 0; u < n; u++) {
-            if (used[u]) continue;
-            T y = dfs(u);
-            if (y != (T)0) return {false, {}};
-        }
-
-        return {true, x};
-    }
-};
-
-struct f2 {
-    bool v;
-    f2(int x = 0){
-        x = abs(x);
-        v = x & 1;
-    }
-
-    f2 operator+(const f2 rhs)const noexcept{
-        return f2(*this) += rhs;
-    }
-
-    f2 operator-(const f2 rhs) const noexcept{
-        return f2(*this) -= rhs;
-    }
-    f2 operator*(const f2 rhs) const noexcept{
-        return f2(*this) *= rhs;
-    }
-
-    f2 &operator+=(const f2 rhs) noexcept {
-        v ^= rhs.v;
-        return *this;
-    }
-
-    f2 &operator-=(const f2 rhs) noexcept {
-        v ^= rhs.v;
-        return *this;
-    }
-
-    f2 &operator*=(const f2 rhs) noexcept {
-        v &= rhs.v;
-        return *this;
-    }
-
-    bool operator==(const f2 rhs) noexcept {
-        return v == rhs.v;
-    }
-
-    bool operator!=(const f2 rhs) noexcept {
-        return v != rhs.v;
-    }
-
-    friend string to_string(const f2 F){
-        return to_string(F.v);
-    }
-};
+    return res;
+}
 void print() {
     cout << endl;
 }
@@ -258,7 +208,7 @@ template <class T>
 void print(vector<T> &vec) {
     for (auto& a : vec) {
         cout << a;
-        if (&a != &vec.back()) cout << " ";
+        if (&a != &vec.back()) cout << "\n";
     }
     cout << endl;
 }
@@ -274,45 +224,16 @@ signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     ll n,m; cin >> n >> m;
-    vector<f2> c(n + 1);
-    vector<Pll> a(n);
-    for(int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
-
-    sort(all(a));
-
-    rep(i,0,n){
-        if(a[i].second){
-            c[i] += f2(1);
-            c[i + 1] += f2(1);
-        }
-    }
-
-    debug(c);
-
-    LinearSystemIncidence<f2> lsi(n + 1);
+    graph<ll> g(n);
     rep(i,0,m){
-        ll l,r; cin >> l >> r;
-        ll lid = lower_bound(all(a), Pll{l, 0}) - a.begin();
-        ll rid = upper_bound(all(a), Pll{r, 1}) - a.begin();
-        debug(lid, rid);
-        lsi.add_edge(lid, rid);
+        ll c,a,b; cin >> c >> a >> b;
+        g.add_edge(a, b, c);
+        g.add_edge(b, a, c);
     }
 
-    auto [ok, x] = lsi.solve(c);
-    if(!ok){
-        cout << -1 << endl;
-        return 0;
-    }
+    auto bmin = g.dijkstra(0);
 
-    vector<ll> ans;
-    rep(i,0,m){
-        if(x[i] == f2(1)){
-            ans.emplace_back(i + 1);
-        }
-    }
+    auto dij = dijkstra(g, 0, bmin);
 
-    cout << ans.size() << "\n";
-    print(ans);
+    print(dij);
 }

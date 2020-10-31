@@ -270,36 +270,24 @@ signed main() {
     ll n, m, l;
     cin >> n >> m >> l;
     auto solve = [&](ll x) {
-        vector dp(n + 1, vector<mint>(m + 1));
+        vector dp(n + x + 1, vector<mint>(m + x + 1));
 
         dp[0][0] = 1;
-        rep(i, 0, n) {
-            rep(num, 1, x + 1) {
-                ll i_ = i + num;
-                if (i_ > n) break;
-                rep(j, 0, m+1) {
-                    ll j_ = j + num - 1;
-                    if (j_ > m) break;
-                    if (num == 1) {
-                        dp[i_][j_] += dp[i][j];
-                        continue;
-                    }
-                    dp[i_][j_] += dp[i][j] * bc.com(n - i - 1, num - 1) * bc.fact(num) / 2;
-                    j_++;
-                    if (j_ > m) continue;
-                    if (num == 2) {
-                        dp[i_][j_] +=
-                            dp[i][j] * (n - i - 1);
-                        continue;
-                    }
-                    dp[i_][j_] += dp[i][j] * bc.com(n - i - 1, num - 1) *
-                                 bc.fact(num - 1) / 2;
+        for (int i = 0; i <= n; i++)
+            for (int j = 0; j <= m; j++) {
+                for (int l = 1; l <= min(x, n - i); l++) {
+                    if (l == 1) dp[i + 1][j] += dp[i][j];
+                    if (l == 2) dp[i + 2][j + 2] += dp[i][j] * (n - i - 1);
+                    if (l > 1)
+                        dp[i + l][j + l - 1] += dp[i][j] * bc.com(n - i - 1, l - 1) * bc.fact(l) / mint(2);
+                    if (l > 2)
+                        dp[i + l][j + l] += dp[i][j] *
+                                            bc.com(n - i - 1, l - 1) *
+                                            bc.fact(l - 1) / mint(2);
                 }
             }
-        }
-        debug(x);
-        debug(dp);
 
+        debug(dp);
         return dp[n][m];
     };
     cout << solve(l) - solve(l - 1) << endl;

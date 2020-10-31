@@ -61,7 +61,6 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
-
 template<typename T>
 struct edge{
     int f,t;
@@ -153,7 +152,6 @@ struct graph{
         return res;
     }
 };
-
 template <typename T>
 struct LinearSystemIncidence {
     vector<T> x, c;
@@ -197,122 +195,27 @@ struct LinearSystemIncidence {
         return {true, x};
     }
 };
-
-struct f2 {
-    bool v;
-    f2(int x = 0){
-        x = abs(x);
-        v = x & 1;
-    }
-
-    f2 operator+(const f2 rhs)const noexcept{
-        return f2(*this) += rhs;
-    }
-
-    f2 operator-(const f2 rhs) const noexcept{
-        return f2(*this) -= rhs;
-    }
-    f2 operator*(const f2 rhs) const noexcept{
-        return f2(*this) *= rhs;
-    }
-
-    f2 &operator+=(const f2 rhs) noexcept {
-        v ^= rhs.v;
-        return *this;
-    }
-
-    f2 &operator-=(const f2 rhs) noexcept {
-        v ^= rhs.v;
-        return *this;
-    }
-
-    f2 &operator*=(const f2 rhs) noexcept {
-        v &= rhs.v;
-        return *this;
-    }
-
-    bool operator==(const f2 rhs) noexcept {
-        return v == rhs.v;
-    }
-
-    bool operator!=(const f2 rhs) noexcept {
-        return v != rhs.v;
-    }
-
-    friend string to_string(const f2 F){
-        return to_string(F.v);
-    }
-};
-void print() {
-    cout << endl;
+void YES(bool ok){
+    cout << (ok ? "Yes" : "No") << endl;
 }
-
-template <class Head, class... Tail>
-void print(Head&& head, Tail&&... tail) {
-    cout << head;
-    if (sizeof...(tail) != 0) cout << " ";
-    print(forward<Tail>(tail)...);
-}
-
-template <class T>
-void print(vector<T> &vec) {
-    for (auto& a : vec) {
-        cout << a;
-        if (&a != &vec.back()) cout << " ";
-    }
-    cout << endl;
-}
-
-template <class T>
-void print(vector<vector<T>> &df) {
-    for (auto& vec : df) {
-        print(vec);
-    }
-}
-
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     ll n,m; cin >> n >> m;
-    vector<f2> c(n + 1);
-    vector<Pll> a(n);
-    for(int i = 0; i < n; i++) {
-        cin >> a[i].first >> a[i].second;
-    }
-
-    sort(all(a));
-
-    rep(i,0,n){
-        if(a[i].second){
-            c[i] += f2(1);
-            c[i + 1] += f2(1);
-        }
-    }
-
-    debug(c);
-
-    LinearSystemIncidence<f2> lsi(n + 1);
+    LinearSystemIncidence<ll> lsi(n);
+    vector<ll> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    vector<ll> b(n);
+    for(int i = 0; i < n; i++) cin >> b[i];
     rep(i,0,m){
-        ll l,r; cin >> l >> r;
-        ll lid = lower_bound(all(a), Pll{l, 0}) - a.begin();
-        ll rid = upper_bound(all(a), Pll{r, 1}) - a.begin();
-        debug(lid, rid);
-        lsi.add_edge(lid, rid);
+        ll c,d; cin >> c >> d;
+        c--;
+        d--;
+        lsi.add_edge(c,d);
     }
-
+    vector<ll> c(n);
+    rep(i, 0, n) c[i] = b[i] - a[i];
     auto [ok, x] = lsi.solve(c);
-    if(!ok){
-        cout << -1 << endl;
-        return 0;
-    }
-
-    vector<ll> ans;
-    rep(i,0,m){
-        if(x[i] == f2(1)){
-            ans.emplace_back(i + 1);
-        }
-    }
-
-    cout << ans.size() << "\n";
-    print(ans);
+    YES(ok);
+    debug(x);
 }
