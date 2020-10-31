@@ -30,7 +30,8 @@ const int n_max = 1e5+10;
 
 // Longest Increase S..?
 //狭義のLIS(同じ数は一度だけ)
-vector<ll> N_LIS(vector<int> a){
+template<typename T>
+vector<ll> N_LIS(vector<T> a){
     vector<ll> dp(n_max, INF);
     // fill(all(dp), INF);
     int n = a.size();
@@ -42,7 +43,8 @@ vector<ll> N_LIS(vector<int> a){
 }
 
 //広義のLIS（同じ数は何度でも）
-vector<ll> B_LIS(vector<int> a){
+template <typename T>
+vector<ll> B_LIS(vector<T> a) {
     vector<ll> dp(n_max, INF);
     // fill(all(dp), INF);
     int n = a.size();
@@ -55,18 +57,19 @@ vector<ll> B_LIS(vector<int> a){
 
 // Longest Decrease S..?
 //狭義のLDS
-vector<ll> N_LDS(vector<int> a){
+template <typename T>
+vector<ll> N_LDS(vector<T> a) {
     // fill(dp, dp + n_max, INF);
     reverse(all(a));
     return N_LIS(a);
 }
 
 //広義のLDS
-vector<ll> B_LDS(vector<int> a){
+template <typename T>
+vector<ll> B_LDS(vector<T> a) {
     reverse(all(a));
     return B_LIS(a);
 }
-
 
 signed main(){
     int n;cin >> n;
