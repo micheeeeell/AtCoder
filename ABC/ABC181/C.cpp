@@ -63,7 +63,7 @@ template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
 // 点a,b,cからなる三角形の面積
-template<class T> 
+template <class T>
 long double area(pair<T, T> a, pair<T, T> b, pair<T, T> c) {
     long double ans = 0;
     a.first -= c.first;
@@ -74,10 +74,9 @@ long double area(pair<T, T> a, pair<T, T> b, pair<T, T> c) {
     ans /= 2.0;
     return ans;
 };
-
 // 直線ABと点Cの距離
 // 直線ABの距離が0または三点が同一直線状にあるとき、-1を返す
-template<class T>
+template <class T>
 long double dist(pair<T, T> a, pair<T, T> b, pair<T, T> c) {
     double tri = area(a, b, c) * 2.0;
     double len = hypot(a.first - b.first, a.second - b.second);
@@ -85,30 +84,24 @@ long double dist(pair<T, T> a, pair<T, T> b, pair<T, T> c) {
     return tri / len;
 };
 
-template<class T>
-long double dist(pair<T, T> a, pair<T, T> b){
-    return hypot(a.first - b.first, a.second - b.second);
+void YES(bool ok){
+    cout << (ok ? "Yes" : "No") << endl;
+    exit(0);
 }
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll x, y;
-    cin >> x >> y;
-    ll n;
-    cin >> n;
-    vector<Pll> v(n + 1);
-    rep(i, 0, n) {
-        cin >> v[i].first >> v[i].second;
+    ll n; cin >> n;
+    vector<Pll> v(n);
+    for(auto &[x, y] : v){
+        cin >> x >> y;
     }
-    v[n] = v[0];
+    rep(i,0,n)rep(j,i+1, n)rep(k,j+1, n){
+        if(dist(v[i], v[j], v[k]) == ld(-1)){
+            YES(true);
+        }
+    }
 
-    double ans = INF;
-    rep(i, 0, n) {
-        double temp = dist(v[i], v[i + 1], Pll(x, y));
-        chmin(ans, temp);
-        debug(i, temp);
-    }
-    cout << fixed << setprecision(15);
-    cout << ans << endl;
+    YES(false);
 }

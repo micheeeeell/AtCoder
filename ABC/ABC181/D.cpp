@@ -16,7 +16,6 @@ constexpr ll INF = numeric_limits<ll>::max()/4;
 constexpr ll n_max = 2e5+10;
 #define int ll
 const long double pi = 3.14159265358979323846;
-const long double eps = 1e-12;
 
 template <typename A, typename B>
 string to_string(pair<A, B> p);
@@ -62,53 +61,53 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-// 点a,b,cからなる三角形の面積
-template<class T> 
-long double area(pair<T, T> a, pair<T, T> b, pair<T, T> c) {
-    long double ans = 0;
-    a.first -= c.first;
-    b.first -= c.first;
-    a.second -= c.second;
-    b.second -= c.second;
-    ans = abs(a.first * b.second - a.second * b.first);
-    ans /= 2.0;
-    return ans;
-};
-
-// 直線ABと点Cの距離
-// 直線ABの距離が0または三点が同一直線状にあるとき、-1を返す
-template<class T>
-long double dist(pair<T, T> a, pair<T, T> b, pair<T, T> c) {
-    double tri = area(a, b, c) * 2.0;
-    double len = hypot(a.first - b.first, a.second - b.second);
-    if (abs(len) < eps || abs(tri) < eps) return -1;
-    return tri / len;
-};
-
-template<class T>
-long double dist(pair<T, T> a, pair<T, T> b){
-    return hypot(a.first - b.first, a.second - b.second);
+void YES(bool ok){
+    cout << (ok ? "Yes" : "No") << endl;
+    exit(0);
 }
-
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    ll x, y;
-    cin >> x >> y;
-    ll n;
-    cin >> n;
-    vector<Pll> v(n + 1);
-    rep(i, 0, n) {
-        cin >> v[i].first >> v[i].second;
+    string s;cin >> s;
+    ll n = s.size();
+    if(n == 1){
+        YES(s == "8");
     }
-    v[n] = v[0];
+    if(n == 2){
+        ll t = 0, t2 = 0;
+        rep(i,0,2){
+            t *= 10;
+            t2 *= 10;
+            t += s[i] - '0';
+            t2 += s[1 - i] - '0';
+        }
 
-    double ans = INF;
-    rep(i, 0, n) {
-        double temp = dist(v[i], v[i + 1], Pll(x, y));
-        chmin(ans, temp);
-        debug(i, temp);
+        YES(t % 8 == 0 || t2 % 8 == 0);
     }
-    cout << fixed << setprecision(15);
-    cout << ans << endl;
+
+    vector<ll> cnt(10);
+    rep(i,0,n){
+        ll t = s[i] - '0';
+        cnt[t]++;
+    }
+    auto check = [&](string x) {
+        vector<ll> temp(10);
+        if (x.size() < 3) return false;
+        rep(i, 0, 3) {
+            ll t = x[i] - '0';
+            temp[t]++;
+        }
+        bool res = true;
+        rep(i, 0, 10) {
+            res &= cnt[i] >= temp[i];
+        }
+        return res;
+    };
+
+    bool ok = false;
+    for (int i = 8; i <= 1000; i += 8){
+        ok |= check(to_string(i));
+    }
+
+    YES(ok);
 }
