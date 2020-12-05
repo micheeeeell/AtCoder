@@ -197,7 +197,8 @@ signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
     string s;cin >> s;
-    ll k; cin >> k;
+    ll K; cin >> K;
+
     vector<ll> v;
     ll n = s.size();
     s += '0';
@@ -217,26 +218,33 @@ signed main(){
         sum[i+1] = sum[i] + v[i];
     }
     debug(sum);
+    ll nn = sum.back();
+    vector dp(nn + 1, vector<mint>(nn + 1));
+    dp[0][0] = 1;
 
-    vector dp(m + 1, vector(n + 1, vector<mint>(n + 1)));
-    rep(i,0,m+1){
-        dp[i][sum[i]][0] = 1;
-    }
     rep(i,0,m){
-        rep(j, sum[i+1], n+1){
-            rep(k,0,n){
-                rep(jj,j,n+1){
-                    ll kk = k + abs(v[i] - jj + j);
-                    if(kk <= n)dp[i+1][jj][kk] += dp[i][j][k];
+        vector dp_(nn + 1, vector<mint>(nn + 1));
+        rep(j, 0, nn + 1)rep(k, 0, nn + 1){
+            rep(x, 0, nn + 1){
+                if (j + x < sum[i + 1] || j + x > nn) continue;
+                if(x >= v[i]){
+                    dp_[j + x][k] += dp[j][k];
+                }
+                else{
+                    if(k + v[i] - x < nn + 1)dp_[j + x][k + (v[i] - x)] += dp[j][k];
                 }
             }
         }
-    }
-    debug(dp);
-    mint ans = 0;
-    rep(i,0,k+1){
-        ans += dp[m][sum.back()][i];
+
+        swap(dp_, dp);
     }
 
-    cout << ans << "\n";
+    debug(dp);
+
+    mint ans = 0;
+    rep(i,0,min(K + 1, nn + 1)){
+        ans += dp[nn][i];
+    }
+
+    cout << ans << endl;
 }

@@ -182,7 +182,7 @@ signed main(){
     auto check = [&](ld x) {
         graph<ld> temp(n + 2);
         for (auto &e : edges) {
-            if(e.c + eps < x){
+            if(e.c <= x){
                 temp.add_edge(e);
             }
         }

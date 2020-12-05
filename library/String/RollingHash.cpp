@@ -86,6 +86,12 @@ struct RollingHash {
         }
     }
 
+    vector<long long> hash(int l, int r) {
+        vector<long long> h;
+        for (int i = 0; i < MS; i++) h.emplace_back(hash(l, r, i));
+        return h;
+    }
+
     long long hash(int l, int r, int i){
         return ((hs[i][r] - hs[i][l] * pw[i][r-l]) % mod[i] + mod[i]) % mod[i];
     }
@@ -96,7 +102,7 @@ struct RollingHash {
         return ret;
     }
 
-    bool match(int l, int r, long long h[]){
+    bool match(int l, int r, vector<long long> h){
         bool ret = true;
         for(int i = 0; i < MS; i++) ret &= hash(l, r, i) == h[i];
         return ret;
@@ -111,8 +117,8 @@ signed main(){
     RollingHash rh2(p, base);
     ll n = t.size();
     ll m = p.size();
-    ll h[2];
-    rep(i,0,2)h[i] = rh2.hash(0, m, i);
+    vector<ll> h(2);
+    rep(i, 0, 2) h[i] = rh2.hash(0, m, i);
     rep(i,0,n){
         if(i + m > n)break;
         auto ok = rh1.match(i, i + m, h);
