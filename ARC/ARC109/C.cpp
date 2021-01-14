@@ -65,5 +65,46 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll n,k; cin >> n >> k;
+    string s;cin >> s;
+    // R = 0, P = 1, S = 2
+    auto bt = [](ll a, ll b){
+        if(a == b)return a;
+        if(a > b)swap(a, b);
+        if(a == 0){
+            if(b == 1)return b;
+            else
+                return a;
+        }
+        else if(a == 1){
+            return b;
+        }
+    };
+    vector<ll> modn(k);
+    modn[0] = 1;
+    rep(i, 1, k) modn[i] = modn[i - 1] * 2 % n;
+    debug(modn);
+
+    vector dp(n, vector<ll>(k + 1));
+    rep(i,0,n){
+        ll t = 0;
+        if(s[i] == 'P')t = 1;
+        else if(s[i] == 'S')
+            t = 2;
+        dp[i][0] = t;
+    }
+
+    rep(j, 0, k) rep(i, 0, n)
+    {
+        debug(i, j, dp[i][j], dp[(i + modn[j]) % n][j]);
+        dp[i][j + 1] = bt(dp[i][j], dp[(i + modn[j]) % n][j]);
+    }
+    debug(dp);
+
+    string ans;
+    if(dp[0][k] == 0)ans = "R";
+    else if(dp[0][k] == 1)ans = "P";
+    else ans = "S";
+
+    cout << ans << endl;
 }
