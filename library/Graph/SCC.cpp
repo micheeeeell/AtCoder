@@ -149,7 +149,7 @@ struct SCC {
         dag.resize(k);
         for(int i = 0; i < V; i++) {
             for(auto &e : g[i]) {
-                int x = cmp[e.f], y = cmp[e.t];
+                int x = cmp[i], y = cmp[e.t];
                 if(x == y)continue;
                 dag.add_edge(x, y, e.c);
             }
