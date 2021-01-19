@@ -18,18 +18,6 @@ constexpr ll n_max = 2e5+10;
 const long double pi = 3.14159265358979323846;
 const long double eps = 1e-12;
 
-template <typename T>
-int comp(T a){
-    if (abs(a) < eps) return 0;
-    return a > 0 ? 1 : -1;
-}
-
-template <typename T>
-int comp(T a, T b){
-    // a > b -> 1, a < b -> -1
-    return comp(a - b);
-}
-
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
@@ -74,8 +62,49 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+void print() {
+    cout << endl;
+}
+
+template <class Head, class... Tail>
+void print(Head&& head, Tail&&... tail) {
+    cout << head;
+    if (sizeof...(tail) != 0) cout << " ";
+    print(forward<Tail>(tail)...);
+}
+
+template <class T>
+void print(vector<T> &vec) {
+    for (auto& a : vec) {
+        cout << a;
+        if (&a != &vec.back()) cout << "\n";
+    }
+    cout << endl;
+}
+
+template <class T>
+void print(vector<vector<T>> &df) {
+    for (auto& vec : df) {
+        print(vec);
+    }
+}
+
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll n; cin >> n;
+    vector<ll> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    vector<ll> b(n);
+    for(int i = 0; i < n; i++) cin >> b[i];
+    vector<ll> c(n);
+    ll max_ = a[0];
+    c[0] = a[0] * b[0];
+    rep(i, 1, n){
+        chmax(max_, a[i]);
+        c[i] = b[i] * max_;
+        chmax(c[i], c[i - 1]);
+    }
+
+    print(c);
 }

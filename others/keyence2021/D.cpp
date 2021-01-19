@@ -18,18 +18,6 @@ constexpr ll n_max = 2e5+10;
 const long double pi = 3.14159265358979323846;
 const long double eps = 1e-12;
 
-template <typename T>
-int comp(T a){
-    if (abs(a) < eps) return 0;
-    return a > 0 ? 1 : -1;
-}
-
-template <typename T>
-int comp(T a, T b){
-    // a > b -> 1, a < b -> -1
-    return comp(a - b);
-}
-
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
@@ -77,5 +65,35 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll n; cin >> n;
+    vector<string> s, t;
+    s = {"AB"};
+    ll c = 2;
+    rep(i, 1, n) {
+        t = s;
+        vector<string> tmp;
+        ll m = t.size();
+        ll m2 = t[0].size();
+        rep(j, 0, m) {
+            rep(k,0,m2){
+                if (t[j][k] == 'A') t[j][k] = 'B';
+                else
+                    t[j][k] = 'A';
+            }
+        }
+        rep(j,0,m){
+            tmp.emplace_back(s[j] + s[j]);
+            tmp.emplace_back(s[j] + t[j]);
+        }
+
+        tmp.emplace_back(string(c, 'A') + string(c, 'B'));
+        c *= 2;
+        s = tmp;
+        debug(tmp);
+    }
+
+    cout << s.size() << "\n";
+    for (auto c : s) {
+        cout << c << "\n";
+    }
 }

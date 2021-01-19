@@ -18,18 +18,6 @@ constexpr ll n_max = 2e5+10;
 const long double pi = 3.14159265358979323846;
 const long double eps = 1e-12;
 
-template <typename T>
-int comp(T a){
-    if (abs(a) < eps) return 0;
-    return a > 0 ? 1 : -1;
-}
-
-template <typename T>
-int comp(T a, T b){
-    // a > b -> 1, a < b -> -1
-    return comp(a - b);
-}
-
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
@@ -77,5 +65,44 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll n; cin >> n;
+    vector<ll> a(n);
+    for(int i = 0; i < n; i++) cin >> a[i];
+    vector memo(n + 1, vector(n + 1, vector<ll>((n + 1) / 2 + 1)));
+    ll s = (n + 1) / 2;
+    auto flag = memo;
+    auto dfs = [&](auto self, ll l, ll r, ll k) -> ll{
+        if (flag[l][r][k]) return memo[l][r][k];
+        ll res = 0;
+        ll L = 0, R = 0;
+        if (l == 0) L = 0;
+        else
+            L = a[l - 1];
+        if (r == n) R = 0;
+        else
+            R = a[r];
+        if(L == R){
+            return 0;
+        }
+        if(L > R){
+            chmax(res, self(self, l - 1, r, k));
+        }
+        else{
+            chmax(res, self(self, l, r + 1, k));
+        }
+
+        ll m = r - l;
+        if(k <= m / 2){
+            if (l) chmax(res, self(self, l - 1, r, k + 1) + a[l - 1]);
+            if (r < n) chmax(res, self(self, l, r + 1, k + 1) + a[r]);
+        }
+
+        flag[l][r][k] = 1;
+        return memo[l][r][k] = res;
+    };
+
+    rep(i,0,n + 1){
+        cout << dfs(dfs, i, i, 0) << "\n";
+    }
+    // debug(memo);
 }

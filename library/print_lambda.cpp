@@ -29,7 +29,6 @@ int comp(T a, T b){
     // a > b -> 1, a < b -> -1
     return comp(a - b);
 }
-
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
@@ -74,8 +73,29 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-signed main(){
+
+signed main() {
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+
+    auto print = [](vector<ll> &v) {
+        for (auto &i : v) {
+            cout << i;
+            if (&i != &v.back()) cout << " ";
+        }
+        cout << "\n";
+    };
+    auto print2 = [&print](vector<vector<ll>> &v) {
+        for (auto x : v) print(x);
+    };
+
+    vector<ll> a = {1, 3, 4, 5, 6, 7, 7, 8, 8};
+    vector<vector<ll>> b = {
+        {22, 43, 34, 2, 6, 2}, {2, 3, 4, 5, 6, 7, 8, 9, 0}, {0}};
+
+    print(a);
+    print2(b);
+
+
+
 }
