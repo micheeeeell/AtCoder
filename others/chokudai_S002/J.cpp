@@ -29,6 +29,7 @@ int comp(T a, T b){
     // a > b -> 1, a < b -> -1
     return comp(a - b);
 }
+
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
@@ -73,16 +74,13 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
-// O(N^1/4)で素因数分解
-// verify: https://atcoder.jp/contests/chokudai_S002/tasks/chokudai_S002_j
-
 template <typename T, typename U>
-T modpow(T a, U n, T m){
+T modpow(T a, U n, T m) {
     unsigned __int128 res = 1;
     unsigned __int128 x = a;
     if (n == 0) return m == 1 ? 0 : 1;
-    while(n){
-        if(n & 1){
+    while (n) {
+        if (n & 1) {
             res *= x;
             res %= m;
         }
@@ -93,35 +91,32 @@ T modpow(T a, U n, T m){
 }
 
 template <typename T>
-bool is_prime(T n){
+bool is_prime(T n) {
     assert(n > 1);
     vector<ll> A = {2, 325, 9375, 28178, 450775, 9780504, 1795265022};
     if (n == 2 || n == 3 || n == 5 || n == 7) return true;
     if (n % 2 == 0 || n % 3 == 0 || n % 5 == 0 || n % 7 == 0) return false;
 
     ll d = n - 1;
-    while(~d & 1) d >>= 1;
+    while (~d & 1) d >>= 1;
 
-
-
-    for(auto a : A){
+    for (auto a : A) {
         ll t = d;
         __uint128_t y = modpow(a, t, n);
-        if(y == 0)continue;
+        if (y == 0) continue;
         // debug(a, t, y);
 
-        while(t != (n-1) && y != 1 && y != n-1){
+        while (t != (n - 1) && y != 1 && y != n - 1) {
             y = (y * y) % n;
             t <<= 1;
         }
-        if(y != n-1 && (~t & 1)) return false;
+        if (y != n - 1 && (~t & 1)) return false;
     }
     return true;
-
 }
 
 template <typename T>
-void rho(T n, map<T, int> &mp){
+void rho(T n, map<T, int> &mp) {
     auto f = [&n](T x, T c) {
         __uint128_t r = x;
         r = r * r + c;
@@ -135,8 +130,8 @@ void rho(T n, map<T, int> &mp){
     }
 
     vector<ll> v = {2, 3, 5, 7, 11, 13};
-    for(auto i : v){
-        if(n % i == 0){
+    for (auto i : v) {
+        if (n % i == 0) {
             mp[i]++;
             rho(n / i, mp);
             return;
@@ -149,14 +144,15 @@ void rho(T n, map<T, int> &mp){
         T x = 2;
         T y = 2;
 
-        while(d == 1){
+        while (d == 1) {
             x = f(x, c);
             y = f(f(y, c), c);
             debug(n, x, y, c);
             if (x == y) break;
             d = gcd(n, abs(x - y));
         }
-        if (d == 1) c++;
+        if (d == 1)
+            c++;
         else
             break;
     }
@@ -164,8 +160,8 @@ void rho(T n, map<T, int> &mp){
     rho(n / d, mp);
 }
 
-template<typename T>
-map<T, int> prime(T x){
+template <typename T>
+map<T, int> prime(T x) {
     map<T, int> mp;
     rho(x, mp);
     return mp;
@@ -197,29 +193,24 @@ vector<T> divisor(T x) {
     return res;
 }
 
-
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-
     ll n; cin >> n;
     vector<ll> a(n), b(n);
     for(int i = 0; i < n; i++) cin >> a[i] >> b[i];
-    ll g = 0;
-    rep(i,0,n){
-        ll l = lcm(a[i], b[i]);
-        g = gcd(g, l);
-    }
-
-    auto d = divisor(g);
+    auto d = divisor(a[0]);
+    auto d2 = divisor(b[0]);
+    copy(all(d2), back_inserter(d));
     d.emplace_back(1);
-    debug(d, g);
-    ll res = 0;
-    for(auto t : d){
+    debug(d);
+    ll res = 1;
+    for (auto t : d) {
         bool ok = true;
         rep(i,0,n){
             ok &= a[i] % t == 0 || b[i] % t == 0;
         }
+
         if (ok) chmax(res, t);
     }
 

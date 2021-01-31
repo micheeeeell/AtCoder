@@ -63,21 +63,28 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
 template< typename T>
 struct UnionFind{
-    private:
-    vector<T> par;
-    vector<T> rank;
-    vector<T> sz;
+    using F = function<T(T, T)>;
+
+   private:
+    vector<int> par;
+    vector<int> rank;
+    vector<int> sz;
+    vector<T> val;
+    F f;
+    T M0;
     int n;
 
-    public:
+   public:
     //n要素で親を初期化、par[x]はxの親を表す
-    UnionFind(int n): n(n) {
+    UnionFind(int n, F f = [](T a, T b) { return (T)0; }, T M0 = 0)
+        : n(n), f(f), M0(M0) {
         par.resize(n,0);
         rank.resize(n,0);
         sz.resize(n,1);
         for(int i = 0; i < n; i++){
             par[i] = i;
         }
+        val.resize(n, M0);
     }
 
     //木の根を求める
@@ -98,7 +105,8 @@ struct UnionFind{
         
         par[y] = x;
         sz[x] += sz[y];
-        if(rank[x] == rank[y]) rank[x]++; 
+        val[x] = f(val[x], val[y]);
+        if (rank[x] == rank[y]) rank[x]++;
     }
 
     //xとyが同じ集合に属するか否か
@@ -119,6 +127,10 @@ struct UnionFind{
             if(!cnt[root(i)])ans++, cnt[root(i)] = 1;
         }
         return ans;
+    }
+
+    T get(int x){
+        return val[root(x)];
     }
 };
 
