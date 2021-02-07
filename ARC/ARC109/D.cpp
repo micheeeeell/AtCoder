@@ -61,9 +61,108 @@ template<class T>
 bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
+void print() {
+    cout << endl;
+}
+
+template <class Head, class... Tail>
+void print(Head&& head, Tail&&... tail) {
+    cout << head;
+    if (sizeof...(tail) != 0) cout << " ";
+    print(forward<Tail>(tail)...);
+}
+
+template <class T>
+void print(vector<T> &vec) {
+    for (auto& a : vec) {
+        cout << a;
+        if (&a != &vec.back()) cout << "\n";
+    }
+    cout << endl;
+}
+
+template <class T>
+void print(vector<vector<T>> &df) {
+    for (auto& vec : df) {
+        print(vec);
+    }
+}
 
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll base = 10;
+    vector table(21, vector<ll>(21, INF));
+    using state = tuple<ll, Pll, Pll, Pll>;
+    queue<state> que;
+    que.emplace(state{  0,
+                        {1,0}, 
+                        {0,0}, 
+                        {0,1}});
+
+    table[base + 1][base + 1] = 0;
+
+    while(!que.empty()){
+        auto [c, i, j, k] = que.front();
+        if (c > 5) break;
+        que.pop();
+        if(j.first != k.first){
+            if(i.first == k.first){
+                swap(i, j);
+            }
+            else
+                swap(i, k);
+        }
+        if (j.second != i.second) swap(j, k);
+        debug(c, i, j, k);
+
+        {
+            ll x = j.first + k.first + base;
+            ll y = j.second + k.second + base;
+            if (chmin(table[x + j.first - 1][y + j.second], c + 1)) {
+                que.emplace(state{c + 1, {j.first - 1, j.second}, j, k});
+            }
+            if (chmin(table[x + j.first - 1][y + k.second], c + 1)) {
+                que.emplace(state{c + 1, {j.first - 1, k.second}, j, k});
+            }
+            if (chmin(table[x + j.first + 1][y + j.second], c + 1)) {
+                que.emplace(state{c + 1, {j.first + 1, j.second}, j, k});
+            }
+            if (chmin(table[x + j.first + 1][y + k.second], c + 1)) {
+                que.emplace(state{c + 1, {j.first + 1, k.second}, j, k});
+            }
+        }
+        {
+            ll x = i.first + j.first + base;
+            ll y = i.second + j.second + base;
+            if(chmin(table[x + i.first][y + i.second - 1], c + 1)){
+                que.emplace(state{c + 1, i, j, {i.first, i.second - 1}});
+            }
+            if(chmin(table[x + j.first][y + i.second - 1], c + 1)){
+                que.emplace(state{c + 1, i, j, {j.first, i.second - 1}});
+            }
+            if (chmin(table[x + i.first][y + i.second + 1], c + 1)) {
+                que.emplace(state{c + 1, i, j, {i.first, i.second + 1}});
+            }
+            if (chmin(table[x + j.first][y + i.second + 1], c + 1)) {
+                que.emplace(state{c + 1, i, j, {j.first, i.second + 1}});
+            }
+        }
+        { 
+            ll x = i.first + k.first + base;
+            ll y = i.second + k.second + base;
+            if(chmin(table[x + i.first][y + k.second], c +1)){
+                que.emplace(state{c + 1, i, {i.first, k.second}, k});
+            }
+        }
+        
+    }
+    vector<string> v(21, string(21, '.'));
+
+    rep(i,0,21)rep(j,0,21){
+        if(table[i][j] != INF){
+            v[i][j] = '0' + table[i][j];
+        }
+    }
+    print(v);
 }

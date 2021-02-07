@@ -168,12 +168,15 @@ struct SegmentTree {
     }
 };
 
+// HL分解、木を列に落とすことで更新などに強くなる
+// 任意のパス上でモノイド演算などができる
 template<class T>
 struct HLD {
     using F = function<T(T, T)>;
     struct edge {
         int f, t;
         T c;
+        edge(){};
         edge(int f, int t, T c) : f(f), t(t), c(c){};
     };
 
@@ -183,7 +186,7 @@ struct HLD {
     vector<vector<edge>> data;
     SegmentTree<T> seg;
     vector<int> rt, par, pos, sub, dep;
-
+    vector<T> par_cost;
 
     HLD(int n, const F f, const T &M1)
         : n(n), f(f), M1(M1), data(n, vector<edge>()), seg(n, f, M1){
@@ -195,6 +198,7 @@ struct HLD {
         sub.assign(n, 0);
         dep.assign(n, 0);
         par.resize(n);
+        par_cost.resize(n);
     };
 
     void add_edge(int u, int v){
@@ -206,11 +210,11 @@ struct HLD {
         data[v].emplace_back(v, u, c);
     }
 
-    // 頂点に重みが設定されている場合 (辺の場合はめんどくさいのでやりたくない)
+    // 頂点に重みが設定されている場合 
     void build(int r, vector<T> vec){
         vector<int> a;
         dfs(r);
-        vdfs(a, {}, r);
+        vdfs(a, r);
         debug(a);
         vector<T> v(n, M1);
         for (int i = 0; i < n; i++){
@@ -219,7 +223,20 @@ struct HLD {
         seg.build(v);
     }
 
-    T query(int u, int v){
+    // 辺の重みを使って構築
+    void build(int r){
+        vector<int> a;
+        dfs(r);
+        vdfs(a, r);
+        debug(a);
+        vector<T> v(n, M1);
+        for (int i = 0; i < n; i++) {
+            v[i] = par_cost[a[i]];
+        }
+        seg.build(v);
+    }
+
+    T query(int u, int v, bool is_edge_weighted = false){
         T res = M1;
         while(root(u) != root(v)){
             if (dep[root(u)] < dep[root(v)]) swap(u, v);
@@ -227,13 +244,24 @@ struct HLD {
             u = par[root(u)];
         }
 
-        res = f(res, seg.query(min(pos[u], pos[v]), max(pos[u], pos[v]) + 1));
+        if(!is_edge_weighted)
+            res = f(res, seg.query(min(pos[u], pos[v]), max(pos[u], pos[v]) + 1));
+        else
+            res = f(res, seg.query(min(pos[u], pos[v]) + 1,
+                                   max(pos[u], pos[v]) + 1));
 
         return res;
     }
 
+
+
     void update(int k, T x){
         seg.update(pos[k], x);
+    }
+
+    void update(int u, int v, T x){
+        if (par[v] != u) swap(u, v);
+        seg.update(pos[v], x);
     }
 
     int root(int k){
@@ -247,17 +275,20 @@ struct HLD {
     void dfs(int now, int pre = -1, int d = 0){
         Pll p = {0, -1};
         par[now] = pre;
+        if (pre == -1) par_cost[now] = M1;
         dep[now] = d;
         for (auto e : data[now]) {
             if (e.t == pre) continue;
             dfs(e.t, now, d + 1);
             sub[now] += sub[e.t];
+            par_cost[e.t] = e.c;
             chmax(p, {sub[e.t], e.t});
         }
         sub[now]++;
         if(p.second != -1){
             rt[p.second] = now;
         }
+        
     }
 
     void vdfs(vector<int> &a, int now, int pre = -1){
@@ -272,7 +303,7 @@ struct HLD {
             }
         }
         if(c != -1) vdfs(a, c, now);
-        
+
         for(auto e : data[now]){
             if (e.t == pre || e.t == c) continue;
             vdfs(a, e.t, now);
@@ -285,31 +316,22 @@ signed main() {
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
 
-    auto f = [](vl a, vl b) {
-        copy(all(b), back_inserter(a));
-        return a;
-    };
-
-    ll n,q; cin >> n >> q;
-
-    HLD<vl> hld(n, f, vl{});
-    rep(i, 0, n - 1){
-        ll u,v; cin >> u >> v;
-        u--;
-        v--;
-        hld.add_edge(u, v);
+    ll n; cin >> n;
+    auto f = [](ll a, ll b) { return a + b; };
+    HLD<ll> hld(n, f, 0);
+    rep(i,0,n-1){
+        ll x,y; cin >> x >> y;
+        x--;
+        y--;
+        hld.add_edge(x, y, 1);
     }
-    vector<vl> v(n);
-    rep(i, 0, n) v[i] = {i};
-    hld.build(0, v);
-    rep(i, 0, q) {
-        ll f,t; cin >> f >> t;
-        f--;
-        t--;
-        auto r = hld.query(f, t);
-        for (auto i : r){
-            cout << i << " ";
-        }
-        cout << endl;
+    hld.build(0);
+
+    ll q; cin >> q;
+    rep(i,0,q){
+        ll a,b; cin >> a >> b;
+        a--;
+        b--;
+        cout << hld.query(a, b, true) + 1 << "\n";
     }
 }

@@ -177,6 +177,8 @@ struct graph {
     }
 };
 
+// https://opt-cp.com/linear-system-incidence/
+// 接続行列を係数に持つ線型方程式を解く
 template <typename T>
 struct LinearSystemIncidence {
     vector<T> x, c;

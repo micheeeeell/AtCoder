@@ -490,7 +490,7 @@ struct WaveletMatrix {
         return rangeFreq(l, r, y) - rangeFreq(l, r, x);
     }
 
-    // [l, r)で（cと同じ値の数、cより小さい値の数、cより大きい値のか数）
+    // [l, r)で（cと同じ値の数、cより小さい値の数、cより大きい値の数）
     tuple<int, int, int> rankAll(int l, int r, T c) {
         int num = r - l;
 

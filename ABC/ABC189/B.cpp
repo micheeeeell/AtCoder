@@ -15,6 +15,20 @@ typedef vector<vvl> vvvl;
 constexpr ll INF = numeric_limits<ll>::max()/4;
 constexpr ll n_max = 2e5+10;
 #define int ll
+const long double pi = 3.14159265358979323846;
+const long double eps = 1e-12;
+
+template <typename T>
+int comp(T a){
+    if (abs(a) < eps) return 0;
+    return a > 0 ? 1 : -1;
+}
+
+template <typename T>
+int comp(T a, T b){
+    // a > b -> 1, a < b -> -1
+    return comp(a - b);
+}
 
 template <typename A, typename B>
 string to_string(pair<A, B> p);
@@ -63,5 +77,19 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+
+    ll n,x; cin >> n >> x;
+    x *= 100;
+    ll t = 0;
+    rep(i, 0, n) {
+        ll v,p; cin >> v >> p;
+
+        t += v * p;
+        if(t > x){
+            cout << i + 1 << endl;
+            return 0;
+        }
+    }
+
+    cout << -1 << endl;
 }

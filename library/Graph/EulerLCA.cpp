@@ -106,56 +106,28 @@ struct graph{
 };
 
 
-// Sparse Table
-template<class MeetSemiLattice> struct SparseTable {
-    vector<vector<MeetSemiLattice> > dat;
-    vector<int> height;
-    
-    SparseTable() { }
-    SparseTable(const vector<MeetSemiLattice> &vec) { init(vec); }
-    void init(const vector<MeetSemiLattice> &vec) {
-        int n = (int)vec.size(), h = 0;
-        while ((1<<h) < n) ++h;
-        dat.assign(h, vector<MeetSemiLattice>(1<<h));
-        height.assign(n+1, 0);
-        for (int i = 2; i <= n; i++) height[i] = height[i>>1]+1;
-        for (int i = 0; i < n; ++i) dat[0][i] = vec[i];
-        for (int i = 1; i < h; ++i)
-            for (int j = 0; j < n; ++j)
-                dat[i][j] = min(dat[i-1][j], dat[i-1][min(j+(1<<(i-1)),n-1)]);
-    }
-    
-    MeetSemiLattice get(int a, int b) {
-        return min(dat[height[b-a]][a], dat[height[b-a]][b-(1<<height[b-a])]);
-    }
-};
-
-template< typename Monoid >
+template <typename Monoid>
 struct SegmentTree {
+    using F = function<Monoid(Monoid, Monoid)>;
 
-    int sz;
-    vector< Monoid > seg;
+    int sz, n;
+    vector<Monoid> seg;
 
-    const Monoid M1 = 0;
-    Monoid f(const Monoid a, const Monoid b){return a + b;};
-    SegmentTree(){}
-    SegmentTree(const int n){
-        init(n);
-    }
-
-    void init(const int n){
+    const F f;
+    const Monoid M1;
+    SegmentTree(const int n, const F f, const Monoid &M1) : n(n), f(f), M1(M1) {
         sz = 1;
-        while(sz < n)sz <<= 1;
-        seg.assign(2*sz, M1);
+        while (sz < n) sz <<= 1;
+        seg.assign(2 * sz, M1);
     }
 
     void set(int k, const Monoid &x) {
         seg[k + sz] = x;
     }
 
-    void build(vector< Monoid > &vec) {
-        for(int i = 0; i < vec.size(); i++)set(i, vec[i]);
-        for(int k = sz - 1; k > 0; k--) {
+    void build(vector<Monoid> &vec) {
+        for (int i = 0; i < vec.size(); i++) set(i, vec[i]);
+        for (int k = sz - 1; k > 0; k--) {
             seg[k] = f(seg[2 * k + 0], seg[2 * k + 1]);
         }
     }
@@ -163,38 +135,101 @@ struct SegmentTree {
     void update(int k, const Monoid &x) {
         k += sz;
         seg[k] = x;
-        while(k >>= 1) {
+        while (k >>= 1) {
             seg[k] = f(seg[2 * k + 0], seg[2 * k + 1]);
         }
     }
 
     Monoid query(int a, int b) {
         Monoid L = M1, R = M1;
-        for(a += sz, b += sz; a < b; a >>= 1, b >>= 1) {
-            if(a & 1) L = f(L, seg[a++]);
-            if(b & 1) R = f(seg[--b], R);
+        for (a += sz, b += sz; a < b; a >>= 1, b >>= 1) {
+            if (a & 1) L = f(L, seg[a++]);
+            if (b & 1) R = f(seg[--b], R);
         }
         return f(L, R);
     }
 
-    Monoid operator[] (const int &k) const {
+    Monoid operator[](const int &k) const {
         return seg[k + sz];
+    }
+
+    template <typename C>
+    int find_subtree(int a, const C &check, Monoid &M, bool type) {
+        while (a < sz) {
+            Monoid nxt =
+                type ? f(seg[2 * a + type], M) : f(M, seg[2 * a + type]);
+            if (check(nxt))
+                a = 2 * a + type;
+            else
+                M = nxt, a = 2 * a + 1 - type;
+        }
+        return a - sz;
+    }
+
+    template <typename C>
+    int find_first(int a, const C &check) {
+        Monoid L = M1;
+        if (a <= 0) {
+            if (check(f(L, seg[1]))) return find_subtree(1, check, L, false);
+            return -1;
+        }
+        int b = sz;
+        for (a += sz, b += sz; a < b; a >>= 1, b >>= 1) {
+            if (a & 1) {
+                Monoid nxt = f(L, seg[a]);
+                if (check(nxt)) return find_subtree(a, check, L, false);
+                L = nxt;
+                ++a;
+            }
+        }
+        return -1;
+    }
+
+    template <typename C>
+    int find_last(int b, const C &check) {
+        Monoid R = M1;
+        if (b >= sz) {
+            if (check(f(seg[1], R))) return find_subtree(1, check, R, true);
+            return -1;
+        }
+        int a = sz;
+        for (b += sz; a < b; a >>= 1, b >>= 1) {
+            if (b & 1) {
+                Monoid nxt = f(seg[--b], R);
+                if (check(nxt)) return find_subtree(b, check, R, true);
+                R = nxt;
+            }
+        }
+        return -1;
+    }
+
+    friend string to_string(SegmentTree<Monoid> &seg) {
+        string s;
+        for (int i = 0; i < seg.n; i++) {
+            s += to_string(seg[i]) + " ";
+        }
+        return s;
     }
 };
 
 template <typename G, typename T>
 struct EulerLCA{
+    using F = function< T (T, T) >;
+    using pii = pair<int, int>;
     const G &g;
-    vector<pair<int, int>> depth;
+    vector<pii> depth;
     vector<int> id;
-    SparseTable< pair<int, int> > ST;
-    int root;
+    int root, n;
+    const F f;
+    const T M1;
     SegmentTree<T> seg;
+    SegmentTree<pii> dep_seg;
 
-    EulerLCA(const G &g, int root = 0): g(g), root(root) {
-        int n = g.size();
-        id.resize(n);depth.resize(2 * n - 1);
-        seg.init(2 * n - 1);
+    EulerLCA(const G &g, const F f, const T &M1, int root = 0)
+        : g(g),f(f),M1(M1),root(root),n(g.size()),seg(2 * n - 1, f, M1),
+        dep_seg(2 * n - 1, [](pii a, pii b) { return min(a, b); }, pii{INF, INF}) {
+        id.resize(n);
+        depth.resize(2 * n - 1);
 
         init(n, root);
         debug(depth, id);
@@ -217,11 +252,11 @@ struct EulerLCA{
     void init(int n, int root = 0){
         int k = 0;
         dfs(root, -1, 0, k);
-        ST.init(depth);
+        dep_seg.build(depth);
     }
 
     int lca(int u, int v){
-        return ST.get(min(id[u], id[v]), max(id[u], id[v]) + 1).second;
+        return dep_seg.query(min(id[u], id[v]), max(id[u], id[v]) + 1).second;
     }
 
     T query(int u, int v){
@@ -241,7 +276,8 @@ signed main(){
         g.add_edge(a, b, 1);
         g.add_edge(b, a, 1);
     }
-    EulerLCA<graph<ll>, ll> elca(g);
+    auto f = [](ll a, ll b) { return a + b; };
+    EulerLCA<graph<ll>, ll> elca(g, f, 0LL);
 
     ll q; cin >> q;
     rep(i,0,q){
