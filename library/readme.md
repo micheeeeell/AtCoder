@@ -7,7 +7,6 @@
 - 2-SAT
 - 動的 Wavlet matrix
 - 区間をsetで管理するやつ
-- 無向グラフで閉路検出
 
 # 理解したいもの（慣れたいもの）
 - Saffix Array

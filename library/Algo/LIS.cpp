@@ -32,26 +32,23 @@ const int n_max = 1e5+10;
 //狭義のLIS(同じ数は一度だけ)
 template<typename T>
 vector<ll> N_LIS(vector<T> a){
-    vector<ll> dp(n_max, INF);
+    ll n = a.size();
+    vector<ll> dp(n + 1, INF);
     // fill(all(dp), INF);
-    int n = a.size();
     for(int i = 0; i < n; i++){
         *lower_bound(all(dp), a[i]) = a[i];
     }
-    cout << lower_bound(all(dp), INF) - dp.begin() << endl;
     return dp;
 }
 
 //広義のLIS（同じ数は何度でも）
 template <typename T>
 vector<ll> B_LIS(vector<T> a) {
-    vector<ll> dp(n_max, INF);
-    // fill(all(dp), INF);
-    int n = a.size();
+    ll n = a.size();
+    vector<ll> dp(n + 1, INF);
     for(int i = 0; i < n; i++){
         *upper_bound(all(dp), a[i]) = a[i];
     }
-    cout << upper_bound(all(dp), INF) - dp.begin() << endl;
     return dp;
 }
 
@@ -59,7 +56,6 @@ vector<ll> B_LIS(vector<T> a) {
 //狭義のLDS
 template <typename T>
 vector<ll> N_LDS(vector<T> a) {
-    // fill(dp, dp + n_max, INF);
     reverse(all(a));
     return N_LIS(a);
 }

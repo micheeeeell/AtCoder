@@ -1,8 +1,6 @@
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
-// #include<atcoder/all>
-// using namespace atcoder;
 #include<bits/stdc++.h>
 using namespace std;
 #define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
@@ -18,7 +16,7 @@ constexpr ll INF = numeric_limits<ll>::max()/4;
 constexpr ll n_max = 2e5+10;
 #define int ll
 const long double pi = 3.14159265358979323846;
-const long double eps = 1e-12;
+const long double eps = 1e-10;
 
 template <typename T>
 int comp(T a){
@@ -79,5 +77,39 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ld x,y,r; cin >> x >> y >> r;
+    ll L = (x - r - 10);
+    ll R = (x + r + 10);
+    r = r * r;
+    ll ans = 0;
+    auto dis = [&](ld i, ld j) {
+        ld dist = (x-i) * (x-i) + (y-j)*(y-j);
+        return dist;
+    };
+    rep(i, L, R) {
+        ld t = abs(x - i);
+        t = r - t * t;
+        if (comp(t, (ld)0) < 0) continue;
+        ll u = y + sqrt(t) + 10;
+        ll l = y - sqrt(t) - 10;
+        u = ceil(u);
+        l = floor(l);
+        while(u >= l){
+            ld dist = dis(i, u);
+            if (comp(dist, r) <= 0) break;
+            u--;
+        }
+        while(u >= l){
+            ld dist = dis(i, l);
+            if (comp(dist, r) <= 0) break;
+            l++;
+        }
+        if(u == l){
+            ld dist = dis(i, u);
+            if (comp(dist, r) > 0) continue;
+        }
+        ans += (u - l + 1);
+    };
+
+    cout << ans << endl;
 }

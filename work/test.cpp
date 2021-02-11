@@ -1,6 +1,8 @@
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
+// #include<atcoder/all>
+// using namespace atcoder;
 #include<bits/stdc++.h>
 using namespace std;
 #define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
@@ -18,6 +20,17 @@ constexpr ll n_max = 2e5+10;
 const long double pi = 3.14159265358979323846;
 const long double eps = 1e-12;
 
+template <typename T>
+int comp(T a){
+    if (abs(a) < eps) return 0;
+    return a > 0 ? 1 : -1;
+}
+
+template <typename T>
+int comp(T a, T b){
+    // a > b -> 1, a < b -> -1
+    return comp(a - b);
+}
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
@@ -62,9 +75,14 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+template<class M, class F, class G>
+void calc(F f, G g){
+    M I = INF;
+    debug(f(1), g(2), I);
+}
+
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    string s = "gfahwighaolwehjrto.gz";
-    cout << s.substr(s.size() - 3) << endl;
+    calc<int>([](int x) { return x; }, [](int x) { return x * 2; });
 }

@@ -1,8 +1,6 @@
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
-// #include<atcoder/all>
-// using namespace atcoder;
 #include<bits/stdc++.h>
 using namespace std;
 #define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
@@ -79,5 +77,23 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll h,w; cin >> h >> w;
+    vector<string> s(h);
+    for(int i = 0;i < h;i++){
+       cin >> s[i];
+    }
+    ll r = 0;
+    rep(i,0,h-1)rep(j,0,w-1){
+        ll tmp = 0;
+        rep(ii, 0, 2)rep(jj,0,2){
+            if(s[i+ii][j+jj] == '#'){
+                tmp++;
+            }
+        }
+        if(tmp == 1 || tmp == 3){
+            r++;
+        }
+    }
+
+    cout << r << endl;
 }

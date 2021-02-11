@@ -31,7 +31,6 @@ int comp(T a, T b){
     // a > b -> 1, a < b -> -1
     return comp(a - b);
 }
-
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
@@ -79,5 +78,23 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll p = 200003;
+    auto check = [&](ll i) {
+        vector<ll> used(p + 1);
+        ll t = 1;
+        rep(j, 1, p) {
+            t *= i;
+            t %= p;
+            if (used[t]) return false;
+            used[t] = 1;
+        }
+        return true;
+    };
+
+    rep(i,2,1000){
+        if(check(i)){
+            debug(i);
+            return 0;
+        }
+    }
 }

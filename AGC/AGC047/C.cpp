@@ -1,6 +1,8 @@
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
+#include<atcoder/all>
+using namespace atcoder;
 #include<bits/stdc++.h>
 using namespace std;
 #define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
@@ -15,7 +17,20 @@ typedef vector<vvl> vvvl;
 constexpr ll INF = numeric_limits<ll>::max()/4;
 constexpr ll n_max = 2e5+10;
 #define int ll
+const long double pi = 3.14159265358979323846;
+const long double eps = 1e-12;
 
+template <typename T>
+int comp(T a){
+    if (abs(a) < eps) return 0;
+    return a > 0 ? 1 : -1;
+}
+
+template <typename T>
+int comp(T a, T b){
+    // a > b -> 1, a < b -> -1
+    return comp(a - b);
+}
 template <typename A, typename B>
 string to_string(pair<A, B> p);
 string to_string(const string &s) {return '"' + s + '"';}
@@ -63,5 +78,41 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    const ll p = 200003;
+
+    ll n; cin >> n;
+    vector<ll> a(n);
+    ll sum = 0;
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+        sum += a[i] * a[i] % p;
+    }
+    ll pl = 2;
+    vector<ll> v(p);
+    {
+        ll t = 1;
+        rep(i, 1, p - 1) {
+            t *= pl;
+            t %= p;
+            v[t] = i;
+        }
+        // debug(v);
+    }
+    vector<ll> b(p);
+    rep(i,0,n){
+        if(a[i] != 0){
+            b[v[a[i]]]++;
+        }
+    }
+    auto c = convolution_ll(b, b);
+    ll ans = 0;
+    ll m = c.size();
+    ll t = 1;
+    rep(i, 0, m) {
+        ans += c[i] * t;
+        t *= pl;
+        t %= p;
+    }
+
+    cout << (ans - sum) / 2 << endl;
 }

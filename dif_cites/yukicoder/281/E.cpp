@@ -1,8 +1,6 @@
 #ifdef LOCAL
 #define _GLIBCXX_DEBUG
 #endif
-// #include<atcoder/all>
-// using namespace atcoder;
 #include<bits/stdc++.h>
 using namespace std;
 #define rep(i,s,t) for(ll i = (ll)(s); i < (ll)(t); i++)
@@ -76,8 +74,68 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+vector<ll> Manacher(string &s) {
+    int i = 0, j = 0;
+    vector<ll> R(s.size());
+    while (i < s.size()) {
+        while (i - j >= 0 && i + j < s.size() && s[i - j] == s[i + j]) ++j;
+        R[i] = j;
+        int k = 1;
+        while (i - k >= 0 && i + k < s.size() && k + R[i - k] < j)
+            R[i + k] = R[i - k], ++k;
+        i += k;
+        j -= k;
+    }
+    return R;
+}
+
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll n,k; cin >> n >> k;
+    if(n < 10){
+        rep(i, 0, 1LL << n){
+            string s;
+            rep(j, 0, n){
+                if((i >> j) & 1){
+                    s += '1';
+                }
+                else
+                    s += '0';
+                s += '$';
+            }
+            s.pop_back();
+            auto r = Manacher(s);
+            debug(s, r);
+
+            ll t = 0;
+            rep(i,0,2 * n - 1){
+                if(i & 1){
+                    chmax(t, r[i]);
+                }
+                else{
+                    if (~r[i] & 1) r[i]--;
+                    chmax(t, r[i]);
+                }
+            }
+            if (t == k) {
+                string st;
+                rep(j, 0, n) st += s[j * 2];
+                cout << st << endl;
+                return 0;
+            }
+        }
+        cout << -1 << endl;
+        return 0;
+    }
+
+    if(k < 4){
+        cout << -1 << endl;
+        return 0;
+    }
+    string s = string(k, '1');
+    while(s.size() < n){
+        s += "010011";
+    }
+    cout << s.substr(0, n) << endl;
 }
