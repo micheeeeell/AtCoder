@@ -62,12 +62,20 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+template <class T>
+struct point {
+    T x = 0, y = 0;
+    point(){};
+    point(T x, T y) : x(x), y(y){};
+};
+
 // 点abを通る直線の傾き
 template <class T>
-long double tilt(pair<T, T> a, pair<T, T> b){
-    if (a.first == b.first) return INF;
-    return (long double)(a.second - b.second) / (long double)(a.first - b.first);
+long double tilt(point<T> a, point<T> b){
+    if (a.x == b.x) return INF;
+    return (long double)(a.y - b.y) / (long double)(a.x - b.x);
 };
+
 signed main() {
     cin.tie(nullptr);
     ios::sync_with_stdio(false);

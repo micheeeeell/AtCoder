@@ -75,8 +75,8 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 template <typename Monoid, typename OperatorMonoid = Monoid>
 struct LazySegmentTree {
     using F = function<Monoid(Monoid, Monoid)>;
-    // using G = function< Monoid(Monoid, OperatorMonoid) >;
-    using G = function<Monoid(Monoid, OperatorMonoid, int)>;
+    using G = function< Monoid(Monoid, OperatorMonoid) >;
+    // using G = function<Monoid(Monoid, OperatorMonoid, int)>;
     using H = function<OperatorMonoid(OperatorMonoid, OperatorMonoid)>;
 
     int sz, height, n;
@@ -104,7 +104,7 @@ struct LazySegmentTree {
         recalc(k);
     }
 
-    void build(vector<Monoid> &vec) {
+    void build(const vector<Monoid> &vec) {
         for(int i = 0; i < vec.size(); i++) data[i + sz] = vec[i];
         for(int k = sz - 1; k > 0; k--) {
             data[k] = f(data[2 * k + 0], data[2 * k + 1]);
@@ -121,8 +121,8 @@ struct LazySegmentTree {
     }
 
     inline Monoid reflect(int k) {
-        // return lazy[k] == OM0 ? data[k] : g(data[k], lazy[k]);
-        return lazy[k] == OM0 ? data[k] : g(data[k], lazy[k], length(k));
+        return lazy[k] == OM0 ? data[k] : g(data[k], lazy[k]);
+        // return lazy[k] == OM0 ? data[k] : g(data[k], lazy[k], length(k));
     }
 
     int length(int k) {
@@ -234,8 +234,24 @@ struct LazySegmentTree {
 // auto h = [](ll a, ll b) { return b; };
 // LazySegmentTree<ll, ll> seg(W, f, g, h, INF, -1);
 
+// 区間和、区間更新の例
+// struct S {
+//     ll value = 0;
+//     ll size = 0;
+// };
+// S e = {0, 0};  // monoid単位元
+// ll id = INF;  //作用素の単位元
+// auto f = [](S a, S b) { return S{a.value + b.value, a.size + b.size}; };
+// auto g = [](S a, ll x) {
+//     if (x != INF) a.value = x * a.size;
+//     return a;
+// };
+// auto h = [](ll a, ll b) { return b == INF ? a : b; };
+// LazySegmentTree<S, ll> seg(n, f, g, h, e, id);
+// seg.build(vector<S>(n,S{0, 1}));
 
-signed main(){
+signed
+main() {
     ll n,q; cin >> n >> q;
     vector<ll> a(n,0);
     // 区間和取得、区間加算の例

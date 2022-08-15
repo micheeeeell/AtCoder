@@ -63,5 +63,150 @@ bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 signed main(){
     cin.tie(nullptr);
     ios::sync_with_stdio(false);
-    
+    ll n; cin >> n;
+    using psl = pair<string, ll>;
+    vector<psl> v(n);
+    rep(i,0,n){
+        string s;cin >> s;
+        ll t; cin >> t;
+        v[i] = {s, t};
+    }
+    auto dijkstra = [&](psl p) {
+        ll ans = INF;
+        using T = pair<ll, psl>;
+        map<psl, ll> mp;
+        mp[p] = 0;
+        priority_queue<T, vector<T>, greater<T>> pq;
+        pq.emplace(T{0, p});
+        while(!pq.empty()){
+            auto [c, sl] = pq.top();
+            debug(c, sl);
+            pq.pop();
+            auto [str, state] = sl;
+            if(str == ""){
+                ans = c;
+                break;
+            }
+            ll m1 = str.size();
+            if (state == 1) {
+                for(auto [s, t] : v){
+                    reverse(all(s));
+                    bool tmp = true;
+                    ll m2 = s.size();
+                    if (m1 > m2) {
+                        rep(i,0,m2){
+                            tmp &= s[i] == str[i];
+                        }
+                        if (!tmp) continue;
+                        string str2 = str.substr(m2);
+                        psl P = {str2, state};
+                        if(!mp.count(P) || chmin(mp[P], c + t)){
+                            mp[P] = c + t;
+                            pq.emplace(T(c + t, P));
+                        }
+                    }
+                    else{
+                        rep(i,0,m1){
+                            tmp &= s[i] == str[i];
+                        }
+                        if (!tmp) continue;
+                        string str2 = s.substr(m1);
+                        reverse(all(str2));
+                        psl P = {str2, -state};
+                        if (!mp.count(P) || chmin(mp[P], c + t)) {
+                            mp[P] = c + t;
+                            pq.emplace(T(c + t, P));
+                        }
+                    }
+                }
+            }
+            else{
+                reverse(all(str));
+                for (auto [s, t] : v) {
+                    bool tmp = true;
+                    ll m2 = s.size();
+                    if (m1 > m2) {
+                        rep(i, 0, m2) {
+                            tmp &= s[i] == str[i];
+                        }
+                        if (!tmp) continue;
+                        string str2 = str.substr(m2);
+                        reverse(all(str2));
+                        psl P = {str2, state};
+                        if (!mp.count(P) || chmin(mp[P], c + t)) {
+                            mp[P] = c + t;
+                            pq.emplace(T(c + t, P));
+                        }
+                    } else {
+                        rep(i, 0, m1) {
+                            tmp &= s[i] == str[i];
+                        }
+                        if (!tmp) continue;
+                        string str2 = s.substr(m1);
+                        psl P = {str2, -state};
+                        if (!mp.count(P) || chmin(mp[P], c + t)) {
+                            mp[P] = c + t;
+                            pq.emplace(T(c + t, P));
+                        }
+                    }
+                }
+            }
+        }
+
+        return ans;
+    };
+
+    ll ans = INF;
+    for (auto [s, c] : v) {
+        ll m1 = s.size();
+        rep(j,0,m1){
+            bool ok = true;
+            ll t = 0;
+            while(1){
+                if (j + t >= m1 || j - t < 0) break;
+                ok &= s[j + t] == s[j - t];
+                t++;
+            }
+            if (!ok) continue;
+            if((m1 & 1) && j == m1 / 2){
+                chmin(ans, c);
+            }
+            else if(j < m1 / 2){
+                chmin(ans, c + dijkstra(psl(s.substr(j * 2 + 1), 1)));
+            }
+            else{
+                chmin(ans,
+                      c + dijkstra(psl(s.substr(0, m1 - (m1 - j) * 2 + 1), -1)));
+            }
+        }
+
+        debug(s, c, ans);
+        rep(j, 0, m1 - 1) {
+            bool ok = true;
+            ll t = 0;
+            while (1) {
+                if (j + t + 1>= m1 || j - t < 0) break;
+                ok &= s[j + t + 1] == s[j - t];
+                t++;
+            }
+            if (!ok) continue;
+            if((~m1 & 1) && j == m1 / 2 - 1){
+                chmin(ans, c);
+            }
+            else if(j < m1 / 2){
+                chmin(ans, c + dijkstra(psl(s.substr(2 * (j + 1)), 1)));
+            }
+            else{
+                chmin(ans, c + dijkstra(psl(s.substr(0, m1 - (m1 - j - 1) * 2),
+                                            -1)));
+            }
+        }
+        debug(s, c, ans);
+
+        chmin(ans, c + dijkstra(psl(s, 1)));
+        chmin(ans, c + dijkstra(psl(s, -1)));
+        debug(s, c, ans);
+    }
+
+    cout << (ans != INF ? ans : -1) << endl;
 }

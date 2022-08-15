@@ -62,15 +62,28 @@ bool chmax(T &a, T b){if(a < b){a = b; return true;} return false;}
 template<class T>
 bool chmin(T &a, T b){if(a > b){a = b; return true;} return false;}
 
+template <class T>
+struct point {
+    T x = 0, y = 0;
+    point(){};
+    point(T x, T y) : x(x), y(y){};
+};
+
+// 点と点の距離
+template<class T>
+long double dist(point<T> a, point<T> b){
+    return hypot(a.x - b.x, a.y - b.y);
+}
+
 // 点a,b,cからなる三角形の面積
 template<class T> 
-long double area(pair<T, T> a, pair<T, T> b, pair<T, T> c) {
+long double area(point<T> a, point<T> b, point<T> c) {
     long double ans = 0;
-    a.first -= c.first;
-    b.first -= c.first;
-    a.second -= c.second;
-    b.second -= c.second;
-    ans = abs(a.first * b.second - a.second * b.first);
+    a.x -= c.x;
+    b.x -= c.x;
+    a.y -= c.y;
+    b.y -= c.y;
+    ans = abs(a.x * b.y - a.y * b.x);
     ans /= 2.0;
     return ans;
 };
@@ -78,16 +91,16 @@ long double area(pair<T, T> a, pair<T, T> b, pair<T, T> c) {
 // 直線ABと点Cの距離
 // 直線ABの距離が0または三点が同一直線状にあるとき、-1を返す
 template<class T>
-long double dist(pair<T, T> a, pair<T, T> b, pair<T, T> c) {
+long double dist(point<T> a, point<T> b, point<T> c) {
     double tri = area(a, b, c) * 2.0;
-    double len = hypot(a.first - b.first, a.second - b.second);
+    double len = hypot(a.x - b.x, a.y - b.y);
     if (abs(len) < eps || abs(tri) < eps) return -1;
     return tri / len;
 };
 
 template<class T>
-long double dist(pair<T, T> a, pair<T, T> b){
-    return hypot(a.first - b.first, a.second - b.second);
+long double dist(point<T> a, point<T> b){
+    return hypot(a.x - b.x, a.y - b.y);
 }
 
 signed main(){

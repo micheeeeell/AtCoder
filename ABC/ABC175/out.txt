@@ -1,0 +1,608 @@
+テストケースを入力してください
+[c, sl]: 0 ("kxkbxdadmrlymnhzpdb", 1)
+[c, sl]: 0 ("kbxdadmrlymnhzpdb", 1)
+[c, sl]: 0 ("xkxkbxdadmrlymnhzpd", -1)
+[s, c, ans]: "xkxkbxdadmrlymnhzpdb" 964776970 2305843009213693951
+[s, c, ans]: "xkxkbxdadmrlymnhzpdb" 964776970 2305843009213693951
+[c, sl]: 0 ("xkxkbxdadmrlymnhzpdb", 1)
+[c, sl]: 0 ("xkxkbxdadmrlymnhzpdb", -1)
+[s, c, ans]: "xkxkbxdadmrlymnhzpdb" 964776970 2305843009213693951
+[c, sl]: 0 ("xocahjfrcucddkozsuy", 1)
+[c, sl]: 0 ("fxocahjfrcucddkozsu", -1)
+[s, c, ans]: "fxocahjfrcucddkozsuy" 964776970 2305843009213693951
+[s, c, ans]: "fxocahjfrcucddkozsuy" 964776970 2305843009213693951
+[c, sl]: 0 ("fxocahjfrcucddkozsuy", 1)
+[c, sl]: 0 ("fxocahjfrcucddkozsuy", -1)
+[s, c, ans]: "fxocahjfrcucddkozsuy" 964776970 2305843009213693951
+[c, sl]: 0 ("dqaekpuagisbklbybec", 1)
+[c, sl]: 0 ("xdqaekpuagisbklbybe", -1)
+[s, c, ans]: "xdqaekpuagisbklbybec" 964776970 2305843009213693951
+[s, c, ans]: "xdqaekpuagisbklbybec" 964776970 2305843009213693951
+[c, sl]: 0 ("xdqaekpuagisbklbybec", 1)
+[c, sl]: 0 ("xdqaekpuagisbklbybec", -1)
+[s, c, ans]: "xdqaekpuagisbklbybec" 964776970 2305843009213693951
+[c, sl]: 0 ("yowutrbwyqqqyvlchvr", 1)
+[c, sl]: 0 ("vyowutrbwyqqqyvlchv", -1)
+[s, c, ans]: "vyowutrbwyqqqyvlchvr" 964776970 2305843009213693951
+[s, c, ans]: "vyowutrbwyqqqyvlchvr" 964776970 2305843009213693951
+[c, sl]: 0 ("vyowutrbwyqqqyvlchvr", 1)
+[c, sl]: 0 ("vyowutrbwyqqqyvlchvr", -1)
+[s, c, ans]: "vyowutrbwyqqqyvlchvr" 964776970 2305843009213693951
+[c, sl]: 0 ("jtibdpzhnmylrmdadxb", 1)
+[c, sl]: 0 ("wjtibdpzhnmylrmdadx", -1)
+[s, c, ans]: "wjtibdpzhnmylrmdadxb" 964776970 2305843009213693951
+[s, c, ans]: "wjtibdpzhnmylrmdadxb" 964776970 2305843009213693951
+[c, sl]: 0 ("wjtibdpzhnmylrmdadxb", 1)
+[c, sl]: 0 ("wjtibdpzhnmylrmdadxb", -1)
+[s, c, ans]: "wjtibdpzhnmylrmdadxb" 964776970 2305843009213693951
+[c, sl]: 0 ("fvmjwesjqnahyzn", 1)
+[c, sl]: 0 ("yfvmjwesjqnahyz", -1)
+[s, c, ans]: "yfvmjwesjqnahyzn" 964776970 2305843009213693951
+[s, c, ans]: "yfvmjwesjqnahyzn" 964776970 2305843009213693951
+[c, sl]: 0 ("yfvmjwesjqnahyzn", 1)
+[c, sl]: 964776970 ("itjw", -1)
+[c, sl]: 1929553940 ("bdpzhnmylrmdadxb", 1)
+[c, sl]: 2894330910 ("xkxk", -1)
+[c, sl]: 3859107880 ("wamuoakkceugvycq", 1)
+[c, sl]: 4823884850 ("mtmm", -1)
+[c, sl]: 5788661820 ("rwcjitugjbxtevog", 1)
+[c, sl]: 6753438790 ("eviv", -1)
+[c, sl]: 7718215760 ("jbaemjzysxjusknr", 1)
+[c, sl]: 8682992730 ("texu", -1)
+[c, sl]: 9647769700 ("zcnxclbrsfqbgycy", 1)
+[c, sl]: 10612546670 ("zwci", -1)
+[c, sl]: 11577323640 ("zaunoqcpnuvovobv", 1)
+[c, sl]: 12542100610 ("xhqs", -1)
+[c, sl]: 13506877580 ("dcadyvkjsyfwnphs", 1)
+[c, sl]: 14471654550 ("aqdx", -1)
+[c, sl]: 15436431520 ("ekpuagisbklbybec", 1)
+[c, sl]: 16401208490 ("oqse", -1)
+[c, sl]: 17365985460 ("namucyaulkduutej", 1)
+[c, sl]: 18330762430 ("uffe", -1)
+[c, sl]: 19295539400 ("jpnxljtdulllnkgd", 1)
+[c, sl]: 20260316370 ("iqsc", -1)
+[c, sl]: 21225093340 ("ufwegtghxhspbdyi", 1)
+[c, sl]: 22189870310 ("mltw", -1)
+[c, sl]: 23154647280 ("hjwwcvmblnvklwua", 1)
+[c, sl]: 24119424250 ("qyju", -1)
+[c, sl]: 25084201220 ("etazuthkfkelqfms", 1)
+[c, sl]: 26048978190 ("qinh", -1)
+[c, sl]: 27013755160 ("rvhclvyqqqywbrtu", 1)
+[c, sl]: 27978532130 ("vyow", -1)
+[c, sl]: 28943309100 ("tcsbywnzfcqgvhye", 1)
+[c, sl]: 29908086070 ("xwbk", -1)
+[c, sl]: 30872863040 ("uxiqoqlnjdtdfqds", 1)
+[c, sl]: 31837640010 ("coxf", -1)
+[c, sl]: 32802416980 ("ahjfrcucddkozsuy", 1)
+[c, sl]: 33767193950 ("qiic", -1)
+[c, sl]: 34731970920 ("npmgnsecizkdzsgt", 1)
+[c, sl]: 35696747890 ("uvbg", -1)
+[c, sl]: 36661524860 ("cawxlhkfahnhuujf", 1)
+[c, sl]: 37626301830 ("ninv", -1)
+[c, sl]: 38591078800 ("bneorlnpgkinrjso", 1)
+[c, sl]: 39555855770 ("bali", -1)
+[c, sl]: 40520632740 ("kpidkhqfgfirxdbr", 1)
+[c, sl]: 41485409710 ("dpdz", -1)
+[c, sl]: 42450186680 ("yrkmjhbhkgkhofen", 1)
+[c, sl]: 43414963650 ("xcir", -1)
+[c, sl]: 44379740620 ("xojlkauspsvwzzdu", 1)
+[c, sl]: 45344517590 ("vulo", -1)
+[c, sl]: 46309294560 ("dizpkheirtscmrwf", 1)
+[c, sl]: 47274071530 ("rffr", -1)
+[c, sl]: 48238848500 ("fwrmcstriehkpzid", 1)
+[c, sl]: 49203625470 ("oluv", -1)
+[c, sl]: 50168402440 ("udzzwvspsuakljox", 1)
+[c, sl]: 51133179410 ("ricx", -1)
+[c, sl]: 52097956380 ("nefohkgkhbhjmkry", 1)
+[c, sl]: 53062733350 ("zdpd", -1)
+[c, sl]: 54027510320 ("rbdxrifgfqhkdipk", 1)
+[c, sl]: 54992287290 ("ilab", -1)
+[c, sl]: 55957064260 ("osjrnikgpnlroenb", 1)
+[c, sl]: 56921841230 ("vnin", -1)
+[c, sl]: 57886618200 ("fjuuhnhafkhlxwac", 1)
+[c, sl]: 58851395170 ("gbvu", -1)
+[c, sl]: 59816172140 ("tgszdkzicesngmpn", 1)
+[c, sl]: 60780949110 ("ciiq", -1)
+[c, sl]: 61745726080 ("yuszokddcucrfjha", 1)
+[c, sl]: 62710503050 ("fxoc", -1)
+[c, sl]: 63675280020 ("sdqfdtdjnlqoqixu", 1)
+[c, sl]: 64640056990 ("kbwx", -1)
+[c, sl]: 65604833960 ("eyhvgqcfznwybsct", 1)
+[c, sl]: 66569610930 ("woyv", -1)
+[c, sl]: 67534387900 ("utrbwyqqqyvlchvr", 1)
+[c, sl]: 68499164870 ("hniq", -1)
+[c, sl]: 69463941840 ("smfqlekfkhtuzate", 1)
+[c, sl]: 70428718810 ("ujyq", -1)
+[c, sl]: 71393495780 ("auwlkvnlbmvcwwjh", 1)
+[c, sl]: 72358272750 ("wtlm", -1)
+[c, sl]: 73323049720 ("iydbpshxhgtgewfu", 1)
+[c, sl]: 74287826690 ("csqi", -1)
+[c, sl]: 75252603660 ("dgknllludtjlxnpj", 1)
+[c, sl]: 76217380630 ("effu", -1)
+[c, sl]: 77182157600 ("jetuudkluaycuman", 1)
+[c, sl]: 78146934570 ("esqo", -1)
+[c, sl]: 79111711540 ("cebyblkbsigaupke", 1)
+[c, sl]: 80076488510 ("xdqa", -1)
+[c, sl]: 81041265480 ("shpnwfysjkvydacd", 1)
+[c, sl]: 82006042450 ("sqhx", -1)
+[c, sl]: 82970819420 ("vbovovunpcqonuaz", 1)
+[c, sl]: 83935596390 ("icwz", -1)
+[c, sl]: 84900373360 ("ycygbqfsrblcxncz", 1)
+[c, sl]: 85865150330 ("uxet", -1)
+[c, sl]: 86829927300 ("rnksujxsyzjmeabj", 1)
+[c, sl]: 87794704270 ("vive", -1)
+[c, sl]: 88759481240 ("govetxbjgutijcwr", 1)
+[c, sl]: 89724258210 ("mmtm", -1)
+[c, sl]: 90689035180 ("qcyvgueckkaoumaw", 1)
+[c, sl]: 91653812150 ("kxkx", -1)
+[c, sl]: 92618589120 ("bxdadmrlymnhzpdb", 1)
+[c, sl]: 93583366090 ("wjti", -1)
+[c, sl]: 94548143060 ("nzyhanqjsewjmvfy", 1)
+[c, sl]: 95512920030 ("", -1)
+[c, sl]: 0 ("yfvmjwesjqnahyzn", -1)
+[s, c, ans]: "yfvmjwesjqnahyzn" 964776970 96477697000
+[c, sl]: 0 ("vbgtgszdkzicesngmpn", 1)
+[c, sl]: 0 ("uvbgtgszdkzicesngmp", -1)
+[s, c, ans]: "uvbgtgszdkzicesngmpn" 964776970 96477697000
+[s, c, ans]: "uvbgtgszdkzicesngmpn" 964776970 96477697000
+[c, sl]: 0 ("uvbgtgszdkzicesngmpn", 1)
+[c, sl]: 0 ("uvbgtgszdkzicesngmpn", -1)
+[s, c, ans]: "uvbgtgszdkzicesngmpn" 964776970 96477697000
+[c, sl]: 0 ("ltwiydbpshxhgtgewfu", 1)
+[c, sl]: 0 ("mltwiydbpshxhgtgewf", -1)
+[s, c, ans]: "mltwiydbpshxhgtgewfu" 964776970 96477697000
+[s, c, ans]: "mltwiydbpshxhgtgewfu" 964776970 96477697000
+[c, sl]: 0 ("mltwiydbpshxhgtgewfu", 1)
+[c, sl]: 0 ("mltwiydbpshxhgtgewfu", -1)
+[s, c, ans]: "mltwiydbpshxhgtgewfu" 964776970 96477697000
+[c, sl]: 0 ("qhxdcadyvkjsyfwnphs", 1)
+[c, sl]: 0 ("sqhxdcadyvkjsyfwnph", -1)
+[s, c, ans]: "sqhxdcadyvkjsyfwnphs" 964776970 96477697000
+[s, c, ans]: "sqhxdcadyvkjsyfwnphs" 964776970 96477697000
+[c, sl]: 0 ("sqhxdcadyvkjsyfwnphs", 1)
+[c, sl]: 0 ("sqhxdcadyvkjsyfwnphs", -1)
+[s, c, ans]: "sqhxdcadyvkjsyfwnphs" 964776970 96477697000
+[c, sl]: 0 ("wbkeyhvgqcfznwybsct", 1)
+[c, sl]: 0 ("xwbkeyhvgqcfznwybsc", -1)
+[s, c, ans]: "xwbkeyhvgqcfznwybsct" 964776970 96477697000
+[s, c, ans]: "xwbkeyhvgqcfznwybsct" 964776970 96477697000
+[c, sl]: 0 ("xwbkeyhvgqcfznwybsct", 1)
+[c, sl]: 0 ("xwbkeyhvgqcfznwybsct", -1)
+[s, c, ans]: "xwbkeyhvgqcfznwybsct" 964776970 96477697000
+[c, sl]: 0 ("tjwnzyhanqjsewjmvfy", 1)
+[c, sl]: 0 ("itjwnzyhanqjsewjmvf", -1)
+[s, c, ans]: "itjwnzyhanqjsewjmvfy" 964776970 96477697000
+[s, c, ans]: "itjwnzyhanqjsewjmvfy" 964776970 96477697000
+[c, sl]: 0 ("itjwnzyhanqjsewjmvfy", 1)
+[c, sl]: 0 ("itjwnzyhanqjsewjmvfy", -1)
+[c, sl]: 964776970 ("itjw", -1)
+[c, sl]: 1929553940 ("bdpzhnmylrmdadxb", 1)
+[c, sl]: 2894330910 ("xkxk", -1)
+[c, sl]: 3859107880 ("wamuoakkceugvycq", 1)
+[c, sl]: 4823884850 ("mtmm", -1)
+[c, sl]: 5788661820 ("rwcjitugjbxtevog", 1)
+[c, sl]: 6753438790 ("eviv", -1)
+[c, sl]: 7718215760 ("jbaemjzysxjusknr", 1)
+[c, sl]: 8682992730 ("texu", -1)
+[c, sl]: 9647769700 ("zcnxclbrsfqbgycy", 1)
+[c, sl]: 10612546670 ("zwci", -1)
+[c, sl]: 11577323640 ("zaunoqcpnuvovobv", 1)
+[c, sl]: 12542100610 ("xhqs", -1)
+[c, sl]: 13506877580 ("dcadyvkjsyfwnphs", 1)
+[c, sl]: 14471654550 ("aqdx", -1)
+[c, sl]: 15436431520 ("ekpuagisbklbybec", 1)
+[c, sl]: 16401208490 ("oqse", -1)
+[c, sl]: 17365985460 ("namucyaulkduutej", 1)
+[c, sl]: 18330762430 ("uffe", -1)
+[c, sl]: 19295539400 ("jpnxljtdulllnkgd", 1)
+[c, sl]: 20260316370 ("iqsc", -1)
+[c, sl]: 21225093340 ("ufwegtghxhspbdyi", 1)
+[c, sl]: 22189870310 ("mltw", -1)
+[c, sl]: 23154647280 ("hjwwcvmblnvklwua", 1)
+[c, sl]: 24119424250 ("qyju", -1)
+[c, sl]: 25084201220 ("etazuthkfkelqfms", 1)
+[c, sl]: 26048978190 ("qinh", -1)
+[c, sl]: 27013755160 ("rvhclvyqqqywbrtu", 1)
+[c, sl]: 27978532130 ("vyow", -1)
+[c, sl]: 28943309100 ("tcsbywnzfcqgvhye", 1)
+[c, sl]: 29908086070 ("xwbk", -1)
+[c, sl]: 30872863040 ("uxiqoqlnjdtdfqds", 1)
+[c, sl]: 31837640010 ("coxf", -1)
+[c, sl]: 32802416980 ("ahjfrcucddkozsuy", 1)
+[c, sl]: 33767193950 ("qiic", -1)
+[c, sl]: 34731970920 ("npmgnsecizkdzsgt", 1)
+[c, sl]: 35696747890 ("uvbg", -1)
+[c, sl]: 36661524860 ("cawxlhkfahnhuujf", 1)
+[c, sl]: 37626301830 ("ninv", -1)
+[c, sl]: 38591078800 ("bneorlnpgkinrjso", 1)
+[c, sl]: 39555855770 ("bali", -1)
+[c, sl]: 40520632740 ("kpidkhqfgfirxdbr", 1)
+[c, sl]: 41485409710 ("dpdz", -1)
+[c, sl]: 42450186680 ("yrkmjhbhkgkhofen", 1)
+[c, sl]: 43414963650 ("xcir", -1)
+[c, sl]: 44379740620 ("xojlkauspsvwzzdu", 1)
+[c, sl]: 45344517590 ("vulo", -1)
+[c, sl]: 46309294560 ("dizpkheirtscmrwf", 1)
+[c, sl]: 47274071530 ("rffr", -1)
+[c, sl]: 48238848500 ("fwrmcstriehkpzid", 1)
+[c, sl]: 49203625470 ("oluv", -1)
+[c, sl]: 50168402440 ("udzzwvspsuakljox", 1)
+[c, sl]: 51133179410 ("ricx", -1)
+[c, sl]: 52097956380 ("nefohkgkhbhjmkry", 1)
+[c, sl]: 53062733350 ("zdpd", -1)
+[c, sl]: 54027510320 ("rbdxrifgfqhkdipk", 1)
+[c, sl]: 54992287290 ("ilab", -1)
+[c, sl]: 55957064260 ("osjrnikgpnlroenb", 1)
+[c, sl]: 56921841230 ("vnin", -1)
+[c, sl]: 57886618200 ("fjuuhnhafkhlxwac", 1)
+[c, sl]: 58851395170 ("gbvu", -1)
+[c, sl]: 59816172140 ("tgszdkzicesngmpn", 1)
+[c, sl]: 60780949110 ("ciiq", -1)
+[c, sl]: 61745726080 ("yuszokddcucrfjha", 1)
+[c, sl]: 62710503050 ("fxoc", -1)
+[c, sl]: 63675280020 ("sdqfdtdjnlqoqixu", 1)
+[c, sl]: 64640056990 ("kbwx", -1)
+[c, sl]: 65604833960 ("eyhvgqcfznwybsct", 1)
+[c, sl]: 66569610930 ("woyv", -1)
+[c, sl]: 67534387900 ("utrbwyqqqyvlchvr", 1)
+[c, sl]: 68499164870 ("hniq", -1)
+[c, sl]: 69463941840 ("smfqlekfkhtuzate", 1)
+[c, sl]: 70428718810 ("ujyq", -1)
+[c, sl]: 71393495780 ("auwlkvnlbmvcwwjh", 1)
+[c, sl]: 72358272750 ("wtlm", -1)
+[c, sl]: 73323049720 ("iydbpshxhgtgewfu", 1)
+[c, sl]: 74287826690 ("csqi", -1)
+[c, sl]: 75252603660 ("dgknllludtjlxnpj", 1)
+[c, sl]: 76217380630 ("effu", -1)
+[c, sl]: 77182157600 ("jetuudkluaycuman", 1)
+[c, sl]: 78146934570 ("esqo", -1)
+[c, sl]: 79111711540 ("cebyblkbsigaupke", 1)
+[c, sl]: 80076488510 ("xdqa", -1)
+[c, sl]: 81041265480 ("shpnwfysjkvydacd", 1)
+[c, sl]: 82006042450 ("sqhx", -1)
+[c, sl]: 82970819420 ("vbovovunpcqonuaz", 1)
+[c, sl]: 83935596390 ("icwz", -1)
+[c, sl]: 84900373360 ("ycygbqfsrblcxncz", 1)
+[c, sl]: 85865150330 ("uxet", -1)
+[c, sl]: 86829927300 ("rnksujxsyzjmeabj", 1)
+[c, sl]: 87794704270 ("vive", -1)
+[c, sl]: 88759481240 ("govetxbjgutijcwr", 1)
+[c, sl]: 89724258210 ("mmtm", -1)
+[c, sl]: 90689035180 ("qcyvgueckkaoumaw", 1)
+[c, sl]: 91653812150 ("kxkx", -1)
+[c, sl]: 92618589120 ("bxdadmrlymnhzpdb", 1)
+[c, sl]: 93583366090 ("wjti", -1)
+[c, sl]: 94548143060 ("nzyhanqjsewjmvfy", 1)
+[c, sl]: 95512920030 ("", -1)
+[s, c, ans]: "itjwnzyhanqjsewjmvfy" 964776970 96477697000
+[c, sl]: 0 ("ninbneorlnpgkinrjso", 1)
+[c, sl]: 0 ("vninbneorlnpgkinrjs", -1)
+[s, c, ans]: "vninbneorlnpgkinrjso" 964776970 96477697000
+[s, c, ans]: "vninbneorlnpgkinrjso" 964776970 96477697000
+[c, sl]: 0 ("vninbneorlnpgkinrjso", 1)
+[c, sl]: 0 ("vninbneorlnpgkinrjso", -1)
+[s, c, ans]: "vninbneorlnpgkinrjso" 964776970 96477697000
+[c, sl]: 0 ("bvucawxlhkfahnhuujf", 1)
+[c, sl]: 0 ("gbvucawxlhkfahnhuuj", -1)
+[s, c, ans]: "gbvucawxlhkfahnhuujf" 964776970 96477697000
+[s, c, ans]: "gbvucawxlhkfahnhuujf" 964776970 96477697000
+[c, sl]: 0 ("gbvucawxlhkfahnhuujf", 1)
+[c, sl]: 0 ("gbvucawxlhkfahnhuujf", -1)
+[s, c, ans]: "gbvucawxlhkfahnhuujf" 964776970 96477697000
+[c, sl]: 0 ("oyvtcsbywnzfcqgvhye", 1)
+[c, sl]: 0 ("woyvtcsbywnzfcqgvhy", -1)
+[s, c, ans]: "woyvtcsbywnzfcqgvhye" 964776970 96477697000
+[s, c, ans]: "woyvtcsbywnzfcqgvhye" 964776970 96477697000
+[c, sl]: 0 ("woyvtcsbywnzfcqgvhye", 1)
+[c, sl]: 0 ("woyvtcsbywnzfcqgvhye", -1)
+[s, c, ans]: "woyvtcsbywnzfcqgvhye" 964776970 96477697000
+[c, sl]: 0 ("tmmqcyvgueckkaoumaw", 1)
+[c, sl]: 0 ("mqcyvgueckkaoumaw", 1)
+[c, sl]: 0 ("mtmmqcyvgueckkaouma", -1)
+[s, c, ans]: "mtmmqcyvgueckkaoumaw" 964776970 96477697000
+[s, c, ans]: "mtmmqcyvgueckkaoumaw" 964776970 96477697000
+[c, sl]: 0 ("mtmmqcyvgueckkaoumaw", 1)
+[c, sl]: 0 ("mtmmqcyvgueckkaoumaw", -1)
+[s, c, ans]: "mtmmqcyvgueckkaoumaw" 964776970 96477697000
+[c, sl]: 0 ("sqonamucyaulkduutej", 1)
+[c, sl]: 0 ("esqonamucyaulkduute", -1)
+[s, c, ans]: "esqonamucyaulkduutej" 964776970 96477697000
+[s, c, ans]: "esqonamucyaulkduutej" 964776970 96477697000
+[c, sl]: 0 ("esqonamucyaulkduutej", 1)
+[c, sl]: 0 ("esqonamucyaulkduutej", -1)
+[s, c, ans]: "esqonamucyaulkduutej" 964776970 96477697000
+[c, sl]: 0 ("icxxojlkauspsvwzzdu", 1)
+[c, sl]: 0 ("ricxxojlkauspsvwzzd", -1)
+[s, c, ans]: "ricxxojlkauspsvwzzdu" 964776970 96477697000
+[s, c, ans]: "ricxxojlkauspsvwzzdu" 964776970 96477697000
+[c, sl]: 0 ("ricxxojlkauspsvwzzdu", 1)
+[c, sl]: 0 ("ricxxojlkauspsvwzzdu", -1)
+[s, c, ans]: "ricxxojlkauspsvwzzdu" 964776970 96477697000
+[c, sl]: 0 ("invfjuuhnhafkhlxwac", 1)
+[c, sl]: 0 ("vfjuuhnhafkhlxwac", 1)
+[c, sl]: 0 ("ninvfjuuhnhafkhlxwa", -1)
+[s, c, ans]: "ninvfjuuhnhafkhlxwac" 964776970 96477697000
+[s, c, ans]: "ninvfjuuhnhafkhlxwac" 964776970 96477697000
+[c, sl]: 0 ("ninvfjuuhnhafkhlxwac", 1)
+[c, sl]: 0 ("ninvfjuuhnhafkhlxwac", -1)
+[s, c, ans]: "ninvfjuuhnhafkhlxwac" 964776970 96477697000
+[c, sl]: 0 ("qdxshpnwfysjkvydacd", 1)
+[c, sl]: 0 ("aqdxshpnwfysjkvydac", -1)
+[s, c, ans]: "aqdxshpnwfysjkvydacd" 964776970 96477697000
+[s, c, ans]: "aqdxshpnwfysjkvydacd" 964776970 96477697000
+[c, sl]: 0 ("aqdxshpnwfysjkvydacd", 1)
+[c, sl]: 0 ("aqdxshpnwfysjkvydacd", -1)
+[s, c, ans]: "aqdxshpnwfysjkvydacd" 964776970 96477697000
+[c, sl]: 0 ("vivgovetxbjgutijcwr", 1)
+[c, sl]: 0 ("evivgovetxbjgutijcw", -1)
+[s, c, ans]: "evivgovetxbjgutijcwr" 964776970 96477697000
+[s, c, ans]: "evivgovetxbjgutijcwr" 964776970 96477697000
+[c, sl]: 0 ("evivgovetxbjgutijcwr", 1)
+[c, sl]: 0 ("evivgovetxbjgutijcwr", -1)
+[s, c, ans]: "evivgovetxbjgutijcwr" 964776970 96477697000
+[c, sl]: 0 ("cirnefohkgkhbhjmkry", 1)
+[c, sl]: 0 ("xcirnefohkgkhbhjmkr", -1)
+[s, c, ans]: "xcirnefohkgkhbhjmkry" 964776970 96477697000
+[s, c, ans]: "xcirnefohkgkhbhjmkry" 964776970 96477697000
+[c, sl]: 0 ("xcirnefohkgkhbhjmkry", 1)
+[c, sl]: 0 ("xcirnefohkgkhbhjmkry", -1)
+[s, c, ans]: "xcirnefohkgkhbhjmkry" 964776970 96477697000
+[c, sl]: 0 ("bwxuxiqoqlnjdtdfqds", 1)
+[c, sl]: 0 ("kbwxuxiqoqlnjdtdfqd", -1)
+[s, c, ans]: "kbwxuxiqoqlnjdtdfqds" 964776970 96477697000
+[s, c, ans]: "kbwxuxiqoqlnjdtdfqds" 964776970 96477697000
+[c, sl]: 0 ("kbwxuxiqoqlnjdtdfqds", 1)
+[c, sl]: 0 ("kbwxuxiqoqlnjdtdfqds", -1)
+[s, c, ans]: "kbwxuxiqoqlnjdtdfqds" 964776970 96477697000
+[c, sl]: 0 ("ivejbaemjzysxjusknr", 1)
+[c, sl]: 0 ("ejbaemjzysxjusknr", 1)
+[c, sl]: 0 ("vivejbaemjzysxjuskn", -1)
+[s, c, ans]: "vivejbaemjzysxjusknr" 964776970 96477697000
+[s, c, ans]: "vivejbaemjzysxjusknr" 964776970 96477697000
+[c, sl]: 0 ("vivejbaemjzysxjusknr", 1)
+[c, sl]: 0 ("vivejbaemjzysxjusknr", -1)
+[s, c, ans]: "vivejbaemjzysxjusknr" 964776970 96477697000
+[c, sl]: 0 ("iiqnpmgnsecizkdzsgt", 1)
+[c, sl]: 0 ("ciiqnpmgnsecizkdzsg", -1)
+[s, c, ans]: "ciiqnpmgnsecizkdzsgt" 964776970 96477697000
+[s, c, ans]: "ciiqnpmgnsecizkdzsgt" 964776970 96477697000
+[c, sl]: 0 ("ciiqnpmgnsecizkdzsgt", 1)
+[c, sl]: 0 ("ciiqnpmgnsecizkdzsgt", -1)
+[s, c, ans]: "ciiqnpmgnsecizkdzsgt" 964776970 96477697000
+[c, sl]: 0 ("yjuauwlkvnlbmvcwwjh", 1)
+[c, sl]: 0 ("qyjuauwlkvnlbmvcwwj", -1)
+[s, c, ans]: "qyjuauwlkvnlbmvcwwjh" 964776970 96477697000
+[s, c, ans]: "qyjuauwlkvnlbmvcwwjh" 964776970 96477697000
+[c, sl]: 0 ("qyjuauwlkvnlbmvcwwjh", 1)
+[c, sl]: 0 ("qyjuauwlkvnlbmvcwwjh", -1)
+[s, c, ans]: "qyjuauwlkvnlbmvcwwjh" 964776970 96477697000
+[c, sl]: 0 ("cwzzaunoqcpnuvovobv", 1)
+[c, sl]: 0 ("icwzzaunoqcpnuvovob", -1)
+[s, c, ans]: "icwzzaunoqcpnuvovobv" 964776970 96477697000
+[s, c, ans]: "icwzzaunoqcpnuvovobv" 964776970 96477697000
+[c, sl]: 0 ("icwzzaunoqcpnuvovobv", 1)
+[c, sl]: 0 ("icwzzaunoqcpnuvovobv", -1)
+[s, c, ans]: "icwzzaunoqcpnuvovobv" 964776970 96477697000
+[c, sl]: 0 ("exurnksujxsyzjmeabj", 1)
+[c, sl]: 0 ("texurnksujxsyzjmeab", -1)
+[s, c, ans]: "texurnksujxsyzjmeabj" 964776970 96477697000
+[s, c, ans]: "texurnksujxsyzjmeabj" 964776970 96477697000
+[c, sl]: 0 ("texurnksujxsyzjmeabj", 1)
+[c, sl]: 0 ("texurnksujxsyzjmeabj", -1)
+[s, c, ans]: "texurnksujxsyzjmeabj" 964776970 96477697000
+[c, sl]: 0 ("ffejetuudkluaycuman", 1)
+[c, sl]: 0 ("uffejetuudkluaycuma", -1)
+[s, c, ans]: "uffejetuudkluaycuman" 964776970 96477697000
+[s, c, ans]: "uffejetuudkluaycuman" 964776970 96477697000
+[c, sl]: 0 ("uffejetuudkluaycuman", 1)
+[c, sl]: 0 ("uffejetuudkluaycuman", -1)
+[s, c, ans]: "uffejetuudkluaycuman" 964776970 96477697000
+[c, sl]: 0 ("ffujpnxljtdulllnkgd", 1)
+[c, sl]: 0 ("effujpnxljtdulllnkg", -1)
+[s, c, ans]: "effujpnxljtdulllnkgd" 964776970 96477697000
+[s, c, ans]: "effujpnxljtdulllnkgd" 964776970 96477697000
+[c, sl]: 0 ("effujpnxljtdulllnkgd", 1)
+[c, sl]: 0 ("effujpnxljtdulllnkgd", -1)
+[s, c, ans]: "effujpnxljtdulllnkgd" 964776970 96477697000
+[c, sl]: 0 ("mtmrwcjitugjbxtevog", 1)
+[c, sl]: 0 ("mmtmrwcjitugjbxtevo", -1)
+[s, c, ans]: "mmtmrwcjitugjbxtevog" 964776970 96477697000
+[c, sl]: 0 ("tmrwcjitugjbxtevog", 1)
+[s, c, ans]: "mmtmrwcjitugjbxtevog" 964776970 96477697000
+[c, sl]: 0 ("mmtmrwcjitugjbxtevog", 1)
+[c, sl]: 0 ("mmtmrwcjitugjbxtevog", -1)
+[s, c, ans]: "mmtmrwcjitugjbxtevog" 964776970 96477697000
+[c, sl]: 0 ("ffrfwrmcstriehkpzid", 1)
+[c, sl]: 0 ("rffrfwrmcstriehkpzi", -1)
+[s, c, ans]: "rffrfwrmcstriehkpzid" 964776970 96477697000
+[c, sl]: 0 ("fwrmcstriehkpzid", 1)
+[c, sl]: 964776970 ("oluv", -1)
+[c, sl]: 1929553940 ("udzzwvspsuakljox", 1)
+[c, sl]: 2894330910 ("ricx", -1)
+[c, sl]: 3859107880 ("nefohkgkhbhjmkry", 1)
+[c, sl]: 4823884850 ("zdpd", -1)
+[c, sl]: 5788661820 ("rbdxrifgfqhkdipk", 1)
+[c, sl]: 6753438790 ("ilab", -1)
+[c, sl]: 7718215760 ("osjrnikgpnlroenb", 1)
+[c, sl]: 8682992730 ("vnin", -1)
+[c, sl]: 9647769700 ("fjuuhnhafkhlxwac", 1)
+[c, sl]: 10612546670 ("gbvu", -1)
+[c, sl]: 11577323640 ("tgszdkzicesngmpn", 1)
+[c, sl]: 12542100610 ("ciiq", -1)
+[c, sl]: 13506877580 ("yuszokddcucrfjha", 1)
+[c, sl]: 14471654550 ("fxoc", -1)
+[c, sl]: 15436431520 ("sdqfdtdjnlqoqixu", 1)
+[c, sl]: 16401208490 ("kbwx", -1)
+[c, sl]: 17365985460 ("eyhvgqcfznwybsct", 1)
+[c, sl]: 18330762430 ("woyv", -1)
+[c, sl]: 19295539400 ("utrbwyqqqyvlchvr", 1)
+[c, sl]: 20260316370 ("hniq", -1)
+[c, sl]: 21225093340 ("smfqlekfkhtuzate", 1)
+[c, sl]: 22189870310 ("ujyq", -1)
+[c, sl]: 23154647280 ("auwlkvnlbmvcwwjh", 1)
+[c, sl]: 24119424250 ("wtlm", -1)
+[c, sl]: 25084201220 ("iydbpshxhgtgewfu", 1)
+[c, sl]: 26048978190 ("csqi", -1)
+[c, sl]: 27013755160 ("dgknllludtjlxnpj", 1)
+[c, sl]: 27978532130 ("effu", -1)
+[c, sl]: 28943309100 ("jetuudkluaycuman", 1)
+[c, sl]: 29908086070 ("esqo", -1)
+[c, sl]: 30872863040 ("cebyblkbsigaupke", 1)
+[c, sl]: 31837640010 ("xdqa", -1)
+[c, sl]: 32802416980 ("shpnwfysjkvydacd", 1)
+[c, sl]: 33767193950 ("sqhx", -1)
+[c, sl]: 34731970920 ("vbovovunpcqonuaz", 1)
+[c, sl]: 35696747890 ("icwz", -1)
+[c, sl]: 36661524860 ("ycygbqfsrblcxncz", 1)
+[c, sl]: 37626301830 ("uxet", -1)
+[c, sl]: 38591078800 ("rnksujxsyzjmeabj", 1)
+[c, sl]: 39555855770 ("vive", -1)
+[c, sl]: 40520632740 ("govetxbjgutijcwr", 1)
+[c, sl]: 41485409710 ("mmtm", -1)
+[c, sl]: 42450186680 ("qcyvgueckkaoumaw", 1)
+[c, sl]: 43414963650 ("kxkx", -1)
+[c, sl]: 44379740620 ("bxdadmrlymnhzpdb", 1)
+[c, sl]: 45344517590 ("wjti", -1)
+[c, sl]: 46309294560 ("nzyhanqjsewjmvfy", 1)
+[c, sl]: 47274071530 ("", -1)
+[s, c, ans]: "rffrfwrmcstriehkpzid" 964776970 48238848500
+[c, sl]: 0 ("rffrfwrmcstriehkpzid", 1)
+[c, sl]: 0 ("rffrfwrmcstriehkpzid", -1)
+[s, c, ans]: "rffrfwrmcstriehkpzid" 964776970 48238848500
+[c, sl]: 0 ("iicyuszokddcucrfjha", 1)
+[c, sl]: 0 ("qiicyuszokddcucrfjh", -1)
+[s, c, ans]: "qiicyuszokddcucrfjha" 964776970 48238848500
+[s, c, ans]: "qiicyuszokddcucrfjha" 964776970 48238848500
+[c, sl]: 0 ("qiicyuszokddcucrfjha", 1)
+[c, sl]: 0 ("qiicyuszokddcucrfjha", -1)
+[s, c, ans]: "qiicyuszokddcucrfjha" 964776970 48238848500
+[c, sl]: 0 ("tlmhjwwcvmblnvklwua", 1)
+[c, sl]: 0 ("wtlmhjwwcvmblnvklwu", -1)
+[s, c, ans]: "wtlmhjwwcvmblnvklwua" 964776970 48238848500
+[s, c, ans]: "wtlmhjwwcvmblnvklwua" 964776970 48238848500
+[c, sl]: 0 ("wtlmhjwwcvmblnvklwua", 1)
+[c, sl]: 0 ("wtlmhjwwcvmblnvklwua", -1)
+[s, c, ans]: "wtlmhjwwcvmblnvklwua" 964776970 48238848500
+[c, sl]: 0 ("labkpidkhqfgfirxdbr", 1)
+[c, sl]: 0 ("ilabkpidkhqfgfirxdb", -1)
+[s, c, ans]: "ilabkpidkhqfgfirxdbr" 964776970 48238848500
+[s, c, ans]: "ilabkpidkhqfgfirxdbr" 964776970 48238848500
+[c, sl]: 0 ("ilabkpidkhqfgfirxdbr", 1)
+[c, sl]: 0 ("ilabkpidkhqfgfirxdbr", -1)
+[s, c, ans]: "ilabkpidkhqfgfirxdbr" 964776970 48238848500
+[c, sl]: 0 ("sqiufwegtghxhspbdyi", 1)
+[c, sl]: 0 ("csqiufwegtghxhspbdy", -1)
+[s, c, ans]: "csqiufwegtghxhspbdyi" 964776970 48238848500
+[s, c, ans]: "csqiufwegtghxhspbdyi" 964776970 48238848500
+[c, sl]: 0 ("csqiufwegtghxhspbdyi", 1)
+[c, sl]: 0 ("csqiufwegtghxhspbdyi", -1)
+[s, c, ans]: "csqiufwegtghxhspbdyi" 964776970 48238848500
+[c, sl]: 0 ("xetzcnxclbrsfqbgycy", 1)
+[c, sl]: 0 ("uxetzcnxclbrsfqbg", -1)
+[c, sl]: 0 ("uxetzcnxclbrsfqbgyc", -1)
+[s, c, ans]: "uxetzcnxclbrsfqbgycy" 964776970 48238848500
+[s, c, ans]: "uxetzcnxclbrsfqbgycy" 964776970 48238848500
+[c, sl]: 0 ("uxetzcnxclbrsfqbgycy", 1)
+[c, sl]: 0 ("uxetzcnxclbrsfqbgycy", -1)
+[s, c, ans]: "uxetzcnxclbrsfqbgycy" 964776970 48238848500
+[c, sl]: 0 ("uloudzzwvspsuakljox", 1)
+[c, sl]: 0 ("vuloudzzwvspsuakljo", -1)
+[s, c, ans]: "vuloudzzwvspsuakljox" 964776970 48238848500
+[s, c, ans]: "vuloudzzwvspsuakljox" 964776970 48238848500
+[c, sl]: 0 ("vuloudzzwvspsuakljox", 1)
+[c, sl]: 0 ("vuloudzzwvspsuakljox", -1)
+[s, c, ans]: "vuloudzzwvspsuakljox" 964776970 48238848500
+[c, sl]: 0 ("niqrvhclvyqqqywbrtu", 1)
+[c, sl]: 0 ("hniqrvhclvyqqqywbrt", -1)
+[s, c, ans]: "hniqrvhclvyqqqywbrtu" 964776970 48238848500
+[s, c, ans]: "hniqrvhclvyqqqywbrtu" 964776970 48238848500
+[c, sl]: 0 ("hniqrvhclvyqqqywbrtu", 1)
+[c, sl]: 0 ("hniqrvhclvyqqqywbrtu", -1)
+[s, c, ans]: "hniqrvhclvyqqqywbrtu" 964776970 48238848500
+[c, sl]: 0 ("aliosjrnikgpnlroenb", 1)
+[c, sl]: 0 ("baliosjrnikgpnlroen", -1)
+[s, c, ans]: "baliosjrnikgpnlroenb" 964776970 48238848500
+[s, c, ans]: "baliosjrnikgpnlroenb" 964776970 48238848500
+[c, sl]: 0 ("baliosjrnikgpnlroenb", 1)
+[c, sl]: 0 ("baliosjrnikgpnlroenb", -1)
+[s, c, ans]: "baliosjrnikgpnlroenb" 964776970 48238848500
+[c, sl]: 0 ("luvdizpkheirtscmrwf", 1)
+[c, sl]: 0 ("oluvdizpkheirtscmrw", -1)
+[s, c, ans]: "oluvdizpkheirtscmrwf" 964776970 48238848500
+[s, c, ans]: "oluvdizpkheirtscmrwf" 964776970 48238848500
+[c, sl]: 0 ("oluvdizpkheirtscmrwf", 1)
+[c, sl]: 0 ("oluvdizpkheirtscmrwf", -1)
+[s, c, ans]: "oluvdizpkheirtscmrwf" 964776970 48238848500
+[c, sl]: 0 ("xkxwamuoakkceugvycq", 1)
+[c, sl]: 0 ("xwamuoakkceugvycq", 1)
+[c, sl]: 0 ("kxkxwamuoakkceugvyc", -1)
+[s, c, ans]: "kxkxwamuoakkceugvycq" 964776970 48238848500
+[s, c, ans]: "kxkxwamuoakkceugvycq" 964776970 48238848500
+[c, sl]: 0 ("kxkxwamuoakkceugvycq", 1)
+[c, sl]: 0 ("kxkxwamuoakkceugvycq", -1)
+[s, c, ans]: "kxkxwamuoakkceugvycq" 964776970 48238848500
+[c, sl]: 0 ("jyqetazuthkfkelqfms", 1)
+[c, sl]: 0 ("ujyqetazuthkfkelqfm", -1)
+[s, c, ans]: "ujyqetazuthkfkelqfms" 964776970 48238848500
+[s, c, ans]: "ujyqetazuthkfkelqfms" 964776970 48238848500
+[c, sl]: 0 ("ujyqetazuthkfkelqfms", 1)
+[c, sl]: 0 ("ujyqetazuthkfkelqfms", -1)
+[s, c, ans]: "ujyqetazuthkfkelqfms" 964776970 48238848500
+[c, sl]: 0 ("dpdyrkmjhbhkgkhofen", 1)
+[c, sl]: 0 ("zdpdyrkmjhbhkgkhofe", -1)
+[s, c, ans]: "zdpdyrkmjhbhkgkhofen" 964776970 48238848500
+[s, c, ans]: "zdpdyrkmjhbhkgkhofen" 964776970 48238848500
+[c, sl]: 0 ("zdpdyrkmjhbhkgkhofen", 1)
+[c, sl]: 0 ("zdpdyrkmjhbhkgkhofen", -1)
+[s, c, ans]: "zdpdyrkmjhbhkgkhofen" 964776970 48238848500
+[c, sl]: 0 ("pdzrbdxrifgfqhkdipk", 1)
+[c, sl]: 0 ("zrbdxrifgfqhkdipk", 1)
+[c, sl]: 0 ("dpdzrbdxrifgfqhkdip", -1)
+[s, c, ans]: "dpdzrbdxrifgfqhkdipk" 964776970 48238848500
+[s, c, ans]: "dpdzrbdxrifgfqhkdipk" 964776970 48238848500
+[c, sl]: 0 ("dpdzrbdxrifgfqhkdipk", 1)
+[c, sl]: 0 ("dpdzrbdxrifgfqhkdipk", -1)
+[s, c, ans]: "dpdzrbdxrifgfqhkdipk" 964776970 48238848500
+[c, sl]: 0 ("hqsvbovovunpcqonuaz", 1)
+[c, sl]: 0 ("xhqsvbovovunpcqonua", -1)
+[s, c, ans]: "xhqsvbovovunpcqonuaz" 964776970 48238848500
+[s, c, ans]: "xhqsvbovovunpcqonuaz" 964776970 48238848500
+[c, sl]: 0 ("xhqsvbovovunpcqonuaz", 1)
+[c, sl]: 0 ("xhqsvbovovunpcqonuaz", -1)
+[s, c, ans]: "xhqsvbovovunpcqonuaz" 964776970 48238848500
+[c, sl]: 0 ("inhsmfqlekfkhtuzate", 1)
+[c, sl]: 0 ("qinhsmfqlekfkhtuzat", -1)
+[s, c, ans]: "qinhsmfqlekfkhtuzate" 964776970 48238848500
+[s, c, ans]: "qinhsmfqlekfkhtuzate" 964776970 48238848500
+[c, sl]: 0 ("qinhsmfqlekfkhtuzate", 1)
+[c, sl]: 0 ("qinhsmfqlekfkhtuzate", -1)
+[s, c, ans]: "qinhsmfqlekfkhtuzate" 964776970 48238848500
+[c, sl]: 0 ("qsecebyblkbsigaupke", 1)
+[c, sl]: 0 ("oqsecebyblkbsigaupk", -1)
+[s, c, ans]: "oqsecebyblkbsigaupke" 964776970 48238848500
+[s, c, ans]: "oqsecebyblkbsigaupke" 964776970 48238848500
+[c, sl]: 0 ("oqsecebyblkbsigaupke", 1)
+[c, sl]: 0 ("oqsecebyblkbsigaupke", -1)
+[s, c, ans]: "oqsecebyblkbsigaupke" 964776970 48238848500
+[c, sl]: 0 ("oxfsdqfdtdjnlqoqixu", 1)
+[c, sl]: 0 ("coxfsdqfdtdjnlqoqix", -1)
+[s, c, ans]: "coxfsdqfdtdjnlqoqixu" 964776970 48238848500
+[s, c, ans]: "coxfsdqfdtdjnlqoqixu" 964776970 48238848500
+[c, sl]: 0 ("coxfsdqfdtdjnlqoqixu", 1)
+[c, sl]: 0 ("coxfsdqfdtdjnlqoqixu", -1)
+[s, c, ans]: "coxfsdqfdtdjnlqoqixu" 964776970 48238848500
+[c, sl]: 0 ("wciycygbqfsrblcxncz", 1)
+[c, sl]: 0 ("zwciycygbqfsrblcxnc", -1)
+[s, c, ans]: "zwciycygbqfsrblcxncz" 964776970 48238848500
+[s, c, ans]: "zwciycygbqfsrblcxncz" 964776970 48238848500
+[c, sl]: 0 ("zwciycygbqfsrblcxncz", 1)
+[c, sl]: 0 ("zwciycygbqfsrblcxncz", -1)
+[s, c, ans]: "zwciycygbqfsrblcxncz" 964776970 48238848500
+[c, sl]: 0 ("qscdgknllludtjlxnpj", 1)
+[c, sl]: 0 ("iqscdgknllludtjlxnp", -1)
+[s, c, ans]: "iqscdgknllludtjlxnpj" 964776970 48238848500
+[s, c, ans]: "iqscdgknllludtjlxnpj" 964776970 48238848500
+[c, sl]: 0 ("iqscdgknllludtjlxnpj", 1)
+[c, sl]: 0 ("iqscdgknllludtjlxnpj", -1)
+[s, c, ans]: "iqscdgknllludtjlxnpj" 964776970 48238848500
+48238848500

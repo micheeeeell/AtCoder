@@ -193,8 +193,8 @@ signed main(){
     seg.build(vec);
     auto check = [](ll x){return x > 5;};
     // 左端固定した時の最初をにぶたん
-    debug(seg.find_first(4, check));
+    debug(seg.find_first(1, check));
     // 右端固定したときの最後をにぶたん
-    debug(seg.find_last(10, check));
+    debug(seg.find_last(5, check));
     debug(seg);
 }
